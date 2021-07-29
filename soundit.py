@@ -1,4 +1,4 @@
-"""Synthesize music
+"""Make audio
 
 This module uses iterators to represent audio streams. These iterators return
 float values between [-1.0, 1.0) and can be chained, averaged, and precomputed
@@ -36,6 +36,11 @@ Music functions:
 Audio source utilities:
     chunked
     unchunked
+
+We also provide some utility functions with other tools such as converting
+chunks info discord.py AudioSources or decompressing audio on the fly with
+FFmpeg. For discord.py utilities, these only work when discord.py is installed.
+They don't affect other functions in the module.
 
 discord.py utilities:
     wrap_discord_source
