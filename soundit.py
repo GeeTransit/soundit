@@ -133,50 +133,30 @@ NOTE_NAMES = "c c# d d# e f f# g g# a a# b".split()
 
 # - Sound generators
 
-def silence(*, seconds=1):
-    """Returns silence
-
-    Note that passing a time is now deprecated. Wrap exact around this instead.
-
-    """
-    for _ in passed(seconds):
+def silence():
+    """Returns silence"""
+    for _ in passed(None):
         yield 0
 
-def sine(freq=A4_FREQUENCY, *, seconds=1):
-    """Returns a sine wave at freq
-
-    Note that passing a time is now deprecated. Wrap exact around this instead.
-
-    """
-    for x in passed(seconds):
+def sine(freq=A4_FREQUENCY):
+    """Returns a sine wave at freq"""
+    for x in passed(None):
         yield math.sin(2*math.pi * freq * x)
 sine_wave = sine  # Old name
 
-def square(freq=A4_FREQUENCY, *, seconds=1):
-    """Returns a square wave at freq
-
-    Note that passing a time is now deprecated. Wrap exact around this instead.
-
-    """
-    for x in passed(seconds):
+def square(freq=A4_FREQUENCY):
+    """Returns a square wave at freq"""
+    for x in passed(None):
         yield (freq*x % 1 > 0.5) * 2 - 1
 
-def sawtooth(freq=A4_FREQUENCY, *, seconds=1):
-    """Returns a sawtooth wave at freq
-
-    Note that passing a time is now deprecated. Wrap exact around this instead.
-
-    """
-    for x in passed(seconds):
+def sawtooth(freq=A4_FREQUENCY):
+    """Returns a sawtooth wave at freq"""
+    for x in passed(None):
         yield ((freq*x + 0.5) % 1 - 0.5) * 2
 
-def triangle(freq=A4_FREQUENCY, *, seconds=1):
-    """Returns a triangle wave at freq
-
-    Note that passing a time is now deprecated. Wrap exact around this instead.
-
-    """
-    for x in passed(seconds):
+def triangle(freq=A4_FREQUENCY):
+    """Returns a triangle wave at freq"""
+    for x in passed(None):
         yield (-abs(-((freq*x + freq/2)%1) + 0.5) + 0.25) * 4
 
 piano_data = None
@@ -196,21 +176,12 @@ def init_piano():
     with open("0.raw", "rb") as f:
         piano_data = f.read()
 
-def piano(index=A4_INDEX, *, seconds=1):
-    """Returns a piano sound at index
-
-    Note that passing a time is now deprecated. Wrap exact around this instead.
-
-    If the length of time is shorter than a second, it will be cut off.
-    If the length of time is longer than a second, silence will be added.
-
-    """
+def piano(index=A4_INDEX):
+    """Returns a piano sound at index"""
     index -= 2*12  # The piano starts at C2
-    for x in passed(min(seconds, 1)):
+    for x in passed(1):
         i = int((index + x) * RATE + 0.5) * 2
         yield int.from_bytes(piano_data[i:i+2], "little", signed=True) / (1<<16-1)
-    if seconds > 1:
-        yield from silence(seconds=seconds-1)
 
 
 # - Experimental sounds from Online Sequencer
