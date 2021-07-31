@@ -1055,27 +1055,35 @@ def notes_to_sine(notes, frequencies, *, line_length=1):
         else:
             yield from cut(length, silence())
 
-# Calls func on each note and plays them together. The sound returned from func
-# can be longer than its length, in which case multiple sounds will be added
-# together.
-def _layer(notes, func, *, line_length=1):
-    current = set()
+def _notes_to_sound(notes, func):
+    """Converts notes to a sound using the provided func
+
+    The provided func is called with the note to get its sound. When there are
+    no more notes to add nor sounds to play, this stops.
+
+    """
+    # Create a queue with all the notes' start times
+    queue = _HeapQueue()
+    start = 0
     for note, length in notes:
-        length *= line_length
-        if note is not None:
-            current.add(func(note, length))
-        for _ in passed(length):
-            result = 0
-            remove = []
-            for it in current:
-                try:
-                    result += next(it)
-                except StopIteration:
-                    remove.append(it)
-            for it in remove:
-                current.remove(it)
-            yield result
-    return current
+        queue.push(start, (note, length))
+        start += length
+    # Play until there are no more notes nor sounds
+    pool = _IteratorPool()
+    for x in passed(None):
+        # Add notes that should start by now
+        for _, (note, length) in queue.popleq(x):
+            if note is None:
+                continue
+            iterable = func(note, length)
+            pool.add(iterable)
+        # Check for end of music
+        nums = pool.step()
+        if not queue and not pool:
+            return
+        # Add component sounds up and yield it
+        yield sum(nums)
+_layer = _notes_to_sound  # Old name
 
 
 # - Experimental class for using multiple iterators in lockstep
