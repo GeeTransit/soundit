@@ -722,7 +722,7 @@ def volume(factor, sound):
 
 def cut(seconds, sound):
     """Ends the sound after the specified time"""
-    for _ in range(int(seconds * RATE)):
+    for _ in passed(seconds):
         yield next(sound)
 
 def pad(seconds, sound):
@@ -1063,7 +1063,7 @@ def _layer(notes, func, *, line_length=1):
         length *= line_length
         if note is not None:
             current.add(func(note, length))
-        for _ in range(int(length * RATE)):
+        for _ in passed(length):
             result = 0
             remove = []
             for it in current:
