@@ -142,7 +142,6 @@ def sine(freq=A4_FREQUENCY):
     """Returns a sine wave at freq"""
     for x in passed(None):
         yield math.sin(2*math.pi * freq * x)
-sine_wave = sine  # Old name
 
 def square(freq=A4_FREQUENCY):
     """Returns a square wave at freq"""
@@ -366,12 +365,6 @@ class _OSInstrument:
         """
         self.cache.clear()
 
-# FFmpeg is now part of _OSInstrument
-_OSInstrumentFFmpeg = _OSInstrument
-
-# Caching is now part of _OSInstrumentFFmpeg
-_OSInstrumentFFmpegCached = _OSInstrumentFFmpeg
-
 # - LRU cache
 
 class LRUCache:
@@ -567,7 +560,6 @@ def create_ffmpeg_process(
     }
     subprocess_kwargs.update(kwargs)
     return subprocess.Popen([executable, *args], **subprocess_kwargs)
-process_from_ffmpeg_args = create_ffmpeg_process  # Old name
 
 def chunked_ffmpeg_process(process):
     """Returns an iterator of chunks from the given process
@@ -603,7 +595,6 @@ def chunked_ffmpeg_process(process):
                 "process ended with a nonzero return code:"
                 f" {process.returncode}"
             )
-iterator_from_process = chunked_ffmpeg_process  # Old name
 
 def make_ffmpeg_section_args(
     filename,
@@ -652,29 +643,6 @@ def make_ffmpeg_section_args(
         *(options or ()),
         "pipe:1",
     ]
-
-
-# - Experimental OS sound functions
-
-_onlinesequencer_data = {}
-_onlinesequencer_settings = None
-
-def _init_onlinesequencer_sound(instrument):
-    assert type(instrument) is int
-    if instrument in _onlinesequencer_data:
-        return
-    _onlinesequencer_data[instrument] = _OSInstrument(
-        instrument,
-        filename=f"<>.raw",
-        before_options="-f s16le -ar 48000 -ac 1".split(),
-        options="-v error".split(),
-    )
-
-def _init_onlinesequencer_settings():
-    _OSInstrument.load_settings()
-
-def _onlinesequencer_sound(instrument, index=A4_INDEX):
-    return (yield from _onlinesequencer_data[instrument].at(index))
 
 
 # - Sound creation utilities
@@ -751,7 +719,6 @@ def volume(factor, sound):
     """Multiplies each point by the specified factor"""
     for num in sound:
         yield num * factor
-scale = volume  # Old name
 
 def cut(seconds, sound):
     """Ends the sound after the specified time"""
@@ -787,7 +754,6 @@ async def play_discord_source(voice_client, source):
     voice_client.play(source, after=after)
     await future
     return future.result()
-play_source = play_discord_source  # Old name
 
 if has_discord:
     # Make our class a subclass of discord.py AudioSource if possible
@@ -824,7 +790,6 @@ if has_discord:
                 return next(self._iterator)
             except StopIteration:
                 return b""
-    IteratorSource = DiscordIteratorSource  # Old name
 
 def wrap_discord_source(iterator, *, is_opus=False):
     """Wraps an iterator of bytes into an audio source
@@ -842,7 +807,6 @@ def wrap_discord_source(iterator, *, is_opus=False):
     if not has_discord:
         raise RuntimeError("discord.py needed to make discord.AudioSources")
     return DiscordIteratorSource(iterator, is_opus=is_opus)
-iterator_to_source = wrap_discord_source  # Old name
 
 def chunked(sound):
     """Converts a stream of floats or two-tuples of floats in [-1, 1) to bytes
@@ -885,7 +849,6 @@ def chunked(sound):
         while not len(current) >= size:
             current += b"\x00\x00\x00\x00"
         yield bytes(current)
-chunk = chunked  # Old name
 
 def unwrap_discord_source(source):
     """Converts an audio source into a stream of bytes
@@ -907,7 +870,6 @@ def unwrap_discord_source(source):
             pass
         else:
             cleanup()
-source_to_iterator = unwrap_discord_source  # Old name
 
 def unchunked(chunks):
     """Converts a stream of bytes to two-tuples of floats in [-1, 1)
@@ -923,7 +885,6 @@ def unchunked(chunks):
             left = int_from_bytes(chunk[i:i+2], "little", signed=True)
             right = int_from_bytes(chunk[i+2:i+4], "little", signed=True)
             yield left/volume, right/volume
-unchunk = unchunked  # Old name
 
 # - Utility for note names and the like
 
@@ -1050,7 +1011,6 @@ def music_to_notes(music, *, line_length=1):
 
         last_note = note
     return notes
-music_to_sounds = music_to_notes  # Old name
 
 def split_music(music):
     r"""Splits music into individual sequences
@@ -1093,7 +1053,6 @@ def notes_to_sine(notes, frequencies, *, line_length=1):
             yield from cut(length, sine(freq=frequencies[note]))
         else:
             yield from cut(length, silence())
-sounds_to_sine = notes_to_sine  # Old name
 
 # Calls func on each note and plays them together. The sound returned from func
 # can be longer than its length, in which case multiple sounds will be added
