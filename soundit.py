@@ -767,7 +767,7 @@ def pad(seconds, sound):
             break
         else:
             yield point
-    yield from silence(seconds=seconds - x)
+    yield from cut(seconds - x, silence())
 
 def exact(seconds, sound):
     """Cuts or pads the sound to make it exactly the specified time"""
@@ -835,7 +835,7 @@ def wrap_discord_source(iterator, *, is_opus=False):
 
     Usage:
         # returns an audio source implementing AudioSource
-        source = s.wrap_discord_source(s.chunked(s.sine(440, seconds=1)))
+        source = s.wrap_discord_source(s.chunked(s.cut(1, s.sine(440))))
         ctx.voice_client.play(source, after=lambda _: print("finished"))
 
     """
@@ -1090,9 +1090,9 @@ def notes_to_sine(notes, frequencies, *, line_length=1):
     for note, length in notes:
         length *= line_length
         if note is not None:
-            yield from sine(freq=frequencies[note], seconds=length)
+            yield from cut(length, sine(freq=frequencies[note]))
         else:
-            yield from silence(seconds=length)
+            yield from cut(length, silence())
 sounds_to_sine = notes_to_sine  # Old name
 
 # Calls func on each note and plays them together. The sound returned from func
