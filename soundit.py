@@ -115,6 +115,7 @@ import itertools
 import functools
 import subprocess
 import copy
+import heapq
 
 try:
     import discord
@@ -1141,6 +1142,80 @@ class _IteratorPool:
         key = self._next_key
         self.iterators[self._next_key] = iterator
         self._next_key += 1
+
+
+# - Experimental class to aid in scheduling stuff
+
+class _HeapQueue:
+    """Heap of key-value pairs
+
+    This is a small wrapper class over the heapq module specialized for
+    schedulers.
+
+    An example:
+
+        >>> queue = _HeapQueue()
+        >>> queue.push(1, "a")
+        >>> queue.push(2, "b")
+        >>> queue.push(3, "c")
+        >>> queue.first
+        (1, "a")
+        >>> queue.pop()
+        (1, "a")
+        >>> queue.push(5, "d")
+        >>> queue.popleq(3)
+        [(2, "b"), (3, "c")]
+        >>> len(queue)
+        1
+
+    """
+    def __init__(self):
+        """Creates a heap queue"""
+        self.heap = []
+        self._next_index = 0
+
+    def __len__(self):
+        return len(self.heap)
+
+    def __repr__(self):
+        return f"<{type(self).__name__} len={len(self)}>"
+
+    def push(self, key, value):
+        """Adds the key-value pair into the heap"""
+        index = self._next_index
+        heapq.heappush(self.heap, (key, index, value))
+        self._next_index += 1
+
+    @property
+    def first(self):
+        """Returns the key-value pair with the lowest key or raises ValueError
+
+        If two pairs have the same key, the one pushed earlier will be
+        returned.
+
+        """
+        if not self:
+            raise ValueError("queue is empty")
+        key, index, value = self.heap[0]
+        return key, value
+
+    def pop(self):
+        """Pops and returns the first pair or raises ValueError
+
+        See .first for more info.
+
+        """
+        if not self:
+            raise ValueError("queue is empty")
+        key, index, value = heapq.heappop(self.heap)
+        return key, value
+
+    def popleq(self, key):
+        """Pops and returns a list of pairs less than or equal to key"""
+        pairs = []
+        while self and self.first[0] <= key:
+            pairs.append(self.pop())
+        return pairs
 
 
 # - Meta utilities
