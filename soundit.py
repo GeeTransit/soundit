@@ -1077,6 +1077,72 @@ def _layer(notes, func, *, line_length=1):
     return current
 
 
+# - Experimental class for using multiple iterators in lockstep
+
+class _IteratorPool:
+    """Pool of iterators to be iterated in lockstep
+
+    This is similar to the builtin function zip but with some notable
+    differences. Firstly, this class never stops iterating. It will return an
+    empty list when there are no iterators. Secondly, having iterators of
+    different lengths simply means the length of values will shrink as you go.
+    Thirdly, you can add more iterators during iteration.
+
+    An example to demonstrate intended usage:
+
+        >>> pool = _IteratorPool()
+        >>> pool.add("aa")
+        >>> pool.add("bbbbb")
+        >>> pool.step()
+        ["a", "b"]
+        >>> pool.step()
+        ["a", "b"]
+        >>> pool.step()
+        ["b"]
+        >>> pool.add("c")
+        >>> pool.step()
+        ["b", "c"]
+        >>> pool.step()
+        ["b"]
+        >>> pool.step()
+        []
+
+    """
+    def __init__(self):
+        """Creates an iterator pool"""
+        self.iterators = {}
+        self._next_key = 0
+
+    def __len__(self):
+        return len(self.iterators)
+
+    def __repr__(self):
+        return f"<{type(self).__name__} len={len(self)}>"
+
+    def step(self):
+        """Returns a list of values from all iterators in the pool"""
+        values = []  # List of values from the iterators
+        remove = []  # Keys to remove after iteration
+        for key, iterator in self.iterators.items():
+            try:
+                value = next(iterator)
+            except StopIteration:
+                remove.append(key)
+            else:
+                values.append(value)
+        if remove:
+            for key in remove:
+                del self.iterators[key]
+        return values
+
+    def add(self, iterable):
+        """Adds the iterable to the pool"""
+        iterator = iter(iterable)
+        key = self._next_key
+        self.iterators[self._next_key] = iterator
+        self._next_key += 1
+
+
 # - Meta utilities
 
 def reload():
