@@ -39,8 +39,7 @@ Audio source utilities:
 
 We also provide some utility functions with other tools such as converting
 chunks info discord.py AudioSources or decompressing audio on the fly with
-FFmpeg. For discord.py utilities, these only work when discord.py is installed.
-They don't affect other functions in the module.
+FFmpeg. These only work when their required library is installed.
 
 discord.py utilities:
     wrap_discord_source
@@ -51,6 +50,10 @@ FFmpeg utilities:
     make_ffmpeg_section_args
     create_ffmpeg_process
     chunked_ffmpeg_process
+
+sounddevice utilities:
+    play_output_chunks
+    create_input_chunks
 
 A very simple example: (Note that ctx is a discord.Context)
 
@@ -123,6 +126,13 @@ except ImportError:
     has_discord = False
 else:
     has_discord = True
+
+try:
+    import sounddevice
+except ImportError:
+    has_sounddevice = False
+else:
+    has_sounddevice = True
 
 # - Constants
 
@@ -1224,6 +1234,61 @@ class _HeapQueue:
         while self and self.first[0] <= key:
             pairs.append(self.pop())
         return pairs
+
+
+# - Utilities wrapping sounddevice
+
+def play_output_chunks(chunks, **kwargs):
+    """Plays chunks to the default audio output device
+
+    This is hardcoded to take PCM 16-bit 48kHz stereo audio, preferably in 20ms
+    blocks.
+
+    Keyword arguments are passed to sounddevice.RawOutputStream.
+
+    Note that the sounddevice library is required for this function.
+
+    """
+    if not has_sounddevice:
+        raise RuntimeError("sounddevice needed to play chunks")
+    SAMPLE_RATE = 48000
+    SECONDS_PER_CHUNK = 1000 // 20
+    FRAMES_PER_CHUNK = SAMPLE_RATE // SECONDS_PER_CHUNK
+    with sounddevice.RawOutputStream(
+        samplerate=SAMPLE_RATE,
+        blocksize=FRAMES_PER_CHUNK,
+        channels=2,
+        dtype="int16",
+        **kwargs,
+    ) as stream:
+        for chunk in chunks:
+            stream.write(chunk)
+
+def create_input_chunks(**kwargs):
+    """Returns chunks from the default audio input device
+
+    This is hardcoded to yield 20ms blocks of PCM 16-bit 48kHz stereo audio.
+
+    Keyword arguments are passed to sounddevice.RawInputStream.
+
+    Note that the sounddevice library is required for this function.
+
+    """
+    if not has_sounddevice:
+        raise RuntimeError("sounddevice needed to record chunks")
+    SAMPLE_RATE = 48000
+    SECONDS_PER_CHUNK = 1000 // 20
+    FRAMES_PER_CHUNK = SAMPLE_RATE // SECONDS_PER_CHUNK
+    with sounddevice.RawInputStream(
+        samplerate=SAMPLE_RATE,
+        blocksize=FRAMES_PER_CHUNK,
+        channels=2,
+        dtype="int16",
+        **kwargs,
+    ) as stream:
+        while True:
+            data, overflowed = stream.read(FRAMES_PER_CHUNK)
+            yield data
 
 
 # - Meta utilities
