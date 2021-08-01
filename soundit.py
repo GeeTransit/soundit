@@ -55,13 +55,10 @@ sounddevice utilities:
     play_output_chunks
     create_input_chunks
 
-A very simple example: (Note that ctx is a discord.Context)
+A very simple example: (Note that these require sounddevice to be installed)
 
     import sound as s
-    await s.play_discord_source(
-        ctx.voice_client,
-        s.wrap_discord_source(s.chunked(s.exact(1, s.sine(440)))),
-    )
+    s.play_output_chunks(s.chunked(s.exact(1, s.sine(440))))
 
 A longer example:
 
@@ -72,13 +69,10 @@ A longer example:
     frequencies = s.make_frequencies_dict()
     notes = "a3 c e a g e c e d e d c a3 c a3 g3".split()
 
-    await s.play_discord_source(
-        ctx.voice_client,
-        s.wrap_discord_source(s.chunked(itertools.chain.from_iterable(
-            s.exact(0.5, s.sine(frequencies[indices[note]]))
-            for note in notes
-        ))),
-    )
+    s.play_output_chunks(s.chunked(itertools.chain.from_iterable(
+        s.exact(0.5, s.sine(frequencies[indices[note]]))
+        for note in notes
+    )))
 
 An even longer example:
 
@@ -94,15 +88,12 @@ An even longer example:
         re mi,re - mi
     '''
 
-    await s.play_discord_source(
-        ctx.voice_client,
-        s.wrap_discord_source(s.chunked(
-            s.volume(2, s._layer(
-                s.music_to_notes(music, line_length=1.15),
-                lambda name, length: s.piano(indices[name] + 1),
-            ))
-        )),
-    )
+    s.play_output_chunks(s.chunked(
+        s.volume(2, s._layer(
+            s.music_to_notes(music, line_length=1.15),
+            lambda name, length: s.piano(indices[name] + 1),
+        ))
+    ))
 
 There is also some builtin music that are prefixed with MUSIC_, such as
 MUSIC_DIGITIZED, provided for testing purposes.
