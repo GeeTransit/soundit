@@ -5,7 +5,7 @@ with open("README.md") as file:
 
 setuptools.setup(
     name="soundit",
-    version="0.1",
+    version="0.2.dev",
     license="MIT",
     author="George Zhang",
     author_email="geetransit@gmail.com",
