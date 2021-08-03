@@ -534,6 +534,31 @@ def lru_iter_cache(func=None, *, maxsize=128, cache=None):
     # Return the wrapper function
     return _lru_iter_cache_wrapper
 
+
+# - Experimental string pluck synthesis
+
+def _with_self_tee(genfunc):
+    def _wrapper(*args, **kwargs):
+        self = yield
+        yield
+        yield from genfunc(self, *args, **kwargs)
+    def _exposed(*args, **kwargs):
+        iterator = _wrapper(*args, **kwargs)
+        iterator.send(None)
+        head, tail = itertools.tee(iterator)
+        iterator.send(tail)
+        return head
+    return _exposed
+
+@_with_self_tee
+def _pluck(self, freq=440, *, func=square):
+    import random
+    initial = cut(1 / freq, func(freq))
+    head, tail = itertools.tee(itertools.chain(initial, self))
+    next(head, None)
+    for x, y in zip(tail, head):
+        yield (x+y)/2 * 0.99
+
 # - FFmpeg utilities
 
 def create_ffmpeg_process(
