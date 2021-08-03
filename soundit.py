@@ -1092,15 +1092,14 @@ def _notes_to_sound(notes, func):
     queue = _HeapQueue()
     start = 0
     for note, length in notes:
-        queue.push(start, (note, length))
+        if note is not None:
+            queue.push(start, (note, length))
         start += length
     # Play until there are no more notes nor sounds
     pool = _IteratorPool()
     for x in passed(None):
         # Add notes that should start by now
         for _, (note, length) in queue.popleq(x):
-            if note is None:
-                continue
             iterable = func(note, length)
             pool.add(iterable)
         # Check for end of music
