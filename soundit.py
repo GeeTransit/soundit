@@ -148,7 +148,7 @@ def sine(freq=A4_FREQUENCY):
 def square(freq=A4_FREQUENCY):
     """Returns a square wave at freq"""
     for x in passed(None):
-        yield (freq*x % 1 > 0.5) * 2 - 1
+        yield (freq*x % 1 >= 0.5) * 2 - 1
 
 def sawtooth(freq=A4_FREQUENCY):
     """Returns a sawtooth wave at freq"""
