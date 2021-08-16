@@ -158,7 +158,7 @@ def sawtooth(freq=A4_FREQUENCY):
 def triangle(freq=A4_FREQUENCY):
     """Returns a triangle wave at freq"""
     for x in passed(None):
-        yield (-abs(-((freq*x + freq/2)%1) + 0.5) + 0.25) * 4
+        yield (-abs(-((freq*x + 0.25)%1) + 0.5) + 0.25) * 4
 
 piano_data = None
 def init_piano():
