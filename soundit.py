@@ -31,7 +31,7 @@ Music functions:
     split_music
     music_to_notes
     notes_to_sine
-    _layer  (unfinalized API)
+    _notes_to_sound  (unfinalized API)
 
 Audio source utilities:
     chunked
@@ -89,7 +89,7 @@ An even longer example:
     '''
 
     s.play_output_chunks(s.chunked(
-        s.volume(2, s._layer(
+        s.volume(2, s._notes_to_sound(
             s.music_to_notes(music, line_length=1.15),
             lambda name, length: s.piano(indices[name] + 1),
         ))
