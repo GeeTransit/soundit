@@ -1307,6 +1307,65 @@ def create_input_chunks(**kwargs):
             yield data
 
 
+# - Miscellaneous sound utilities
+
+def _dft(points, frequency):
+    n = len(points)
+    factor = -2 * cmath.pi * frequency / n
+    rect_ = cmath.rect
+    return sum(
+        rect_(a, factor * i)
+        for i, a in enumerate(points)
+    ) / n
+
+def _fft_inplace(points, invert=True):
+    """Computes the fast fourier transform inplace
+
+    The length of points must be a power of two. Pass False to invert to
+    calculate the inverse.
+
+    """
+    # Resources:
+    # https://cp-algorithms.web.app/algebra/fft.html
+    # https://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/
+    # https://www.youtube.com/watch?v=r6sGWTCMz2k
+    n = len(points)
+    # Ensure the array is a power of 2 so we can achieve O(n log n) performance
+    if n == 0 or 2 ** (n.bit_length() - 1) != n:
+        raise ValueError("list length must be a power of 2")
+    # Faster lookup
+    range_ = range
+    rect_ = cmath.rect
+    # Bit reversal permutation
+    half_n = n // 2
+    j = 0
+    for i in range_(1, n):
+        mask = half_n
+        while j & mask:
+            j ^= mask
+            mask //= 2
+        j ^= mask
+        if i < j:
+            points[i], points[j] = points[j], points[i]
+    # Iterative fast fourier transform
+    direction = -cmath.pi if invert else cmath.pi
+    size = 1
+    while size < n:
+        wlen = rect_(1, direction / size)
+        for i in range_(0, n, size * 2):
+            w = 1 + 0j
+            for j in range_(i, i + size):
+                u = points[j]
+                v = points[j + size] * w
+                points[j] = u + v
+                points[j + size] = u - v
+                w *= wlen
+        size *= 2
+    if invert:
+        for i, a in enumerate(points):
+            points[i] = a / n
+
+
 # - Meta utilities
 
 def reload():
