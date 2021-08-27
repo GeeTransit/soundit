@@ -542,6 +542,7 @@ def _with_self_tee(genfunc):
         self = yield
         yield
         yield from genfunc(self, *args, **kwargs)
+    @functools.wraps(genfunc)
     def _exposed(*args, **kwargs):
         iterator = _wrapper(*args, **kwargs)
         iterator.send(None)
