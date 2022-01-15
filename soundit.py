@@ -1295,10 +1295,11 @@ def create_input_chunks(**kwargs):
     SAMPLE_RATE = 48000
     SECONDS_PER_CHUNK = 1000 // 20
     FRAMES_PER_CHUNK = SAMPLE_RATE // SECONDS_PER_CHUNK
+    FRAMES_PER_CHUNK = kwargs.pop("blocksize", FRAMES_PER_CHUNK)
     with sounddevice.RawInputStream(
         samplerate=SAMPLE_RATE,
         blocksize=FRAMES_PER_CHUNK,
-        channels=2,
+        channels=kwargs.pop("channels", 2),
         dtype="int16",
         **kwargs,
     ) as stream:
