@@ -110,6 +110,8 @@ import functools
 import subprocess
 import copy
 import heapq
+import sys
+import collections
 
 try:
     import discord
@@ -124,6 +126,12 @@ except ImportError:
     has_sounddevice = False
 else:
     has_sounddevice = True
+
+from typing import TYPE_CHECKING, Optional, Any, Iterable, Deque, Iterator
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 # - Constants
 
@@ -671,6 +679,140 @@ def make_ffmpeg_section_args(
         *(options or ()),
         "pipe:1",
     ]
+
+
+# - Byte stream utilities
+
+def loop_stream(
+    data_iterable: Iterable[bytes],
+    *,
+    copy: Optional[bool] = True,
+    when_empty: Optional[Literal["ignore", "error"]] = "error",
+) -> Iterator[bytes]:
+    """Consumes a stream of buffers and loops them forever
+
+    - data_iterable: the iterable of buffers
+    - copy => True: whether or not to copy the buffers
+    - when_empty => "error": what to do when data is empty (ignore or error)
+
+    The buffers are reused upon looping. If the buffers are known to be unused
+    after being yielded, you can set copy to False to save some time copying.
+
+    When sum(len(b) for b in buffers) == 0, a RuntimeError will be raised.
+    Otherwise, this function can end up in an infinite loop, or it can cause
+    other functions to never yield (such as equal_chunk_stream). This behaviour
+    is almost never useful, though if necessary, pass when_empty="ignore" to
+    suppress the error.
+
+    """
+    if copy is None:
+        copy = True
+    if when_empty is None:
+        when_empty = "error"
+    if when_empty not in ("ignore", "error"):
+        raise ValueError("when_empty must be ignore or error")
+    data_iterator = iter(data_iterable)
+
+    # Deques have a guaranteed O(1) append; lists have worst case O(n)
+    data_buffers: Deque[bytes] = collections.deque()
+    data_buffers_size = 0
+
+    if copy:
+        # Read and copy data until empty
+        while True:
+            data = next(data_iterator, None)
+            if data is None:
+                break
+            data = bytes(data)  # copy = True
+            data_buffers.append(data)
+            data_buffers_size += len(data)
+            yield data
+
+    else:
+        # Read data until empty
+        while True:
+            data = next(data_iterator, None)
+            if data is None:
+                break
+            data_buffers.append(data)
+            data_buffers_size += len(data)
+            yield data
+
+    # Sanity check for empty buffer length
+    if when_empty == "error" and data_buffers_size == 0:
+        raise RuntimeError("empty data buffers")
+
+    # Yield buffers forever
+    while True:
+        yield from data_buffers
+
+def equal_chunk_stream(
+    data_iterable: Iterable[bytes],
+    buffer_len: int,
+) -> Iterator[bytes]:
+    """Normalizes a stream of buffers into ones of length buffer_len
+
+    - data_iterable is the iterable of buffers.
+    - buffer_len is the size to normalize buffers to
+
+    Note that the yielded buffer is not guaranteed to be unchanged. Basically,
+    create a copy if it needs to be used for longer than a single iteration. It
+    may be reused inside this function to reduce object creation and
+    collection.
+
+    The last buffer yielded is always smaller than buffer_len. Other code can
+    fill it with zeros, drop it, or execute clean up code
+
+        >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghi"], 3)))
+        [b'abc', b'def', b'ghi', b'']
+        >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghijk"], 3)))
+        [b'abc', b'def', b'ghi', b'jk']
+        >>> list(map(bytes, equal_chunk_stream([b"a", b"b", b"c", b"d"], 3)))
+        [b'abc', b'd']
+        >>> list(map(bytes, equal_chunk_stream([], 3)))
+        [b'']
+        >>> list(map(bytes, equal_chunk_stream([b"", b""], 3)))
+        [b'']
+        >>> list(map(bytes, equal_chunk_stream([b"", b"", b"a", b""], 3)))
+        [b'a']
+
+    """
+    if not buffer_len > 0:
+        raise ValueError("buffer length is not positive")
+    data_iterator = iter(data_iterable)
+
+    # Initialize buffer / data variables
+    buffer = memoryview(bytearray(buffer_len))
+    buffer_ptr = 0
+    data = b""
+    data_ptr = 0
+    data_len = len(data)
+
+    while True:
+        # Buffer is full. This must come before the data checking so that the
+        # final chunk always passes an if len(chunk) != buffer_len.
+        if buffer_ptr == buffer_len:
+            yield buffer
+            buffer_ptr = 0
+
+        # Data is consumed
+        if data_ptr == data_len:
+            data_item = next(data_iterator, None)
+            if data_item is None:
+                # Yield everything that we have left (could be b"") so that
+                # other code can simply check the length to know if the stream
+                # is ending.
+                yield buffer[:buffer_ptr]
+                return
+            data = memoryview(data_item)
+            data_ptr = 0
+            data_len = len(data)
+
+        # Either fill up the buffer or consume the data (or both)
+        take = min(buffer_len - buffer_ptr, data_len - data_ptr)
+        buffer[buffer_ptr:buffer_ptr + take] = data[data_ptr:data_ptr + take]
+        buffer_ptr += take
+        data_ptr += take
 
 
 # - Sound creation utilities
@@ -1254,7 +1396,7 @@ class _HeapQueue:
 
 # - Utilities wrapping sounddevice
 
-def play_output_chunks(chunks, **kwargs):
+def play_output_chunks(chunks: Iterable[bytes], **kwargs: Any):
     """Plays chunks to the default audio output device
 
     This is hardcoded to take PCM 16-bit 48kHz stereo audio, preferably in 20ms
@@ -1277,7 +1419,9 @@ def play_output_chunks(chunks, **kwargs):
         dtype="int16",
         **kwargs,
     ) as stream:
-        for chunk in chunks:
+        # Using the specified blocksize is better for performance
+        buffer_len = FRAMES_PER_CHUNK * stream.samplesize * stream.channels
+        for chunk in equal_chunk_stream(chunks, buffer_len):
             stream.write(chunk)
 
 def create_input_chunks(**kwargs):
