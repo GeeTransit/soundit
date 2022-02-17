@@ -132,6 +132,10 @@ if sys.version_info >= (3, 8):
     from typing import Literal
 else:
     from typing_extensions import Literal
+if sys.version_info >= (3, 10):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
 
 # - Constants
 
@@ -597,13 +601,30 @@ def create_ffmpeg_process(
     subprocess_kwargs.update(kwargs)
     return subprocess.Popen([executable, *args], **subprocess_kwargs)
 
-def chunked_ffmpeg_process(process):
+if TYPE_CHECKING or sys.version_info >= (3, 9):
+    Popen: TypeAlias = subprocess.Popen[bytes]
+else:
+    Popen: TypeAlias = subprocess.Popen
+
+def chunked_ffmpeg_process(
+    process: Popen,
+    *,
+    close: Optional[bool] = True,
+) -> Iterator[bytes]:
     """Returns an iterator of chunks from the given process
+
+    - process is the subprocess to stream stdout from
+    - close => True: whether to terminate the process when finished
 
     This function is hardcoded to take PCM 16-bit stereo audio, same as the
     chunked function. See that function for more info.
 
     """
+    if process.stdout is None:
+        raise ValueError("process has no stdout")
+    if close is None:
+        close = True
+
     SAMPLING_RATE = 48000  # 48kHz
     CHANNELS = 2  # stereo
     SAMPLE_WIDTH = 2 * 8  # 16-bit
@@ -615,6 +636,7 @@ def chunked_ffmpeg_process(process):
     FRAME_SIZE_BYTES = FRAME_SIZE // 8
 
     try:
+        # Stream stdout until EOF
         read = process.stdout.read  # speedup by removing a getattr
         while True:
             data = read(FRAME_SIZE_BYTES)
@@ -623,14 +645,21 @@ def chunked_ffmpeg_process(process):
             yield data
 
     finally:
-        process.kill()
-        if process.poll() is None:
-            process.communicate()
-        if process.returncode != 0:
-            raise RuntimeError(
-                "process ended with a nonzero return code:"
-                f" {process.returncode}"
-            )
+        if close:
+            # Terminating instead of closing pipes makes FFmpeg not cry "Error
+            # writing trailer of pipe:: Broken pipe" on .mp3s
+            process.terminate()
+            if process.stdin:
+                process.stdin.close()
+            process.stdout.close()
+            if process.stderr:
+                process.stderr.close()
+            process.wait()
+            if process.returncode != 0:
+                raise RuntimeError(
+                    "process ended with a nonzero return code:"
+                    f" {process.returncode}"
+                )
 
 def make_ffmpeg_section_args(
     filename,
