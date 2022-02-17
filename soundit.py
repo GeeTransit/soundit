@@ -127,6 +127,13 @@ except ImportError:
 else:
     has_sounddevice = True
 
+try:
+    import av  # type: ignore
+except ImportError:
+    has_av = False
+else:
+    has_av = True
+
 from typing import TYPE_CHECKING, Optional, Any, Iterable, Deque, Iterator
 if sys.version_info >= (3, 8):
     from typing import Literal
@@ -842,6 +849,89 @@ def equal_chunk_stream(
         buffer[buffer_ptr:buffer_ptr + take] = data[data_ptr:data_ptr + take]
         buffer_ptr += take
         data_ptr += take
+
+
+# - LibAV utilities
+
+def _chunked_libav_section(
+    filename: str,
+    start: float,
+    length: float,
+):
+    """Returns an iterator of chunks from the specified file
+
+    It will take the required amount of audio starting from the specified start
+    time and convert them into PCM 16-bit stereo audio.
+
+    """
+    if not has_av:
+        raise RuntimeError("av needed to decode file")
+
+    RATE = 48000  # 48kHz
+    CHANNELS = 2  # stereo
+    WIDTH = 2  # 16-bit
+
+    # Close after usage to prevent memory leaks
+    with av.open(filename, "r") as in_container, \
+            av.open(None, "w", format="s16le") as pcm_container:
+
+        # Input audio stream to decode from
+        in_stream = in_container.streams.audio[0]
+        in_stream.thread_type = "AUTO"  # Use more threads for decoding
+
+        # Output PCM stream to encode into
+        pcm_stream = pcm_container.add_stream("pcm_s16le", RATE)
+        pcm_stream.layout = "stereo"
+
+        # Decoding state
+        got_initial = False  # Flag to correctly set in_skip after seeking
+        in_skip = round(start / in_stream.time_base)  # Frames to skip
+        pcm_left = round(length * RATE)  # Frames to keep
+
+        # Seek to a keyframe at or before in_skip frames
+        in_container.seek(in_skip, stream=in_stream)
+
+        # Loop frames from the input
+        for in_packet in in_container.demux():
+            for in_frame in in_stream.decode(in_packet):
+                # If this is the first frame, subtract current from in_skip
+                if not got_initial:
+                    in_skip -= in_frame.pts
+                    got_initial = True
+
+                # Skip the whole frame if we dont need it
+                if in_skip >= in_frame.samples:
+                    in_skip -= in_frame.samples
+                    continue
+
+                # Encode into PCM
+                in_frame.pts = None  # Have pcm_stream join frames together
+                pcm_packet = memoryview(b"".join(pcm_stream.encode(in_frame)))
+
+                # If there's still a part to skip, skip it
+                if in_skip > 0:
+                    pcm_skip = round(in_skip * in_stream.time_base * RATE)
+                    pcm_packet = pcm_packet[pcm_skip * CHANNELS * WIDTH :]
+                    in_skip = 0
+
+                # If this is the last packet, cut the end, yield, and break
+                pcm_length = len(pcm_packet) // CHANNELS // WIDTH
+                if pcm_left <= pcm_length:
+                    if pcm_left < pcm_length:
+                        pcm_packet = pcm_packet[: pcm_left * CHANNELS * WIDTH]
+                    yield pcm_packet
+                    return
+
+                # Update frames left and yield
+                pcm_left -= pcm_length
+                yield pcm_packet
+
+        # Flush buffers and yield the last bits
+        pcm_packet = memoryview(b"".join(pcm_stream.encode(None)))
+        pcm_length = len(pcm_packet) // CHANNELS // WIDTH
+        if pcm_left < pcm_length:
+            pcm_packet = pcm_packet[: pcm_left * CHANNELS * WIDTH]
+        yield pcm_packet
 
 
 # - Sound creation utilities
