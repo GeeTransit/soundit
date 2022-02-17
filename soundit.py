@@ -114,14 +114,14 @@ import sys
 import collections
 
 try:
-    import discord
+    import discord  # type: ignore
 except ImportError:
     has_discord = False
 else:
     has_discord = True
 
 try:
-    import sounddevice
+    import sounddevice  # type: ignore
 except ImportError:
     has_sounddevice = False
 else:
