@@ -642,6 +642,8 @@ def chunked_ffmpeg_process(
     FRAME_SIZE = SAMPLES_PER_FRAME * SAMPLE_SIZE
     FRAME_SIZE_BYTES = FRAME_SIZE // 8
 
+    check_return_code = True
+
     try:
         # Stream stdout until EOF
         read = process.stdout.read  # speedup by removing a getattr
@@ -650,6 +652,10 @@ def chunked_ffmpeg_process(
             if not data:
                 break
             yield data
+
+    except GeneratorExit:
+        check_return_code = False
+        raise
 
     finally:
         if close:
@@ -662,7 +668,7 @@ def chunked_ffmpeg_process(
             if process.stderr:
                 process.stderr.close()
             process.wait()
-            if process.returncode != 0:
+            if check_return_code and process.returncode != 0:
                 raise RuntimeError(
                     "process ended with a nonzero return code:"
                     f" {process.returncode}"
