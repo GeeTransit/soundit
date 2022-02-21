@@ -5,7 +5,7 @@ with open("README.md") as file:
 
 setuptools.setup(
     name="soundit",
-    version="0.2",
+    version="0.2.1.dev",
     license="MIT",
     author="George Zhang",
     author_email="geetransit@gmail.com",
@@ -14,6 +14,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/GeeTransit/soundit",
     py_modules=["soundit"],
+    install_requires=["typing_extensions>=4.0.0"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: MIT License",
