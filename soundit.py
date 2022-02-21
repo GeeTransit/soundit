@@ -100,7 +100,7 @@ MUSIC_DIGITIZED, provided for testing purposes.
 
 """
 
-__version__ = "0.2.1.dev"
+__version__ = "0.2.1"
 
 import asyncio
 import math
