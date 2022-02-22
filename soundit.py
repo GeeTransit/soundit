@@ -1399,16 +1399,16 @@ class _IteratorPool:
         >>> pool.add("aa")
         >>> pool.add("bbbbb")
         >>> pool.step()
-        ["a", "b"]
+        ['a', 'b']
         >>> pool.step()
-        ["a", "b"]
+        ['a', 'b']
         >>> pool.step()
-        ["b"]
+        ['b']
         >>> pool.add("c")
         >>> pool.step()
-        ["b", "c"]
+        ['b', 'c']
         >>> pool.step()
-        ["b"]
+        ['b']
         >>> pool.step()
         []
 
@@ -1462,12 +1462,12 @@ class _HeapQueue:
         >>> queue.push(2, "b")
         >>> queue.push(3, "c")
         >>> queue.first
-        (1, "a")
+        (1, 'a')
         >>> queue.pop()
-        (1, "a")
+        (1, 'a')
         >>> queue.push(5, "d")
         >>> queue.popleq(3)
-        [(2, "b"), (3, "c")]
+        [(2, 'b'), (3, 'c')]
         >>> len(queue)
         1
 
