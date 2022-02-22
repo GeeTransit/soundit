@@ -38,6 +38,21 @@ include = ["/examples/*"]
 
 [tool.hatch.build.targets.wheel]
 
+[tool.hatch.envs.lint]
+skip-install = true
+dependencies = [
+    "flake8>=4.0.0",
+    "pyproject-flake8>=0.0.1a2",
+]
+
+[tool.hatch.envs.lint.scripts]
+# TODO: Change to flake8 when it supports pyproject.toml
+style = "pflake8 soundit.py"
+all = ["style"]
+
+[tool.flake8]
+extend-ignore = "E302, E305, E306"
+
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
