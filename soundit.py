@@ -100,8 +100,6 @@ MUSIC_DIGITIZED, provided for testing purposes.
 
 """
 
-__version__ = "0.3-dev"
-
 import asyncio
 import math
 import json
