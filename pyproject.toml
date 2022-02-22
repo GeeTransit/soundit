@@ -52,6 +52,10 @@ style = "pflake8 soundit.py"
 typing = "mypy --install-types --non-interactive soundit.py"
 all = ["style", "typing"]
 
+[tool.hatch.envs.test.scripts]
+doctest = "python -m doctest soundit.py"
+all = ["doctest"]
+
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
 
