@@ -1,0 +1,39 @@
+[project]
+name = "soundit"
+description = "Make audio"
+version = "0.3-dev"
+authors = [
+	{ name = "George Zhang", email = "geetransit@gmail.com" },
+]
+readme = "README.md"
+license = { text = "MIT" }
+classifiers = [
+	"Development Status :: 3 - Alpha",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.9",
+	"Topic :: Multimedia :: Sound/Audio",
+]
+requires-python = ">=3.7"
+dependencies = [
+	"typing-extensions>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/GeeTransit/soundit"
+
+[tool.hatch]
+
+[tool.hatch.build]
+ignore-vcs = true
+include = ["/soundit.py"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/examples/*"]
+
+[tool.hatch.build.targets.wheel]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
