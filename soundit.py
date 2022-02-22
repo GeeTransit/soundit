@@ -110,6 +110,7 @@ import copy
 import heapq
 import sys
 import collections
+import cmath
 
 try:
     import discord  # type: ignore
@@ -175,7 +176,7 @@ def sawtooth(freq=A4_FREQUENCY):
 def triangle(freq=A4_FREQUENCY):
     """Returns a triangle wave at freq"""
     for x in passed(None):
-        yield (-abs(-((freq*x + 0.25)%1) + 0.5) + 0.25) * 4
+        yield (-abs(-((freq*x + 0.25) % 1) + 0.5) + 0.25) * 4
 
 piano_data = None
 def init_piano():
@@ -199,7 +200,10 @@ def piano(index=A4_INDEX):
     index -= 2*12  # The piano starts at C2
     for x in passed(1):
         i = int((index + x) * RATE + 0.5) * 2
-        yield int.from_bytes(piano_data[i:i+2], "little", signed=True) / (1<<16-1)
+        yield (
+            int.from_bytes(piano_data[i:i+2], "little", signed=True)
+            / (1 << 16-1)
+        )
 
 
 # - Experimental sounds from Online Sequencer
@@ -516,7 +520,8 @@ class LRUIterableCache(LRUCache):
     """
     def get(self, key, iterable_func):
         """Return the iterator for this key, calling iterable_func if needed"""
-        value_func = lambda: itertools.tee(iterable_func(), 1)[0]
+        def value_func(self):
+            return itertools.tee(iterable_func(), 1)[0]
         return copy.copy(super().get(key, value_func))
 
 def lru_iter_cache(func=None, *, maxsize=128, cache=None):
@@ -541,7 +546,8 @@ def lru_iter_cache(func=None, *, maxsize=128, cache=None):
         # The key must not be the same for different call args / kwargs.
         # Example: f("a", 1) vs f(a=1).
         key = (args, *kwargs.items())
-        iterable_func = lambda: func(*args, **kwargs)
+        def iterable_func():
+            return func(*args, **kwargs)
         return cache.get(key, iterable_func)
 
     # Add the cache to the function object for later introspection
@@ -570,7 +576,6 @@ def _with_self_tee(genfunc):
 
 @_with_self_tee
 def _pluck(self, freq=440, *, func=square):
-    import random
     initial = cut(1 / freq, func(freq))
     head, tail = itertools.tee(itertools.chain(initial, self))
     next(head, None)
@@ -915,7 +920,7 @@ def _chunked_libav_section(
                 # If there's still a part to skip, skip it
                 if in_skip > 0:
                     pcm_skip = round(in_skip * in_stream.time_base * RATE)
-                    pcm_packet = pcm_packet[pcm_skip * CHANNELS * WIDTH :]
+                    pcm_packet = pcm_packet[pcm_skip * CHANNELS * WIDTH:]
                     in_skip = 0
 
                 # If this is the last packet, cut the end, yield, and break
@@ -1146,8 +1151,8 @@ def chunked(sound):
 def unwrap_discord_source(source):
     """Converts an audio source into a stream of bytes
 
-    This basically does the opposite of wrap_discord_source. See that function's
-    documentation for more info.
+    This basically does the opposite of wrap_discord_source. See that
+    function's documentation for more info.
 
     """
     try:
@@ -1174,7 +1179,7 @@ def unchunked(chunks):
     volume = 1 << (16-1)  # 16-bit signed
     int_from_bytes = int.from_bytes  # speedup by removing a getattr
     for chunk in chunks:
-        for i in range(0, len(chunk) - len(chunk)%4, 4):
+        for i in range(0, len(chunk) - len(chunk) % 4, 4):
             left = int_from_bytes(chunk[i:i+2], "little", signed=True)
             right = int_from_bytes(chunk[i+2:i+4], "little", signed=True)
             yield left/volume, right/volume
@@ -1438,7 +1443,6 @@ class _IteratorPool:
     def add(self, iterable):
         """Adds the iterable to the pool"""
         iterator = iter(iterable)
-        key = self._next_key
         self.iterators[self._next_key] = iterator
         self._next_key += 1
 
@@ -1855,4 +1859,4 @@ MUSIC_DIGITIZED_DUAL = '''
 
     do . . .
 /   la3 . . .
-'''
+'''  # noqa: E501
