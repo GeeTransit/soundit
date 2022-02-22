@@ -56,6 +56,10 @@ all = ["style", "typing"]
 doctest = "python -m doctest soundit.py"
 all = ["doctest"]
 
+[tool.hatch.envs.test-matrix]
+template = "test"
+matrix = [ { python = ["37", "38", "39", "310"] } ]
+
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
 
