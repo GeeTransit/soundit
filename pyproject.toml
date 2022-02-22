@@ -43,15 +43,20 @@ skip-install = true
 dependencies = [
     "flake8>=4.0.0",
     "pyproject-flake8>=0.0.1a2",
+    "mypy>=0.901",
 ]
 
 [tool.hatch.envs.lint.scripts]
 # TODO: Change to flake8 when it supports pyproject.toml
 style = "pflake8 soundit.py"
-all = ["style"]
+typing = "mypy --install-types --non-interactive soundit.py"
+all = ["style", "typing"]
 
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
+
+[tool.mypy]
+show_error_codes = true
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
