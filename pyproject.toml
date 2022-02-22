@@ -21,7 +21,8 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/GeeTransit/soundit"
+Homepage = "https://pypi.org/project/soundit/"
+Repository = "https://github.com/GeeTransit/soundit"
 
 [tool.hatch]
 
