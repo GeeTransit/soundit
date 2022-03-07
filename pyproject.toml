@@ -1,9 +1,6 @@
 [project]
 name = "soundit"
 description = "Make audio"
-authors = [
-	{ name = "George Zhang", email = "geetransit@gmail.com" },
-]
 readme = "README.md"
 license = { text = "MIT" }
 classifiers = [
@@ -24,7 +21,9 @@ dynamic = ["version"]
 Homepage = "https://pypi.org/project/soundit/"
 Repository = "https://github.com/GeeTransit/soundit"
 
-[tool.hatch]
+[[project.authors]]
+name = "George Zhang"
+email = "geetransit@gmail.com"
 
 [tool.hatch.version]
 source = "vcs"
@@ -49,7 +48,9 @@ all = ["doctest"]
 
 [tool.hatch.envs.test-matrix]
 template = "test"
-matrix = [ { python = ["37", "38", "39", "310"] } ]
+
+[[tool.hatch.envs.test-matrix.matrix]]
+python = ["37", "38", "39", "310"]
 
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
