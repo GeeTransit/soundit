@@ -28,6 +28,9 @@ email = "geetransit@gmail.com"
 [tool.hatch.version]
 source = "vcs"
 
+[tool.hatch.build]
+exclude = ["examples"]
+
 [tool.hatch.envs.lint]
 skip-install = true
 dependencies = [
