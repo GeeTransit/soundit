@@ -29,15 +29,6 @@ Repository = "https://github.com/GeeTransit/soundit"
 [tool.hatch.version]
 source = "vcs"
 
-[tool.hatch.build]
-ignore-vcs = true
-include = ["/soundit.py"]
-
-[tool.hatch.build.targets.sdist]
-include = ["/examples/*"]
-
-[tool.hatch.build.targets.wheel]
-
 [tool.hatch.envs.lint]
 skip-install = true
 dependencies = [
@@ -67,5 +58,5 @@ extend-ignore = "E302, E305, E306"
 show_error_codes = true
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling>=0.15.0", "hatch-vcs"]
 build-backend = "hatchling.build"
