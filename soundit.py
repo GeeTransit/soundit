@@ -520,7 +520,7 @@ class LRUIterableCache(LRUCache):
     """
     def get(self, key, iterable_func):
         """Return the iterator for this key, calling iterable_func if needed"""
-        def value_func(self):
+        def value_func():
             return itertools.tee(iterable_func(), 1)[0]
         return copy.copy(super().get(key, value_func))
 
