@@ -1096,10 +1096,10 @@ def wrap_discord_source(iterator, *, is_opus=False):
     16-bit little endian stereo 48kHz audio each iteration. If is_opus is True,
     the iterator should yield 20ms of Opus encoded audio each iteration.
 
-    Usage:
-        # returns an audio source implementing AudioSource
-        source = s.wrap_discord_source(s.chunked(s.cut(1, s.sine(440))))
-        ctx.voice_client.play(source, after=lambda _: print("finished"))
+        >>> ctx.voice_client.play(
+        ...     wrap_discord_source(chunked(cut(1, sine(440)))),
+        ...     after=lambda _: print("finished"),
+        ... )  # doctest: +SKIP
 
     """
     if not has_discord:
@@ -1316,10 +1316,9 @@ def split_music(music):
     Lines starting with a slash "/" will be added to a new sequence. All other
     lines (including blanks and comments) will be part of the main sequence.
 
-    Usage:
-        split_music("1\n1") == ["1\n1"]
-        split_music("1\n/2\n1") == ["1\n1", "2"]
-        split_music("1\n/2\n/3\n1\n/2") == ["1\n1 ", "2\n2", "3"]
+        >>> assert split_music("1\n1") == ["1\n1"]
+        >>> assert split_music("1\n/2\n1") == ["1\n1", "2"]
+        >>> assert split_music("1\n/2\n/3\n1\n/2") == ["1\n1", "2\n2", "3"]
 
     """
     sequences = [[]]
