@@ -1,0 +1,23 @@
+[envs.lint]
+skip-install = true
+dependencies = [
+    "flake8>=4.0.0",
+    "pyproject-flake8>=0.0.1a2",
+    "mypy>=0.901",
+]
+
+[envs.lint.scripts]
+# TODO: Change to flake8 when it supports pyproject.toml
+style = "pflake8 soundit.py"
+typing = "mypy --install-types --non-interactive soundit.py"
+all = ["style", "typing"]
+
+[envs.test.scripts]
+doctest = "python -m doctest soundit.py"
+all = ["doctest"]
+
+[envs.test-matrix]
+template = "test"
+
+[[envs.test-matrix.matrix]]
+python = ["37", "38", "39", "310"]

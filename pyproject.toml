@@ -31,30 +31,6 @@ source = "vcs"
 [tool.hatch.build]
 exclude = ["examples"]
 
-[tool.hatch.envs.lint]
-skip-install = true
-dependencies = [
-    "flake8>=4.0.0",
-    "pyproject-flake8>=0.0.1a2",
-    "mypy>=0.901",
-]
-
-[tool.hatch.envs.lint.scripts]
-# TODO: Change to flake8 when it supports pyproject.toml
-style = "pflake8 soundit.py"
-typing = "mypy --install-types --non-interactive soundit.py"
-all = ["style", "typing"]
-
-[tool.hatch.envs.test.scripts]
-doctest = "python -m doctest soundit.py"
-all = ["doctest"]
-
-[tool.hatch.envs.test-matrix]
-template = "test"
-
-[[tool.hatch.envs.test-matrix.matrix]]
-python = ["37", "38", "39", "310"]
-
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
 
