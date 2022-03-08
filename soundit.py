@@ -505,10 +505,10 @@ class LRUIterableCache(LRUCache):
     original values and returns copy.copy(...) of the tees in the cache.
 
     We use tee objects for a few reasons:
-        1. They can be iterated at different speeds.
-        2. They are iterators (lazily evaluated).
-        3. They can be copied (major orz for this one).
-        4. They are fast (implemented in C).
+    - They can be iterated at different speeds.
+    - They are iterators (lazily evaluated).
+    - They can be copied (major orz for this one).
+    - They are fast (implemented in C).
 
     A .get() call first finds a tee object, using the cached tee if one exists,
     or creating a fresh one using the iterable_func. We then make a copy of the
@@ -623,7 +623,7 @@ def chunked_ffmpeg_process(
 ) -> Iterator[bytes]:
     """Returns an iterator of chunks from the given process
 
-    - process is the subprocess to stream stdout from
+    - process: the subprocess to stream stdout from
     - close => True: whether to terminate the process when finished
 
     This function is hardcoded to take PCM 16-bit stereo audio, same as the
@@ -797,8 +797,8 @@ def equal_chunk_stream(
 ) -> Iterator[bytes]:
     """Normalizes a stream of buffers into ones of length buffer_len
 
-    - data_iterable is the iterable of buffers.
-    - buffer_len is the size to normalize buffers to
+    - data_iterable: the iterable of buffers.
+    - buffer_len: the size to normalize buffers to
 
     Note that the yielded buffer is not guaranteed to be unchanged. Basically,
     create a copy if it needs to be used for longer than a single iteration. It
@@ -1189,8 +1189,8 @@ def unchunked(chunks):
 def make_frequencies_dict(*, a4=A4_FREQUENCY, offset=0):
     """Makes a dictionary containing frequencies for each note
 
-     - a4 is the frequency for the A above middle C
-     - offset is the number of semitones to offset each note by
+    - a4 is the frequency for the A above middle C
+    - offset is the number of semitones to offset each note by
 
     """
     frequencies = {}
@@ -1204,9 +1204,9 @@ def make_frequencies_dict(*, a4=A4_FREQUENCY, offset=0):
 def make_indices_dict(names=NOTE_NAMES, *, a4=57, offset=0):
     """Makes a dictionary containing note indices of common note names
 
-     - a4 is the note index for the A above middle C
-     - names is a list of note names
-     - offset is the number of semitones to offset each note by
+    - a4 is the note index for the A above middle C
+    - names is a list of note names
+    - offset is the number of semitones to offset each note by
 
     """
     indices = {}
@@ -1340,9 +1340,9 @@ def split_music(music):
 def notes_to_sine(notes, frequencies, *, line_length=1):
     """Converts notes into sine waves
 
-     - notes is an iterator of two-tuples of note names/None and lengths
-     - frequencies is a dict to look up the frequency for each note name
-     - line_length is how much to scale the note by
+    - notes is an iterator of two-tuples of note names/None and lengths
+    - frequencies is a dict to look up the frequency for each note name
+    - line_length is how much to scale the note by
 
     """
     for note, length in notes:
