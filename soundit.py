@@ -10,57 +10,57 @@ There is also a kinda sus music parser which can aid in creating longer music.
 More info on that can be found in the music_to_notes's docstring.
 
 Sound generators:
-    sine
-    square
-    sawtooth
-    triangle
-    silence
-    piano  (requires init_piano to be called)
+    `sine`
+    `square`
+    `sawtooth`
+    `triangle`
+    `silence`
+    `piano`  (requires `init_piano` to be called)
 
 Sound creation utilities:
-    passed
+    `passed`
 
 Sound effects:
-    fade
-    volume
-    cut
-    pad
-    exact
+    `fade`
+    `volume`
+    `cut`
+    `pad`
+    `exact`
 
 Music functions:
-    split_music
-    music_to_notes
-    notes_to_sine
-    _notes_to_sound  (unfinalized API)
+    `split_music`
+    `music_to_notes`
+    `notes_to_sine`
+    `_notes_to_sound`  (unfinalized API)
 
 Audio source utilities:
-    chunked
-    unchunked
+    `chunked`
+    `unchunked`
 
 We also provide some utility functions with other tools such as converting
 chunks info discord.py AudioSources or decompressing audio on the fly with
 FFmpeg. These only work when their required library is installed.
 
 discord.py utilities:
-    wrap_discord_source
-    unwrap_discord_source
-    play_discord_source
+    `wrap_discord_source`
+    `unwrap_discord_source`
+    `play_discord_source`
 
 FFmpeg utilities:
-    make_ffmpeg_section_args
-    create_ffmpeg_process
-    chunked_ffmpeg_process
+    `make_ffmpeg_section_args`
+    `create_ffmpeg_process`
+    `chunked_ffmpeg_process`
 
 sounddevice utilities:
-    play_output_chunks
-    create_input_chunks
+    `play_output_chunks`
+    `create_input_chunks`
 
-A very simple example: (Note that these require sounddevice to be installed)
+A very simple example: (Note that these require sounddevice to be installed) ::
 
     import sound as s
     s.play_output_chunks(s.chunked(s.exact(1, s.sine(440))))
 
-A longer example:
+A longer example::
 
     import itertools
     import sound as s
@@ -74,7 +74,7 @@ A longer example:
         for note in notes
     )))
 
-An even longer example:
+An even longer example::
 
     import sound as s
     s.init_piano()
@@ -95,7 +95,7 @@ An even longer example:
         ))
     ))
 
-There is also some builtin music that are prefixed with MUSIC_, such as
+There is also some builtin music that are prefixed with \MUSIC_, such as
 MUSIC_DIGITIZED, provided for testing purposes.
 
 """
@@ -212,9 +212,9 @@ class _OSInstrument:
     """An instrument wrapping a collection of sounds
 
     These sounds are taken from Online Sequencer. The audio is from links of
-    the form `https://onlinesequencer.net/app/instruments/<>.ogg?v=12` with
-    `<>` being replaced with the instrument number. The settings are from
-    `https://onlinesequencer.net/resources/c/85dda66875c37703d44f50da0bb85185.js`.
+    the form ``https://onlinesequencer.net/app/instruments/<>.ogg?v=12`` with
+    ``<>`` being replaced with the instrument number. The settings are from
+    https://onlinesequencer.net/resources/c/85dda66875c37703d44f50da0bb85185.js.
 
     Online Sequencer's lowest note index (0) represents a C2, which would be 24
     according to make_indices_dict. All note indices are offset accordingly.
@@ -228,9 +228,9 @@ class _OSInstrument:
     runtime. However, you can still specify a raw PCM file. Just also pass
     the relevant FFmpeg options specifying the format, sample rate, and number
     of channels. For 48 kHz signed 16-bit little endian mono audio, you'd pass
-    `before_options=["-f", "s16le", "-ar", "48000", "-ac", "1"]`. You may also
-    want to pass `options=["-v", "error"]` to make FFmpeg quieter (it warns you
-    about estimating the duration from the bitrate).
+    ``before_options=["-f", "s16le", "-ar", "48000", "-ac", "1"]``. You may
+    also want to pass ``options=["-v", "error"]`` to make FFmpeg quieter (it
+    warns you about estimating the duration from the bitrate).
 
     """
     _SETTINGS_FILENAME = "onlinesequencer_settings.json"
@@ -255,13 +255,13 @@ class _OSInstrument:
         If the instrument is a string, it is looked up and converted into an
         instrument number.
 
-        The filename can optionally have a pair of angle brackets `<>` which
+        The filename can optionally have a pair of angle brackets ``<>`` which
         will be replaced by the instrument number.
 
         The before_options and options arguments are included in the
         .ffmpeg_args_for method's return value. Note that they will be prefixed
-        by `["-ss", str(start_time)]` for before_options and
-        `["-t", str(self.seconds)]` for options.
+        by ``["-ss", str(start_time)]`` for before_options and
+        ``["-t", str(self.seconds)]`` for options.
 
         For the sound cache, you can directly pass an LRUIterableCache to the
         cache keyword argument. Passing max_cache_size is deprecated.
@@ -623,8 +623,9 @@ def chunked_ffmpeg_process(
 ) -> Iterator[bytes]:
     """Returns an iterator of chunks from the given process
 
-    - process: the subprocess to stream stdout from
-    - close => True: whether to terminate the process when finished
+    Arguments:
+        process: the subprocess to stream stdout from
+        close: whether to terminate the process when finished
 
     This function is hardcoded to take PCM 16-bit stereo audio, same as the
     chunked function. See that function for more info.
@@ -690,8 +691,8 @@ def make_ffmpeg_section_args(
     It will take the required amount of audio starting from the specified start
     time and convert them into PCM 16-bit stereo audio to be piped to stdout.
 
-    The before_options argument will be passed after `-ss` and before `-i`, and
-    the options argument will be passed after `-t` and before `pipe:1`.
+    The before_options argument will be passed after ``-ss`` and before ``-i``,
+    and the options argument will be passed after ``-t`` and before ``pipe:1``.
 
     The returned args are of this form:
 
@@ -736,9 +737,10 @@ def loop_stream(
 ) -> Iterator[bytes]:
     """Consumes a stream of buffers and loops them forever
 
-    - data_iterable: the iterable of buffers
-    - copy => True: whether or not to copy the buffers
-    - when_empty => "error": what to do when data is empty (ignore or error)
+    Arguments:
+        data_iterable: the iterable of buffers
+        copy: whether or not to copy the buffers
+        when_empty: what to do when data is empty (ignore or error)
 
     The buffers are reused upon looping. If the buffers are known to be unused
     after being yielded, you can set copy to False to save some time copying.
@@ -797,8 +799,9 @@ def equal_chunk_stream(
 ) -> Iterator[bytes]:
     """Normalizes a stream of buffers into ones of length buffer_len
 
-    - data_iterable: the iterable of buffers.
-    - buffer_len: the size to normalize buffers to
+    Arguments:
+        data_iterable: the iterable of buffers.
+        buffer_len: the size to normalize buffers to
 
     Note that the yielded buffer is not guaranteed to be unchanged. Basically,
     create a copy if it needs to be used for longer than a single iteration. It
@@ -806,7 +809,7 @@ def equal_chunk_stream(
     collection.
 
     The last buffer yielded is always smaller than buffer_len. Other code can
-    fill it with zeros, drop it, or execute clean up code
+    fill it with zeros, drop it, or execute clean up code ::
 
         >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghi"], 3)))
         [b'abc', b'def', b'ghi', b'']
@@ -1094,7 +1097,7 @@ def wrap_discord_source(iterator, *, is_opus=False):
 
     If is_opus is False (the default), the iterator must yield 20ms of signed
     16-bit little endian stereo 48kHz audio each iteration. If is_opus is True,
-    the iterator should yield 20ms of Opus encoded audio each iteration.
+    the iterator should yield 20ms of Opus encoded audio each iteration. ::
 
         >>> ctx.voice_client.play(
         ...     wrap_discord_source(chunked(cut(1, sine(440)))),
@@ -1314,7 +1317,7 @@ def split_music(music):
     r"""Splits music into individual sequences
 
     Lines starting with a slash "/" will be added to a new sequence. All other
-    lines (including blanks and comments) will be part of the main sequence.
+    lines (including blanks and comments) will be part of the main sequence. ::
 
         >>> assert split_music("1\n1") == ["1\n1"]
         >>> assert split_music("1\n/2\n1") == ["1\n1", "2"]
@@ -1392,7 +1395,7 @@ class _IteratorPool:
     different lengths simply means the length of values will shrink as you go.
     Thirdly, you can add more iterators during iteration.
 
-    An example to demonstrate intended usage:
+    An example to demonstrate intended usage::
 
         >>> pool = _IteratorPool()
         >>> pool.add("aa")
@@ -1454,7 +1457,7 @@ class _HeapQueue:
     This is a small wrapper class over the heapq module specialized for
     schedulers.
 
-    An example:
+    An example::
 
         >>> queue = _HeapQueue()
         >>> queue.push(1, "a")
