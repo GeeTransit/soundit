@@ -742,6 +742,9 @@ def loop_stream(
         copy: whether or not to copy the buffers
         when_empty: what to do when data is empty (ignore or error)
 
+    Returns:
+        stream of buffers
+
     The buffers are reused upon looping. If the buffers are known to be unused
     after being yielded, you can set copy to False to save some time copying.
 
@@ -802,6 +805,9 @@ def equal_chunk_stream(
     Arguments:
         data_iterable: the iterable of buffers
         buffer_len: the size to normalize buffers to
+
+    Returns:
+        stream of buffers with len(buffer) == buffer_len except the last one
 
     Note that the yielded buffer is not guaranteed to be unchanged. Basically,
     create a copy if it needs to be used for longer than a single iteration. It
