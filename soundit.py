@@ -1105,10 +1105,9 @@ def wrap_discord_source(iterator, *, is_opus=False):
     16-bit little endian stereo 48kHz audio each iteration. If is_opus is True,
     the iterator should yield 20ms of Opus encoded audio each iteration. ::
 
-        >>> ctx.voice_client.play(
-        ...     wrap_discord_source(chunked(cut(1, sine(440)))),
-        ...     after=lambda _: print("finished"),
-        ... )  # doctest: +SKIP
+        # source implements discord.AudioSource
+        source = wrap_discord_source(chunked(cut(1, sine(440))))
+        ctx.voice_client.play(source, after=lambda _: print("finished"))
 
     """
     if not has_discord:
