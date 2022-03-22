@@ -38,7 +38,7 @@ Audio source utilities:
     `unchunked`
 
 We also provide some utility functions with other tools such as converting
-chunks info discord.py AudioSources or decompressing audio on the fly with
+chunks into discord.py AudioSources or decompressing audio on the fly with
 FFmpeg. These only work when their required library is installed.
 
 discord.py utilities:
@@ -800,7 +800,7 @@ def equal_chunk_stream(
     """Normalizes a stream of buffers into ones of length buffer_len
 
     Arguments:
-        data_iterable: the iterable of buffers.
+        data_iterable: the iterable of buffers
         buffer_len: the size to normalize buffers to
 
     Note that the yielded buffer is not guaranteed to be unchanged. Basically,
@@ -809,7 +809,7 @@ def equal_chunk_stream(
     collection.
 
     The last buffer yielded is always smaller than buffer_len. Other code can
-    fill it with zeros, drop it, or execute clean up code ::
+    fill it with zeros, drop it, or execute clean up code. ::
 
         >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghi"], 3)))
         [b'abc', b'def', b'ghi', b'']
