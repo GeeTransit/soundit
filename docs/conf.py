@@ -80,8 +80,14 @@ exclude_patterns = ["_build"]
 
 extensions = []
 
+# Custom extensions are located in _extensions
+sys.path.append(os.path.abspath("_extensions"))
+
 # View code from the docs
 extensions += ["sphinx.ext.viewcode"]
+
+# Set section permalink
+extensions += ["better_subsection"]
 
 # Recursively generate docs using autosummary
 extensions += ["sphinx.ext.autosummary"]
