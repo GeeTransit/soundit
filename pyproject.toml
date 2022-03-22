@@ -17,6 +17,10 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.optional-dependencies]
+discord = ["discord.py>=1.7.0"]
+sounddevice = ["sounddevice>=0.4.0"]
+
 [project.urls]
 Homepage = "https://pypi.org/project/soundit/"
 Repository = "https://github.com/GeeTransit/soundit"
