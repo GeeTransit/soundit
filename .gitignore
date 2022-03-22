@@ -1,5 +1,7 @@
 __pycache__
 dist
 soundit.egg-info
+docs/_build
+docs/_generated
 .mypy_cache
 .random

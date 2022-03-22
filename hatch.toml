@@ -21,3 +21,14 @@ template = "test"
 
 [[envs.test-matrix.matrix]]
 python = ["37", "38", "39", "310"]
+
+[envs.docs]
+dependencies = [
+    "sphinx>=4.4.0",
+    "sphinx-autodoc-typehints>=1.17.0",
+    "importlib-metadata>=4.0.0;python_version<'3.8'",
+    "tomli>=2.0.1;python_version<'3.11'",
+]
+
+[envs.docs.scripts]
+build = "sphinx-build -b dirhtml docs docs/_build/html"

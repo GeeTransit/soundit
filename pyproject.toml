@@ -29,7 +29,7 @@ email = "geetransit@gmail.com"
 source = "vcs"
 
 [tool.hatch.build]
-exclude = ["examples"]
+exclude = ["examples", "docs"]
 
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
