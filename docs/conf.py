@@ -99,6 +99,10 @@ extensions += ["sphinx.ext.autodoc"]
 # Combine __init__ with class docstring
 autoclass_content = "both"
 
+# Remove :meta: fields to prevent empty field lists
+# Note: Must come after sphinx.ext.autodoc
+extensions += ["remove_meta_fields"]
+
 # Support Google style docstrings and type annotations
 extensions += ["sphinx.ext.napoleon", "sphinx_autodoc_typehints"]
 # Disable separate "Return type" field
