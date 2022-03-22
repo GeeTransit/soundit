@@ -1360,6 +1360,8 @@ def _notes_to_sound(notes, func):
     The provided func is called with the note to get its sound. When there are
     no more notes to add nor sounds to play, this stops.
 
+    :meta public:
+
     """
     # Create a queue with all the notes' start times
     queue = _HeapQueue()
@@ -1381,7 +1383,7 @@ def _notes_to_sound(notes, func):
             return
         # Add component sounds up and yield it
         yield sum(nums)
-_layer = _notes_to_sound  # Old name
+_layer = _notes_to_sound  #: :meta private:  # Old name
 
 
 # - Experimental class for using multiple iterators in lockstep
