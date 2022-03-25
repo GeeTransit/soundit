@@ -11,7 +11,8 @@
 
 	{% block modules %}
 	{% if modules %}
-	.. rubric:: {{ _("Modules") }}
+	{{ _("Modules") | escape }}
+	{{ "-" * (_("Modules") | escape | length) }}
 
 	.. autosummary::
 		:toctree:
@@ -24,7 +25,8 @@
 
 	{% block attributes %}
 	{% if attributes %}
-	.. rubric:: {{ _("Module Attributes") }}
+	{{ _("Module Attributes") | escape }}
+	{{ "-" * (_("Module Attributes") | escape | length) }}
 
 	.. autosummary::
 		:nosignatures:
@@ -36,7 +38,8 @@
 
 	{% block exceptions %}
 	{% if exceptions %}
-	.. rubric:: {{ _("Exceptions") }}
+	{{ _("Exceptions") | escape }}
+	{{ "-" * (_("Exceptions") | escape | length) }}
 
 	.. autosummary::
 		:nosignatures:
@@ -48,7 +51,8 @@
 
 	{% block classes %}
 	{% if classes %}
-	.. rubric:: {{ _("Classes") }}
+	{{ _("Classes") | escape }}
+	{{ "-" * (_("Classes") | escape | length) }}
 
 	.. autosummary::
 		:nosignatures:
@@ -60,7 +64,8 @@
 
 	{% block functions %}
 	{% if functions %}
-	.. rubric:: {{ _("Functions") }}
+	{{ _("Functions") | escape }}
+	{{ "-" * (_("Functions") | escape | length) }}
 
 	.. autosummary::
 		:nosignatures:
@@ -72,5 +77,6 @@
 
 	{# This adds separation between the auto-summaries and the auto-docs. #}
 	{% if members %}
-	.. rubric:: {{ _("Documentation") }}
+	{{ _("Documentation") | escape }}
+	{{ "-" * (_("Documentation") | escape | length) }}
 	{% endif %}
