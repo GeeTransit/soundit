@@ -34,6 +34,7 @@ try:
         ["hatch", "version"],
         capture_output=True,
         text=True,
+        check=True,
     ).stdout
 except subprocess.CalledProcessError:
     pass
