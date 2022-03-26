@@ -60,8 +60,8 @@ try:
         ["hatch", "version"],
         capture_output=True,
         text=True,
-    ).stdout
         check=True,
+    ).stdout
 except subprocess.CalledProcessError:
     pass
 release = version
