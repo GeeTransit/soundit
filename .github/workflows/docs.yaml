@@ -37,7 +37,7 @@ jobs:
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         if: >
-          github.ref_name == "main"
+          github.ref_name == 'main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: "docs/_build/html"
