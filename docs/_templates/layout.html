@@ -1,5 +1,16 @@
 {% extends "!layout.html" %}
 
+{% block htmltitle %}
+  {# Copied from Furo (strip title when on main page) #}
+  {% if not docstitle %}
+    <title>{{ title|striptags|e }}</title>
+  {% elif pagename == master_doc %}
+    <title>{{ docstitle|striptags|e }}</title>
+  {% else %}
+    <title>{{ title|striptags|e }} - {{ docstitle|striptags|e }}</title>
+  {% endif %}
+{% endblock %}
+
 {%- block footer %}
     <div class="footer">
       {% if show_copyright %}&copy;{{ copyright }}{% endif %}
