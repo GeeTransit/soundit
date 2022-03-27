@@ -61,7 +61,7 @@ try:
         capture_output=True,
         text=True,
         check=True,
-    ).stdout
+    ).stdout.strip()
 except subprocess.CalledProcessError:
     pass
 release = version

@@ -35,10 +35,10 @@ try:
         capture_output=True,
         text=True,
         check=True,
-    ).stdout
+    ).stdout.strip()
 except subprocess.CalledProcessError:
     pass
-unreleased_version_label = f'v{version.strip()}'
+unreleased_version_label = f'v{version}'
 
 # Include tags that start with "v" and don't end with "-dev". Those tags are
 # just to bump the version setuptools_scm gives.
