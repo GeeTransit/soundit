@@ -128,5 +128,10 @@ html_theme_options = {
     "body_max_width": "auto",
     # Don't have a minimum width
     "body_min_width": "0",
+    # Add GitHub "Watch" button
+    "github_button": True,
+    "github_user": "GeeTransit",
+    "github_repo": "soundit",
+    "github_type": "star",
 }
 html_sourcelink_suffix = ".rst"  # Default is .txt which doesn't imply reST
