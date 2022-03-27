@@ -1,7 +1,11 @@
 Welcome to soundit's documentation!
 ===================================
 
-I still need to write some actual documentation :/
+.. include:: ../README.rst
+	:start-line: 3
+
+Table of contents
+-----------------
 
 .. toctree::
 	:maxdepth: 2
