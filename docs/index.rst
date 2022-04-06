@@ -1,10 +1,10 @@
-Welcome to soundit's documentation!
+Welcome to soundit's Documentation!
 ===================================
 
 .. include:: ../README.rst
 	:start-line: 3
 
-Table of contents
+Table of Contents
 -----------------
 
 .. toctree::
@@ -13,7 +13,7 @@ Table of contents
 	api.rst
 	_generated/CHANGELOG.rst
 
-Indices and tables
+Indices and Tables
 ------------------
 
 * :ref:`genindex`
