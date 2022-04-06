@@ -23,7 +23,7 @@ else:
     title = f'{opts["unreleased_version_label"]} (_`{ref}`)'
 %>\
 
-${underline("-", f'{title}')}
+${underline("-", title)}
 % for section in version["sections"]:
 % if section["label"] != "Other" or len(version["sections"]) > 1:
 
