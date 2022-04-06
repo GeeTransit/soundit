@@ -90,7 +90,7 @@ def subject_process(subject: str) -> str:
     if subject and subject[0].isalpha():
         subject = f'{subject[0].upper()}{subject[1:]}'
     if subject and subject[-1].isalnum():
-        subject = f'{subject}\\.'  # Tell Sphinx that this is *not* a list
+        subject = f'{subject}.'
     if not subject:
         subject = "No commit message."
     return subject
