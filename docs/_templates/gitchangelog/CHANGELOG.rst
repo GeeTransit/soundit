@@ -33,9 +33,6 @@ ${underline("-", title)}
 
 ${underline("~", section["label"])}
 % endif
-
-.. rst-class:: compact
-
 % for commit in section["commits"]:
 - ${indent("  ", commit["subject"])} [${", ".join(commit["authors"])}]
 % endfor
