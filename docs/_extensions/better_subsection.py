@@ -5,10 +5,12 @@ Specify the ID of a section with normal `reST internal hyperlink targets`_:
 .. code-block:: rest
 
     .. _v1.2.3:
+
     v1.2.3 (2022-03-19)
     -------------------
-    The permalink is ``#v1-2-3`` instead of ``#v1-2-3-2022-03-19``. Both target
-    IDs work however, so old docs will still point to the correct section.
+
+The permalink is ``#v1-2-3`` instead of ``#v1-2-3-2022-03-19``. Both target
+IDs work however, so old docs will still point to the correct section.
 
 .. _reST internal hyperlink targets:
     https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#hyperlink-targets
