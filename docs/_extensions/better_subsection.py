@@ -2,6 +2,8 @@
 
 Specify the ID of a section with normal `reST internal hyperlink targets`_:
 
+.. code-block:: rest
+
     .. _v1.2.3:
     v1.2.3 (2022-03-19)
     -------------------
@@ -18,7 +20,9 @@ from docutils.transforms import Transform
 class PreferSectionTarget(Transform):
     """Prefer target IDs over the section's own
 
-    Given this input text::
+    Given this input text:
+
+    .. code-block:: rest
 
         .. _a:
         .. _b:
@@ -29,7 +33,9 @@ class PreferSectionTarget(Transform):
 
         A paragraph.
 
-    This parses into::
+    This parses into:
+
+    .. code-block:: xml
 
         ...
             <target refid="a">
@@ -38,7 +44,9 @@ class PreferSectionTarget(Transform):
             <section ids="section-title a b c">
                 ...
 
-    Transforming it gives::
+    Transforming it gives:
+
+    .. code-block:: xml
 
         ...
             <target refid="a">
