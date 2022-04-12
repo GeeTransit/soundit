@@ -1,6 +1,6 @@
-"""Better Sphinx subsections
+"""Better your Sphinx section IDs
 
-Specify an explicit ID for a section with normal `reST internal hyperlink targets`_::
+Specify the ID of a section with normal `reST internal hyperlink targets`_:
 
     .. _v1.2.3:
     v1.2.3 (2022-03-19)
