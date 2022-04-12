@@ -83,6 +83,7 @@ class PreferSectionTarget(Transform):
             if "refid" not in last:
                 continue
             refid = last["refid"]
+            assert refid in node["ids"]
             # Prefer the target's ID
             node["ids"].remove(refid)
             node["ids"].insert(0, refid)
