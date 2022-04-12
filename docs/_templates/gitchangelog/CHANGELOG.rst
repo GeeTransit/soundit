@@ -17,17 +17,21 @@ ${underline("=", data["title"])}
 <%
 if version["tag"]:
     ref = version["tag"]
-    title = f'_`{ref}` ({version["date"]})'
+    title = f'{ref} ({version["date"]})'
 else:
     ref = "Unreleased"
-    title = f'{opts["unreleased_version_label"]} (_`{ref}`)'
+    title = f'{opts["unreleased_version_label"]} ({ref})'
 %>\
+
+.. _${ref}:
 
 ${underline("-", title)}
 % for section in version["sections"]:
 % if section["label"] != "Other" or len(version["sections"]) > 1:
 
-${underline("~", f'{section["label"]}\ _`{ref}-{section["label"]}`')}
+.. _${ref}-${section["label"]}:
+
+${underline("~", section["label"])}
 % endif
 
 .. rst-class:: compact
