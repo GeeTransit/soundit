@@ -149,5 +149,4 @@ html_theme_options = {
     "github_repo": "soundit",
     "github_type": "star",
 }
-html_sourcelink_suffix = ".rst"  # Default is .txt which doesn't imply reST
 html_permalinks_icon = "#"  # More consistent with other sites
