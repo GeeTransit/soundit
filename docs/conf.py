@@ -32,20 +32,35 @@ project = tomllib.loads(read("pyproject.toml"))["project"]["name"]
 # Copyright [(c)] [2022[-present]] John Doe [<email>] [(website)]
 year, holder = re.search(
     r'''
-        # [^\S\n] matches just horizontal whitespace (\s matches newlines too)
-        ^[^\S\n]*Copyright[^\S\n]*  # Locate "Copyright"
-        (?:\(c\)?[^\S\n]*)  # Optional "(c)"
-        (
-            \d+  # Year
-            (?:
-                [^\s\d\w]  # A symbol (like the "-" in "2022-present")
-                \S+(?=$|\s)  # Next word (like "present")
-            )?
+        Copyright[ ]*  # Locate "Copyright"
+        (?:(?:\(c\)|\N{COPYRIGHT SIGN})[ ]*)?  # Optional sign
+        # Year ranges separated by commas
+        (?:
+            (
+                (?:\d+(?:[ ]*-[ ]*(?:\d+))?,[ ]*)*
+                \d+(?:[ ]*-[ ]*(?:\d+|present))?
+            )
+            ,?
         )?
-        ((?:(?!$|[<(]).)+)  # Don't match email or website
+        [ ]*
+        (?:by[ ]*)?
+        (
+            [^ \n,.]+
+            (?:
+                [ ]*[,.]?[ ]*
+                (?!
+                    [^ @]+@  # Don't match emails (have @ in them)
+                    |All rights reserved  # Don't match boilerplate text
+                    |[^ :]+://  # Don't match websites
+                    |[<(]  # Don't match <email> or (website)
+                )
+                [^ \n,.]+
+            )*
+            [.]?
+        )
     ''',
     read("LICENSE"),
-    re.MULTILINE | re.VERBOSE,
+    re.MULTILINE | re.VERBOSE | re.IGNORECASE,
 ).groups()
 author = holder.strip()
 copyright = f"{year}, {author}" if year else author
