@@ -17,9 +17,11 @@
 	.. autosummary::
 		:toctree:
 		:recursive:
-	{% for item in modules %}
+
+		{% for item in modules %}
 		{{ item }}
-	{%- endfor %}
+		{%- endfor %}
+
 	{% endif %}
 	{% endblock %}
 
@@ -30,9 +32,11 @@
 
 	.. autosummary::
 		:nosignatures:
-	{% for item in attributes %}
+
+		{% for item in attributes %}
 		{{ item }}
-	{%- endfor %}
+		{%- endfor %}
+
 	{% endif %}
 	{% endblock %}
 
@@ -43,9 +47,11 @@
 
 	.. autosummary::
 		:nosignatures:
-	{% for item in exceptions %}
+
+		{% for item in exceptions %}
 		{{ item }}
-	{%- endfor %}
+		{%- endfor %}
+
 	{% endif %}
 	{% endblock %}
 
@@ -56,9 +62,11 @@
 
 	.. autosummary::
 		:nosignatures:
-	{% for item in classes %}
+
+		{% for item in classes %}
 		{{ item }}
-	{%- endfor %}
+		{%- endfor %}
+
 	{% endif %}
 	{% endblock %}
 
@@ -69,9 +77,11 @@
 
 	.. autosummary::
 		:nosignatures:
-	{% for item in functions %}
+
+		{% for item in functions %}
 		{{ item }}
-	{%- endfor %}
+		{%- endfor %}
+
 	{% endif %}
 	{% endblock %}
 
