@@ -815,7 +815,7 @@ def equal_chunk_stream(
     collection.
 
     The last buffer yielded is always smaller than buffer_len. Other code can
-    fill it with zeros, drop it, or execute clean up code. ::
+    fill it with zeros, drop it, or execute clean up code.
 
         >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghi"], 3)))
         [b'abc', b'def', b'ghi', b'']
@@ -1322,7 +1322,7 @@ def split_music(music):
     r"""Splits music into individual sequences
 
     Lines starting with a slash "/" will be added to a new sequence. All other
-    lines (including blanks and comments) will be part of the main sequence. ::
+    lines (including blanks and comments) will be part of the main sequence.
 
         >>> assert split_music("1\n1") == ["1\n1"]
         >>> assert split_music("1\n/2\n1") == ["1\n1", "2"]
@@ -1402,7 +1402,7 @@ class _IteratorPool:
     different lengths simply means the length of values will shrink as you go.
     Thirdly, you can add more iterators during iteration.
 
-    An example to demonstrate intended usage::
+    An example to demonstrate intended usage:
 
         >>> pool = _IteratorPool()
         >>> pool.add("aa")
@@ -1464,7 +1464,7 @@ class _HeapQueue:
     This is a small wrapper class over the heapq module specialized for
     schedulers.
 
-    An example::
+    An example:
 
         >>> queue = _HeapQueue()
         >>> queue.push(1, "a")
