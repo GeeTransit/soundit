@@ -15,12 +15,13 @@ ${underline("=", data["title"])}
 % endif
 % for version in data["versions"]:
 <%
-if version["tag"]:
-    ref = version["tag"]
-    title = f'{ref} ({version["date"]})'
+tag = version.get("tag")
+if tag is not None:
+    ref = tag
+    title = f'{tag} ({version["date"]})'
 else:
     ref = "Unreleased"
-    title = f'{opts["unreleased_version_label"]} ({ref})'
+    title = f'{opts["unreleased_version_label"]} (Unreleased)'
 %>\
 
 .. _${ref}:
