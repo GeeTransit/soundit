@@ -505,6 +505,7 @@ class LRUIterableCache(LRUCache):
     original values and returns copy.copy(...) of the tees in the cache.
 
     We use tee objects for a few reasons:
+
     - They can be iterated at different speeds.
     - They are iterators (lazily evaluated).
     - They can be copied (major orz for this one).
@@ -799,20 +800,19 @@ def loop_stream(
 def equal_chunk_stream(
     data_iterable: Iterable[bytes],
     buffer_len: int,
+    *,
+    copy: Optional[bool] = True,
 ) -> Iterator[bytes]:
     """Normalizes a stream of buffers into ones of length buffer_len
 
     Arguments:
         data_iterable: the iterable of buffers
         buffer_len: the size to normalize buffers to
+        copy: return copies of the internal buffer. If ``False``, the yielded
+            buffer may be reused to reduce object creation and collection.
 
     Returns:
         stream of buffers with len(buffer) == buffer_len except the last one
-
-    Note that the yielded buffer is not guaranteed to be unchanged. Basically,
-    create a copy if it needs to be used for longer than a single iteration. It
-    may be reused inside this function to reduce object creation and
-    collection.
 
     The last buffer yielded is always smaller than buffer_len. Other code can
     fill it with zeros, drop it, or execute clean up code.
@@ -833,7 +833,17 @@ def equal_chunk_stream(
     """
     if not buffer_len > 0:
         raise ValueError("buffer length is not positive")
+    if copy is None:
+        copy = True
     data_iterator = iter(data_iterable)
+
+    # Easier to do map(bytes, ...) than to check it each yield (faster too?)
+    if copy:
+        return (yield from map(bytes, equal_chunk_stream(
+            data_iterable,
+            buffer_len,
+            copy=False,
+        )))
 
     # Initialize buffer / data variables
     buffer = memoryview(bytearray(buffer_len))
