@@ -1043,8 +1043,8 @@ def volume(factor, sound):
 
 def cut(seconds, sound):
     """Ends the sound after the specified time"""
-    for _ in passed(seconds):
-        yield next(sound)
+    for _, point in zip(passed(seconds), sound):
+        yield point
 
 def pad(seconds, sound):
     """Pads the sound with silence if shorter than the specified time"""
