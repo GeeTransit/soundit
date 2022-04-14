@@ -651,12 +651,16 @@ def chunked_ffmpeg_process(
 
     try:
         # Stream stdout until EOF
-        read = process.stdout.read  # speedup by removing a getattr
-        while True:
-            data = read(FRAME_SIZE_BYTES)
-            if not data:
-                break
-            yield data
+        yield from equal_chunk_stream(
+            iter(
+                functools.partial(
+                    process.stdout.read,  # speedup by removing a getattr
+                    FRAME_SIZE_BYTES,
+                ),
+                b"",
+            ),
+            copy=True,
+        )
 
     except GeneratorExit:
         check_return_code = False
