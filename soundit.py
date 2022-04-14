@@ -821,17 +821,17 @@ def equal_chunk_stream(
     The last buffer yielded is always smaller than buffer_len. Other code can
     fill it with zeros, drop it, or execute clean up code.
 
-        >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghi"], 3)))
+        >>> list(equal_chunk_stream([b"abcd", b"efghi"], 3))
         [b'abc', b'def', b'ghi', b'']
-        >>> list(map(bytes, equal_chunk_stream([b"abcd", b"efghijk"], 3)))
+        >>> list(equal_chunk_stream([b"abcd", b"efghijk"], 3))
         [b'abc', b'def', b'ghi', b'jk']
-        >>> list(map(bytes, equal_chunk_stream([b"a", b"b", b"c", b"d"], 3)))
+        >>> list(equal_chunk_stream([b"a", b"b", b"c", b"d"], 3))
         [b'abc', b'd']
-        >>> list(map(bytes, equal_chunk_stream([], 3)))
+        >>> list(equal_chunk_stream([], 3))
         [b'']
-        >>> list(map(bytes, equal_chunk_stream([b"", b""], 3)))
+        >>> list(equal_chunk_stream([b"", b""], 3))
         [b'']
-        >>> list(map(bytes, equal_chunk_stream([b"", b"", b"a", b""], 3)))
+        >>> list(equal_chunk_stream([b"", b"", b"a", b""], 3))
         [b'a']
 
     """
