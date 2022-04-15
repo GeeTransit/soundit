@@ -55,46 +55,6 @@ sounddevice utilities:
     `play_output_chunks`
     `create_input_chunks`
 
-A very simple example: (Note that these require sounddevice to be installed) ::
-
-    import sound as s
-    s.play_output_chunks(s.chunked(s.exact(1, s.sine(440))))
-
-A longer example::
-
-    import itertools
-    import sound as s
-
-    indices = s.make_indices_dict()
-    frequencies = s.make_frequencies_dict()
-    notes = "a3 c e a g e c e d e d c a3 c a3 g3".split()
-
-    s.play_output_chunks(s.chunked(itertools.chain.from_iterable(
-        s.exact(0.5, s.sine(frequencies[indices[note]]))
-        for note in notes
-    )))
-
-An even longer example::
-
-    import sound as s
-    s.init_piano()
-
-    names = "do di re ri mi fa fi so si la li ti".split()
-    indices = s.make_indices_dict(names)
-    music = '''
-        . mi mi mi
-        fa do . do
-        . so mi do
-        re mi,re - mi
-    '''
-
-    s.play_output_chunks(s.chunked(
-        s.volume(2, s._notes_to_sound(
-            s.music_to_notes(music, line_length=1.15),
-            lambda name, length: s.piano(indices[name] + 1),
-        ))
-    ))
-
 There is also some builtin music that are prefixed with \MUSIC_, such as
 MUSIC_DIGITIZED, provided for testing purposes.
 
