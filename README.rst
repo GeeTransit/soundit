@@ -3,6 +3,20 @@ soundit
 
 A small library for audio manipulation.
 
+Installation
+------------
+
+Simply run:
+
+.. code-block:: bash
+
+    $ pip install soundit[sounddevice]
+
+The ``[sounddevice]`` extra installs sounddevice_ for playing audio through
+speakers.
+
+.. _sounddevice: https://python-sounddevice.readthedocs.io/en/0.4.4/
+
 Links
 -----
 
