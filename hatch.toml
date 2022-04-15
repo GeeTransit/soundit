@@ -30,6 +30,7 @@ dependencies = [
     "mako>=1.2.0",
     "importlib-metadata>=4.0.0;python_version<'3.8'",
     "tomli>=2.0.1;python_version<'3.11'",
+    "sphinx-better-subsection>=0.1",
 ]
 
 [envs.docs.env-vars]

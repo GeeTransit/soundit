@@ -103,7 +103,7 @@ sys.path.append(os.path.abspath("_extensions"))
 extensions += ["sphinx.ext.viewcode"]
 
 # Set section permalink
-extensions += ["better_subsection"]
+extensions += ["sphinx_better_subsection"]
 
 # Recursively generate docs using autosummary
 extensions += ["sphinx.ext.autosummary"]
