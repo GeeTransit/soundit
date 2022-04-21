@@ -17,3 +17,13 @@ div.footer {
 dl.py > dt:first-child {
     margin-top: 10px;
 }
+
+/* Make permalinks selectable from the keyboard */
+a.headerlink {
+	visibility: visible !important;  /* basic theme uses hidden */
+	opacity: 0;
+}
+*:hover > a.headerlink,
+a.headerlink:focus {
+	opacity: 1;
+}
