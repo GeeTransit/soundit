@@ -29,6 +29,7 @@ dependencies = [
     "gitchangelog>=3.0.4",
     "mako>=1.2.0",
     "sphinx-reredirects>=0.0.1",
+    "sphinx-last-updated-by-git>=0.3.2",
     "importlib-metadata>=4.0.0;python_version<'3.8'",
     "tomli>=2.0.1;python_version<'3.11'",
     "sphinx-better-subsection>=0.1",

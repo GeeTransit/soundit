@@ -136,6 +136,12 @@ typehints_defaults = "comma"
 # Show argument types even if the docstring has no "Arguments" field
 always_document_param_types = True
 
+# Get last updated date from Git
+extensions += ["sphinx_last_updated_by_git"]
+git_last_updated_timezone = "America/Toronto"
+git_untracked_show_sourcelink = True
+git_untracked_check_dependencies = False
+
 # - HTML output config
 
 html_theme = "alabaster"
