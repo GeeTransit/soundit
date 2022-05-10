@@ -11,7 +11,7 @@ Table of Contents
 	:maxdepth: 2
 
 	api.rst
-	_generated/CHANGELOG.rst
+	changelog.rst
 
 Indices and Tables
 ------------------

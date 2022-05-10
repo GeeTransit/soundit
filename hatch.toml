@@ -28,18 +28,14 @@ dependencies = [
     "sphinx-autodoc-typehints>=1.17.0",
     "gitchangelog>=3.0.4",
     "mako>=1.2.0",
+    "sphinx-reredirects>=0.0.1",
     "importlib-metadata>=4.0.0;python_version<'3.8'",
     "tomli>=2.0.1;python_version<'3.11'",
     "sphinx-better-subsection>=0.1",
 ]
 
-[envs.docs.env-vars]
-GITCHANGELOG_CONFIG_FILENAME = "docs/gitchangelog_conf.py"
-GITCHANGELOG_OUTPUT_FILENAME = "docs/_generated/CHANGELOG.rst"
-
 [envs.docs.scripts]
 html = "sphinx-build -b dirhtml docs docs/_build/html"
 build = [
-	"gitchangelog",
 	"html",
 ]

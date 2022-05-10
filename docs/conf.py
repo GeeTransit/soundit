@@ -105,6 +105,16 @@ extensions += ["sphinx.ext.viewcode"]
 # Set section permalink
 extensions += ["sphinx_better_subsection"]
 
+# Include output from programs (like `gitchangelog`)
+extensions += ["program_include"]
+
+# Redirect relocated pages
+extensions += ["sphinx_reredirects"]
+redirect_html_template_file = "_templates/reredirects/template.html"
+redirects = {
+    "_generated/CHANGELOG/index": "../../changelog/",
+}
+
 # Recursively generate docs using autosummary
 extensions += ["sphinx.ext.autosummary"]
 # Always generate missing summaries (located in _generated/api)

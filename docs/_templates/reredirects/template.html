@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Redirecting...</title>
+		<!-- Fallback meta redirect if JS is disabled -->
+		<meta http-equiv="refresh" content="6; url=${to_uri}">
+		<script>
+			addEventListener("load", function() {
+				// New URL with query and anchor
+				var url = "${to_uri}" + (location.search||"") + (location.hash||"");
+				// Redirect to new URL in 5 seconds
+				setTimeout(function() { location.replace(url); }, 5000);
+				// Replace link with new URL
+				document.getElementById("link").href = url;
+			});
+		</script>
+	</head>
+	<body onload="onload()">
+		<!-- Fallback link if JS errors (or for those who want to click it) -->
+		<p>Redirecting <a id="link" href="${to_uri}">here</a> in 5 seconds...</p>
+	</body>
+</html>
