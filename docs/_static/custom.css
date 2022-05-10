@@ -22,6 +22,7 @@ dl.py > dt:first-child {
 a.headerlink {
 	visibility: visible !important;  /* basic theme uses hidden */
 	opacity: 0;
+	transition: opacity 0.15s ease-out;
 }
 *:hover > a.headerlink,
 a.headerlink:focus {
