@@ -8,12 +8,17 @@ dependencies = [
 
 [envs.lint.scripts]
 # TODO: Change to flake8 when it supports pyproject.toml
-style = "pflake8 soundit.py"
-typing = "mypy --install-types --non-interactive soundit.py"
+style = "pflake8 src"
+typing = "mypy --install-types --non-interactive src"
 all = ["style", "typing"]
 
+[envs.test]
+dependencies = [
+	"pytest>=7.1.2",
+]
+
 [envs.test.scripts]
-doctest = "python -m doctest soundit.py"
+doctest = "pytest --doctest-modules src"
 all = ["doctest"]
 
 [envs.test-matrix]

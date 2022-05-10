@@ -33,6 +33,7 @@ email = "geetransit@gmail.com"
 source = "vcs"
 
 [tool.hatch.build]
+sources = ["src"]
 exclude = ["examples", "docs"]
 
 [tool.flake8]
