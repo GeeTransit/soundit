@@ -86,9 +86,6 @@ release = version
 # Allow less verbose references (e.g. `list` instead of :py:class:`list`)
 default_role = "any"
 
-# Add last updated timestamp
-html_last_updated_fmt = "%B %d, %Y"  # strftime format
-
 templates_path = ["_templates"]
 exclude_patterns = ["_build"]
 
@@ -160,3 +157,4 @@ html_theme_options = {
     "github_type": "star",
 }
 html_permalinks_icon = "#"  # More consistent with other sites
+html_last_updated_fmt = "%B %d, %Y"  # strftime format
