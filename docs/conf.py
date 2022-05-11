@@ -128,22 +128,13 @@ autoapi_options = [
 
 # Generate docs from docstrings
 extensions += ["sphinx.ext.autodoc"]
-# Combine __init__ with class docstring
-autoclass_content = "both"
 
 # Remove :meta: fields to prevent empty field lists
 # Note: Must come after sphinx.ext.autodoc
 extensions += ["remove_meta_fields"]
 
-# Support Google style docstrings and type annotations
-extensions += ["sphinx.ext.napoleon", "sphinx_autodoc_typehints"]
-# Disable separate "Return type" field
-napoleon_use_rtype = False
-typehints_use_rtype = False
-# Show default values after the argument type - like "(int, default=-1)"
-typehints_defaults = "comma"
-# Show argument types even if the docstring has no "Arguments" field
-always_document_param_types = True
+# Support Google style docstrings
+extensions += ["sphinx.ext.napoleon"]
 
 # Get last updated date from Git
 extensions += ["sphinx_last_updated_by_git"]

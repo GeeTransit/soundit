@@ -30,7 +30,6 @@ python = ["37", "38", "39", "310"]
 [envs.docs]
 dependencies = [
     "sphinx>=4.4.0",
-    "sphinx-autodoc-typehints>=1.17.0",
     "gitchangelog>=3.0.4",
     "mako>=1.2.0",
     "sphinx-reredirects>=0.0.1",
