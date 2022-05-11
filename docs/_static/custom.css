@@ -28,3 +28,8 @@ a.headerlink {
 a.headerlink:focus {
 	opacity: 1;
 }
+
+/* Remove newline after source code linked to docs */
+.viewcode-block {
+	display: inline;
+}
