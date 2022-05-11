@@ -135,6 +135,10 @@ extensions += ["remove_meta_fields"]
 
 # Support Google style docstrings
 extensions += ["sphinx.ext.napoleon"]
+# Most themes have styles for special admonitions
+napoleon_use_admonition_for_examples = True
+napoleon_use_admonition_for_notes = True
+napoleon_use_admonition_for_references = True
 
 # Get last updated date from Git
 extensions += ["sphinx_last_updated_by_git"]
@@ -144,7 +148,7 @@ git_untracked_check_dependencies = False
 
 # - HTML output config
 
-html_theme = "alabaster"
+html_theme = "furo"
 html_static_path = ["_static"]
 html_css_files = [
     # Contains some minor CSS improvements to Alabaster
@@ -161,6 +165,14 @@ html_theme_options = {
     "github_user": "GeeTransit",
     "github_repo": "soundit",
     "github_type": "star",
+    # Allow navigating using arrow keys
+    "navigation_with_keys": True,
+}
+html_context = {
+    # Show link to GitHub repo
+    "display_github": True,
+    "github_user": "GeeTransit",
+    "github_repo": "soundit",
 }
 html_permalinks_icon = "#"  # More consistent with other sites
 html_last_updated_fmt = "%B %d, %Y"  # strftime format

@@ -33,3 +33,31 @@ a.headerlink:focus {
 .viewcode-block {
 	display: inline;
 }
+
+/* Title shouldn't push the TOC sidebar icon off-screen */
+.mobile-header .header-center {
+	min-width: 0;
+}
+
+/* Title should be a single line */
+.mobile-header .brand {
+	white-space: nowrap;
+	/* Replace overflowing text by an ellipsis */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.4;  /* don't cut off the bottom of characters like "g" */
+}
+
+/* Keep the 1px border so content doesn't move after refreshing */
+.mobile-header.scrolled {
+	border-bottom: 1px solid rgba(0,0,0,.18);
+	/* Keep the shadow visually identical as before and also widen it */
+	box-shadow:
+		0 0 calc(.2rem - 1px) .07rem rgba(0,0,0,.07),
+		0 calc(.2rem - 1px) calc(.4rem - 1px) .05rem rgba(0,0,0,.14);
+}
+
+/* Remove spacing between the dark mode toggle and title */
+.theme-toggle-header {
+	padding-left: 0;
+}
