@@ -155,16 +155,6 @@ html_css_files = [
     "custom.css",
 ]
 html_theme_options = {
-    # Allow larger windows to have wider text (default is a hardcoded width)
-    "page_width": "auto",
-    "body_max_width": "auto",
-    # Don't have a minimum width
-    "body_min_width": "0",
-    # Add GitHub "Watch" button
-    "github_button": True,
-    "github_user": "GeeTransit",
-    "github_repo": "soundit",
-    "github_type": "star",
     # Allow navigating using arrow keys
     "navigation_with_keys": True,
 }
