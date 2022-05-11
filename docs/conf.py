@@ -110,12 +110,21 @@ extensions += ["sphinx_reredirects"]
 redirect_html_template_file = "_templates/reredirects/template.html"
 redirects = {
     "_generated/CHANGELOG/index": "../../changelog/",
+    "_generated/api/soundit/index": "../../../api/soundit/",
 }
 
-# Recursively generate docs using autosummary
-extensions += ["sphinx.ext.autosummary"]
-# Always generate missing summaries (located in _generated/api)
-autosummary_generate = True
+# Recursively generate docs using AutoAPI
+extensions += ["autoapi.extension"]
+autoapi_root = "api"  # start documentation from api/
+autoapi_dirs = ["../src"]  # directory to document
+autoapi_template_dir = "_templates/autoapi"
+# Document most members
+autoapi_options = [
+    "members",
+    "undoc-members",
+    "show-inheritance",
+    "show-module-summary",
+]
 
 # Generate docs from docstrings
 extensions += ["sphinx.ext.autodoc"]

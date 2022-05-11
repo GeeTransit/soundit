@@ -10,7 +10,7 @@ Table of Contents
 .. toctree::
 	:maxdepth: 2
 
-	api.rst
+	api/index.rst
 	changelog.rst
 
 Indices and Tables
