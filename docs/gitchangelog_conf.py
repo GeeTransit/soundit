@@ -8,7 +8,7 @@ import subprocess
 version = subprocess.run(
     ["hatch", "version"],
     capture_output=True,
-    text=True,
+    encoding="utf-8",
     check=True,
 ).stdout.splitlines()[-1]
 unreleased_version_label = f'v{version}'
