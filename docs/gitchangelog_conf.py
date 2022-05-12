@@ -5,11 +5,6 @@ import re
 import subprocess
 import sys
 
-if sys.version_info >= (3, 8):
-    import importlib.metadata as importlib_metadata
-else:
-    import importlib_metadata
-
 if sys.version_info >= (3, 11):
     import tomllib
 else:
@@ -26,18 +21,13 @@ def read(filename: str) -> str:
 # Single source the project name from pyproject.toml
 name = tomllib.loads(read("pyproject.toml"))["project"]["name"]
 
-# Single source the project version from the installed package's version
-version = importlib_metadata.version(name)
-try:
-    # See comment conf.py near similar code for reasoning
-    version = subprocess.run(
-        ["hatch", "version"],
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines()[-1]
-except subprocess.CalledProcessError:
-    pass
+# Single source the project version from the Hatch CLI
+version = subprocess.run(
+    ["hatch", "version"],
+    capture_output=True,
+    text=True,
+    check=True,
+).stdout.splitlines()[-1]
 unreleased_version_label = f'v{version}'
 
 # Include tags that start with "v" and don't end with "-dev". Those tags are

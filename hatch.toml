@@ -28,6 +28,7 @@ template = "test"
 python = ["37", "38", "39", "310"]
 
 [envs.docs]
+skip-install = true
 dependencies = [
     "sphinx>=4.4.0",
     "gitchangelog>=3.0.4",
@@ -36,7 +37,6 @@ dependencies = [
     "sphinx-reredirects>=0.0.1",
     "sphinx-last-updated-by-git>=0.3.2",
     "sphinx-autoapi>=1.8.4",
-    "importlib-metadata>=4.0.0;python_version<'3.8'",
     "tomli>=2.0.1;python_version<'3.11'",
     "sphinx-better-subsection>=0.1",
 ]

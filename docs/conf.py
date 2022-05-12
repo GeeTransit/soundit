@@ -5,11 +5,6 @@ import re
 import subprocess
 import sys
 
-if sys.version_info >= (3, 8):
-    import importlib.metadata as importlib_metadata
-else:
-    import importlib_metadata
-
 if sys.version_info >= (3, 11):
     import tomllib
 else:
@@ -38,20 +33,15 @@ year, holder = re.search(
 author = holder.strip()
 copyright = f"{year}, {author}"
 
-# Single source the project version from the installed package's version
-version = importlib_metadata.version(project)
-try:
-    # Try getting the package's version from Hatch's CLI if possible. The
-    # version is different when a new commit is added but the installed package
-    # isn't updated (editable installs don't have dynamic versions).
-    version = subprocess.run(
-        ["hatch", "version"],
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines()[-1]
-except subprocess.CalledProcessError:
-    pass
+# Single source the project version from the Hatch CLI. The
+# version is different when a new commit is added but the installed package
+# isn't updated (editable installs don't have dynamic versions).
+version = subprocess.run(
+    ["hatch", "version"],
+    capture_output=True,
+    text=True,
+    check=True,
+).stdout.splitlines()[-1]
 release = version
 
 # - Sphinx config
