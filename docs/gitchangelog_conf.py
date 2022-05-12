@@ -3,23 +3,6 @@
 import os
 import re
 import subprocess
-import sys
-
-if sys.version_info >= (3, 11):
-    import tomllib
-else:
-    import tomli as tomllib
-
-# gitchangelog sets current directory to the repo root
-root = "."
-
-# Helper function to return text of file relative to the repo root
-def read(filename: str) -> str:
-    with open(os.path.join(root, filename)) as file:
-        return file.read()
-
-# Single source the project name from pyproject.toml
-name = tomllib.loads(read("pyproject.toml"))["project"]["name"]
 
 # Single source the project version from the Hatch CLI
 version = subprocess.run(
