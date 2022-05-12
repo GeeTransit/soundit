@@ -31,39 +31,12 @@ project = tomllib.loads(read("pyproject.toml"))["project"]["name"]
 # Single source copyright. The format is ([] denoting optional parts):
 # Copyright [(c)] [2022[-present]] John Doe [<email>] [(website)]
 year, holder = re.search(
-    r'''
-        Copyright[ ]*  # Locate "Copyright"
-        (?:(?:\(c\)|\N{COPYRIGHT SIGN})[ ]*)?  # Optional sign
-        # Year ranges separated by commas
-        (?:
-            (
-                (?:\d+(?:[ ]*-[ ]*(?:\d+))?,[ ]*)*
-                \d+(?:[ ]*-[ ]*(?:\d+|present))?
-            )
-            ,?
-        )?
-        [ ]*
-        (?:by[ ]*)?
-        (
-            [^ \n,.]+
-            (?:
-                [ ]*[,.]?[ ]*
-                (?!
-                    [^ @]+@  # Don't match emails (have @ in them)
-                    |All rights reserved  # Don't match boilerplate text
-                    |[^ :]+://  # Don't match websites
-                    |[<(]  # Don't match <email> or (website)
-                )
-                [^ \n,.]+
-            )*
-            [.]?
-        )
-    ''',
+    r"^Copyright \(c\) ([^ ]+) ([^\n]+)$",
     read("LICENSE"),
-    re.MULTILINE | re.VERBOSE | re.IGNORECASE,
+    re.MULTILINE | re.IGNORECASE,
 ).groups()
 author = holder.strip()
-copyright = f"{year}, {author}" if year else author
+copyright = f"{year}, {author}"
 
 # Single source the project version from the installed package's version
 version = importlib_metadata.version(project)
