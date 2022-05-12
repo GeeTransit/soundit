@@ -93,7 +93,7 @@ exclude_patterns = ["_build"]
 
 extensions = []
 
-# Custom extensions are located in _extensions
+# Path to custom extensions
 sys.path.append(os.path.abspath("_extensions"))
 
 # View code from the docs
@@ -151,7 +151,7 @@ git_untracked_check_dependencies = False
 html_theme = "furo"
 html_static_path = ["_static"]
 html_css_files = [
-    # Contains some minor CSS improvements to Alabaster
+    # Contains some minor CSS improvements
     "custom.css",
 ]
 html_theme_options = {
