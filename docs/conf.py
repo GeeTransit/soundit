@@ -81,6 +81,7 @@ extensions += ["autoapi.extension"]
 autoapi_root = "api"  # start documentation from api/
 autoapi_dirs = ["../src"]  # directory to document
 autoapi_template_dir = "_templates/autoapi"
+autoapi_keep_files = True
 # Document most members
 autoapi_options = [
     "members",
@@ -88,6 +89,9 @@ autoapi_options = [
     "show-inheritance",
     "show-module-summary",
 ]
+
+# Clean leftover docs in AutoAPI folder (such as from removing a module)
+extensions += ["clean_autoapi"]
 
 # Generate docs from docstrings
 extensions += ["sphinx.ext.autodoc"]
