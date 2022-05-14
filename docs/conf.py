@@ -68,6 +68,9 @@ extensions += ["sphinx_better_subsection"]
 # Include output from programs (like `gitchangelog`)
 extensions += ["program_include"]
 
+# Rebuild docs when static HTML files are modified
+extensions += ["static_refresh"]
+
 # Redirect relocated pages
 extensions += ["sphinx_reredirects"]
 redirect_html_template_file = "_templates/reredirects/template.html"
