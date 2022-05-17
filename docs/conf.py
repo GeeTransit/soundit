@@ -5,6 +5,9 @@ import re
 import subprocess
 import sys
 
+from sphinx.util.docfields import GroupedField
+from sphinx import addnodes
+
 if sys.version_info >= (3, 11):
     import tomllib
 else:
@@ -51,6 +54,38 @@ default_role = "any"
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build"]
+
+def setup(app):
+    # Adapted from:
+    # https://github.com/sphinx-doc/sphinx/blob/4c664ae0b873af91b030a8da253959c0727e1c7a/doc/conf.py
+    app.add_object_type(
+        "confval", "confval",
+        objname="configuration value",
+        indextemplate="pair: %s; configuration value",
+    )
+    def parse_event(env, text, sig):
+        m = re.match(r"([a-zA-Z-]+)\s*\((.*)\)", text)
+        if not m:
+            sig += addnodes.desc_name(text, text)
+            return text
+        name, args = m.groups()
+        sig += [addnodes.desc_name(name, name)]
+        params = addnodes.desc_parameterlist()
+        for arg in map(str.strip, args.split(",")):
+            params += [addnodes.desc_parameter(arg, arg)]
+        sig += [params]
+        return name
+    app.add_object_type(
+        "event", "event",
+        "pair: %s; event",
+        parse_event,
+        doc_field_types=[GroupedField(
+            "parameter",
+            label="Parameters",
+            names=["param"],
+            can_collapse=True,
+        )],
+    )
 
 # - Extension config
 
