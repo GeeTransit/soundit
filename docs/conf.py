@@ -116,6 +116,13 @@ git_last_updated_timezone = "America/Toronto"
 git_untracked_show_sourcelink = True
 git_untracked_check_dependencies = False
 
+# Link to other docs
+extensions += ["sphinx.ext.intersphinx"]
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3/", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
+}
+
 # - HTML output config
 
 html_theme = "furo"
