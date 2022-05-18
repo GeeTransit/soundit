@@ -45,6 +45,7 @@ version = subprocess.run(
     encoding="utf-8",
     check=True,
 ).stdout.splitlines()[-1]
+version = "".join(version.rpartition(".dev")[0:2])
 release = version
 
 # - Sphinx config
