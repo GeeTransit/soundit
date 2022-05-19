@@ -159,6 +159,9 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
 }
 
+# Specify dependencies of a document
+extensions += ["rebuild_when"]
+
 # - HTML output config
 
 html_theme = "furo"
