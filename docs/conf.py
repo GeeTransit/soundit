@@ -56,6 +56,10 @@ default_role = "any"
 templates_path = ["_templates"]
 exclude_patterns = ["_build"]
 
+# Less clutter in API docs
+add_module_names = False
+python_use_unqualified_type_names = True
+
 def setup(app):
     # Adapted from:
     # https://github.com/sphinx-doc/sphinx/blob/4c664ae0b873af91b030a8da253959c0727e1c7a/doc/conf.py
