@@ -782,6 +782,7 @@ def equal_chunk_stream(
     The last buffer yielded is always smaller than buffer_len. Other code can
     fill it with zeros, drop it, or execute clean up code.
 
+    Example:
         >>> list(equal_chunk_stream([b"abcd", b"efghi"], 3))
         [b'abc', b'def', b'ghi', b'']
         >>> list(equal_chunk_stream([b"abcd", b"efghijk"], 3))
@@ -1077,7 +1078,10 @@ def wrap_discord_source(iterator, *, is_opus=False):
 
     If is_opus is False (the default), the iterator must yield 20ms of signed
     16-bit little endian stereo 48kHz audio each iteration. If is_opus is True,
-    the iterator should yield 20ms of Opus encoded audio each iteration. ::
+    the iterator should yield 20ms of Opus encoded audio each iteration.
+
+    Example:
+      ::
 
         # source implements discord.AudioSource
         source = wrap_discord_source(chunked(cut(1, sine(440))))
@@ -1376,8 +1380,7 @@ class _IteratorPool:
     different lengths simply means the length of values will shrink as you go.
     Thirdly, you can add more iterators during iteration.
 
-    An example to demonstrate intended usage:
-
+    Example:
         >>> pool = _IteratorPool()
         >>> pool.add("aa")
         >>> pool.add("bbbbb")
@@ -1438,8 +1441,7 @@ class _HeapQueue:
     This is a small wrapper class over the heapq module specialized for
     schedulers.
 
-    An example:
-
+    Example:
         >>> queue = _HeapQueue()
         >>> queue.push(1, "a")
         >>> queue.push(2, "b")
