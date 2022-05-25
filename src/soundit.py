@@ -861,8 +861,7 @@ def _chunked_libav_section(
         raise RuntimeError("av needed to decode file")
 
     RATE = 48000  # 48kHz
-    CHANNELS = 2  # stereo
-    WIDTH = 2  # 16-bit
+    FRAME = 2 * 2  # frame width = stereo * 16-bit
 
     # Close after usage to prevent memory leaks
     with av.open(filename, "r") as in_container, \
@@ -904,14 +903,14 @@ def _chunked_libav_section(
                 # If there's still a part to skip, skip it
                 if in_skip > 0:
                     pcm_skip = round(in_skip * in_stream.time_base * RATE)
-                    pcm_packet = pcm_packet[pcm_skip * CHANNELS * WIDTH:]
+                    pcm_packet = pcm_packet[pcm_skip*FRAME:]
                     in_skip = 0
 
                 # If this is the last packet, cut the end, yield, and break
-                pcm_length = len(pcm_packet) // CHANNELS // WIDTH
+                pcm_length = len(pcm_packet) // FRAME
                 if pcm_left <= pcm_length:
                     if pcm_left < pcm_length:
-                        pcm_packet = pcm_packet[: pcm_left * CHANNELS * WIDTH]
+                        pcm_packet = pcm_packet[:pcm_left*FRAME]
                     yield pcm_packet
                     return
 
@@ -921,9 +920,9 @@ def _chunked_libav_section(
 
         # Flush buffers and yield the last bits
         pcm_packet = memoryview(b"".join(pcm_stream.encode(None)))
-        pcm_length = len(pcm_packet) // CHANNELS // WIDTH
+        pcm_length = len(pcm_packet) // FRAME
         if pcm_left < pcm_length:
-            pcm_packet = pcm_packet[: pcm_left * CHANNELS * WIDTH]
+            pcm_packet = pcm_packet[:pcm_left*FRAME]
         yield pcm_packet
 
 
