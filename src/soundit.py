@@ -1,4 +1,4 @@
-"""Make audio
+r"""Make audio
 
 This module uses iterators to represent audio streams. These iterators return
 float values between [-1.0, 1.0) and can be chained, averaged, and precomputed
