@@ -619,6 +619,7 @@ def chunked_ffmpeg_process(
                 ),
                 b"",
             ),
+            FRAME_SIZE_BYTES,
             copy=True,
         )
 
