@@ -1083,7 +1083,7 @@ if has_discord:
             else:
                 try:
                     close()
-                except BaseException as e:
+                except BaseException:
                     pass
             finally:
                 self._iterator = None
