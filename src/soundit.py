@@ -660,6 +660,8 @@ def make_ffmpeg_section_args(
     The before_options argument will be passed after ``-ss`` and before ``-i``,
     and the options argument will be passed after ``-t`` and before ``pipe:1``.
 
+    If length is None, the audio will play to the end of the file.
+
     The returned args are of this form:
 
         -ss {start}
@@ -681,7 +683,7 @@ def make_ffmpeg_section_args(
         raise ValueError("FFmpeg options should be lists, not strings")
     return [
         "-ss", str(start),
-        "-t", str(length),
+        *(("-t", str(length)) if length is not None else ()),
         *(before_options or ()),
         "-i", filename,
         "-f", "s16le",
