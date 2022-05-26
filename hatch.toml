@@ -42,7 +42,4 @@ dependencies = [
 ]
 
 [envs.docs.scripts]
-html = "sphinx-build -b dirhtml docs docs/_build/html"
-build = [
-	"html",
-]
+build = "sphinx-build -b dirhtml docs docs/_build/html"
