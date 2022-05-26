@@ -166,6 +166,25 @@ def piano(index=A4_INDEX):
         )
 
 
+# - Simple file API
+
+def file_chunks(filename: str, start: float = 0):
+    """Returns a sound from an audio file using FFmpeg
+
+    Arguments:
+        filename: path to the audio file
+        start: seconds into the audio to start at
+
+    Returns:
+        stream of two-tuples of floats decoded from the audio file
+
+    """
+    args = make_ffmpeg_section_args(filename, start, None)
+    process = create_ffmpeg_process(*args)
+    chunks = chunked_ffmpeg_process(process)
+    return unchunked(chunks)
+
+
 # - Experimental sounds from Online Sequencer
 
 class _OSInstrument:
