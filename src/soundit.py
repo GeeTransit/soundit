@@ -1271,10 +1271,10 @@ def music_to_notes(music, *, line_length=1):
                 # Get flags and add to notes list
                 flags = ""
                 if note.endswith("~"):
-                    note = note.removesuffix("~")
+                    note = note[:-1]
                     flags += "~"
                 elif note.endswith("!"):
-                    note = note.removesuffix("!")
+                    note = note[:-1]
                     flags += "!"
                 processed.append((note, flags, note_length))
 
