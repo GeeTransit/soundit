@@ -187,6 +187,46 @@ def file_chunks(filename: str, start: float = 0):
 
 # - Experimental sounds from Online Sequencer
 
+class _OSUtils:
+    """Utilities to work with Online Sequencer instruments
+
+    The audio is assumed to be Online Sequencer's instrument files of the form
+    :samp:`https://onlinesequencer.net/app/instruments/{instrument index}.ogg?v=12`.
+    Instruments vary from 1-43, with 13-16 being 8-bit sounds (sine, square,
+    sawtooth, and triangle respectively) and 41 and 43 being the length
+    dependent classic and grand piano respectively. The settings are assumed to
+    be from
+    :samp:`https://onlinesequencer.net/resources/c/{some hash}.js`. An example
+    hash is ``85dda66875c37703d44f50da0bb85185``.
+
+    """
+    # Online Sequencer starts from C2 (two octaves)
+    _INDEX_OFFSET = 24
+
+    @classmethod
+    def section_of(cls, settings: dict, instrument: int, index: int):
+        """Return section info for the specified note
+
+        Arguments:
+            settings: settings from Online Sequencer JS script
+            instrument: instrument index
+            index: note index
+
+        Returns:
+            two-tuple with start and length, both floats and in seconds
+
+        Raises:
+            LookupError: if index is out of the instrument's range
+
+        """
+        lo = settings["min"][instrument] + cls._INDEX_OFFSET
+        hi = settings["max"][instrument] + cls._INDEX_OFFSET
+        bpm = settings["originalBpm"][instrument] * 2  # BPM is 2x stored one
+        length = 60 / bpm
+        if not lo <= index <= hi:
+            raise LookupError(index)
+        return (index-lo) * length, length
+
 class _OSInstrument:
     """An instrument wrapping a collection of sounds
 
