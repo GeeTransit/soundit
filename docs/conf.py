@@ -139,6 +139,9 @@ extensions += ["clean_autoapi"]
 # Generate docs from docstrings
 extensions += ["sphinx.ext.autodoc"]
 
+# Process :meta: fields in AutoAPI (mimick autodoc behaviour)
+extensions += ["autoapi_meta_fields"]
+
 # Remove :meta: fields to prevent empty field lists
 # Note: Must come after sphinx.ext.autodoc
 extensions += ["remove_meta_fields"]
