@@ -911,7 +911,7 @@ def equal_chunk_stream(
 def _chunked_libav_section(
     filename: str,
     start: float,
-    length: float,
+    length: Optional[float],
 ):
     """Returns an iterator of chunks from the specified file
 
@@ -940,7 +940,8 @@ def _chunked_libav_section(
         # Decoding state
         got_initial = False  # Flag to correctly set in_skip after seeking
         in_skip = round(start / in_stream.time_base)  # Frames to skip
-        pcm_left = round(length * RATE)  # Frames to keep
+        if length is not None:
+            pcm_left = round(length * RATE)  # Frames to keep
 
         # Seek to a keyframe at or before in_skip frames
         in_container.seek(in_skip, stream=in_stream)
@@ -968,6 +969,11 @@ def _chunked_libav_section(
                     pcm_packet = pcm_packet[pcm_skip*FRAME:]
                     in_skip = 0
 
+                # If no length was specified, yield everything
+                if length is None:
+                    yield pcm_packet
+                    continue
+
                 # If this is the last packet, cut the end, yield, and break
                 pcm_length = len(pcm_packet) // FRAME
                 if pcm_left <= pcm_length:
@@ -982,6 +988,9 @@ def _chunked_libav_section(
 
         # Flush buffers and yield the last bits
         pcm_packet = memoryview(b"".join(pcm_stream.encode(None)))
+        if length is None:  # Yield everything
+            yield pcm_packet
+            return
         pcm_length = len(pcm_packet) // FRAME
         if pcm_left < pcm_length:
             pcm_packet = pcm_packet[:pcm_left*FRAME]
