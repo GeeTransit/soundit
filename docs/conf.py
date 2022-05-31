@@ -146,6 +146,9 @@ extensions += ["autoapi_meta_fields"]
 # Note: Must come after sphinx.ext.autodoc
 extensions += ["remove_meta_fields"]
 
+# Show strings in `Literal` annotations correctly in AutoAPI
+extensions += ["autoapi_literal_annotations"]
+
 # Support Google style docstrings
 extensions += ["sphinx.ext.napoleon"]
 # Most themes have styles for special admonitions
