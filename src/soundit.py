@@ -55,7 +55,7 @@ sounddevice utilities:
     `play_output_chunks`
     `create_input_chunks`
 
-There is also some builtin music that are prefixed with \MUSIC_, such as
+There is also some built-in music that are prefixed with \MUSIC_, such as
 MUSIC_DIGITIZED, provided for testing purposes.
 
 """
@@ -351,7 +351,7 @@ class _OSInstrument:
 
         It will take the required amount of audio starting from the specified
         start time and convert them into PCM 16-bit stereo audio to be piped to
-        stdout.
+        STDOUT.
 
         The instance's .before_options will be added before the before_options
         argument and likewise with .options.
@@ -953,7 +953,7 @@ def _chunked_libav_section(
                     in_skip -= in_frame.pts
                     got_initial = True
 
-                # Skip the whole frame if we dont need it
+                # Skip the whole frame if we don't need it
                 if in_skip >= in_frame.samples:
                     in_skip -= in_frame.samples
                     continue
@@ -995,7 +995,7 @@ def passed(seconds=1):
 
     This abstracts away the use of RATE to calculate the number of points.
 
-    If seconds is None, the retured sound will be unbounded.
+    If seconds is None, the returned sound will be unbounded.
 
     """
     if seconds is None:
@@ -1286,7 +1286,7 @@ def music_to_notes(music, *, line_length=1):
     Empty lines or lines starting with a hash "#" are skipped.
 
     Note names can be almost anything. A note name of a dash "-" continues the
-    previous note without a break between then. A suffix of a tilde "~" removes
+    previous note without a break between them. A suffix of a tilde "~" removes
     the break after the note, whereas an exclamation point "!" adds one.
 
     """
@@ -1435,7 +1435,7 @@ _layer = _notes_to_sound  #: :meta private:  # Old name
 class _IteratorPool:
     """Pool of iterators to be iterated in lockstep
 
-    This is similar to the builtin function zip but with some notable
+    This is similar to the built-in function zip but with some notable
     differences. Firstly, this class never stops iterating. It will return an
     empty list when there are no iterators. Secondly, having iterators of
     different lengths simply means the length of values will shrink as you go.
@@ -1637,7 +1637,7 @@ def _dft(points, frequency):
     ) / n
 
 def _fft_inplace(points, invert=True):
-    """Computes the fast fourier transform inplace
+    """Computes the Fast Fourier Transform in-place
 
     The length of points must be a power of two. Pass False to invert to
     calculate the inverse.
@@ -1665,7 +1665,7 @@ def _fft_inplace(points, invert=True):
         j ^= mask
         if i < j:
             points[i], points[j] = points[j], points[i]
-    # Iterative fast fourier transform
+    # Iterative Fast Fourier Transform
     direction = -cmath.pi if invert else cmath.pi
     size = 1
     while size < n:
@@ -1693,7 +1693,7 @@ def reload():
     importlib.reload(importlib.import_module(name))
 
 
-# - Builtin music
+# - Built-in music
 
 MUSIC_DIGITIZED = '''
 # names="do di re ri mi fa fi so si la li ti".split()
