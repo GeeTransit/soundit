@@ -71,6 +71,7 @@ import heapq
 import sys
 import collections
 import cmath
+import contextlib
 
 try:
     import discord  # type: ignore
@@ -336,7 +337,8 @@ class _OSInstrument:
         key = (self, index)
         chunks = self.cache.get(key, lambda: self._chunks_at(start))
         # Unchunk and convert into a sound
-        yield from ((x+y)/2 for x, y in unchunked(chunks))
+        with _closeiter(unchunked(chunks)) as sound:
+            yield from ((x+y)/2 for x, y in sound)
 
     def start_of(self, index=A4_INDEX):
         """Returns the start time for the specified note or None if invalid"""
@@ -597,10 +599,12 @@ def _with_self_tee(genfunc):
 @_with_self_tee
 def _pluck(self, freq=440, *, func=square):
     initial = cut(1 / freq, func(freq))
-    head, tail = itertools.tee(itertools.chain(initial, self))
-    next(head, None)
-    for x, y in zip(tail, head):
-        yield (x+y)/2 * 0.99
+    sound = itertools.chain(initial, self)
+    with _closeiter(sound):
+        head, tail = itertools.tee(sound)
+        next(head, None)
+        for x, y in zip(tail, head):
+            yield (x+y)/2 * 0.99
 
 # - FFmpeg utilities
 
@@ -794,34 +798,35 @@ def loop_stream(
     data_buffers: Deque[bytes] = collections.deque()
     data_buffers_size = 0
 
-    if copy:
-        # Read and copy data until empty
+    with _closeiter(data_iterator):
+        if copy:
+            # Read and copy data until empty
+            while True:
+                data = next(data_iterator, None)
+                if data is None:
+                    break
+                data = bytes(data)  # copy = True
+                data_buffers.append(data)
+                data_buffers_size += len(data)
+                yield data
+
+        else:
+            # Read data until empty
+            while True:
+                data = next(data_iterator, None)
+                if data is None:
+                    break
+                data_buffers.append(data)
+                data_buffers_size += len(data)
+                yield data
+
+        # Sanity check for empty buffer length
+        if when_empty == "error" and data_buffers_size == 0:
+            raise RuntimeError("empty data buffers")
+
+        # Yield buffers forever
         while True:
-            data = next(data_iterator, None)
-            if data is None:
-                break
-            data = bytes(data)  # copy = True
-            data_buffers.append(data)
-            data_buffers_size += len(data)
-            yield data
-
-    else:
-        # Read data until empty
-        while True:
-            data = next(data_iterator, None)
-            if data is None:
-                break
-            data_buffers.append(data)
-            data_buffers_size += len(data)
-            yield data
-
-    # Sanity check for empty buffer length
-    if when_empty == "error" and data_buffers_size == 0:
-        raise RuntimeError("empty data buffers")
-
-    # Yield buffers forever
-    while True:
-        yield from data_buffers
+            yield from data_buffers
 
 def equal_chunk_stream(
     data_iterable: Iterable[bytes],
@@ -866,11 +871,9 @@ def equal_chunk_stream(
 
     # Easier to do map(bytes, ...) than to check it each yield (faster too?)
     if copy:
-        return (yield from map(bytes, equal_chunk_stream(
-            data_iterable,
-            buffer_len,
-            copy=False,
-        )))
+        chunks = equal_chunk_stream(data_iterable, buffer_len, copy=False)
+        with _closeiter(chunks):
+            return (yield from map(bytes, chunks))
 
     # Initialize buffer / data variables
     buffer = memoryview(bytearray(buffer_len))
@@ -879,31 +882,32 @@ def equal_chunk_stream(
     data_ptr = 0
     data_len = len(data)
 
-    while True:
-        # Buffer is full. This must come before the data checking so that the
-        # final chunk always passes an if len(chunk) != buffer_len.
-        if buffer_ptr == buffer_len:
-            yield buffer
-            buffer_ptr = 0
+    with _closeiter(data_iterator):
+        while True:
+            # Buffer is full. This must come before the data checking so that the
+            # final chunk always passes an if len(chunk) != buffer_len.
+            if buffer_ptr == buffer_len:
+                yield buffer
+                buffer_ptr = 0
 
-        # Data is consumed
-        if data_ptr == data_len:
-            data_item = next(data_iterator, None)
-            if data_item is None:
-                # Yield everything that we have left (could be b"") so that
-                # other code can simply check the length to know if the stream
-                # is ending.
-                yield buffer[:buffer_ptr]
-                return
-            data = memoryview(data_item)
-            data_ptr = 0
-            data_len = len(data)
+            # Data is consumed
+            if data_ptr == data_len:
+                data_item = next(data_iterator, None)
+                if data_item is None:
+                    # Yield everything that we have left (could be b"") so that
+                    # other code can simply check the length to know if the stream
+                    # is ending.
+                    yield buffer[:buffer_ptr]
+                    return
+                data = memoryview(data_item)
+                data_ptr = 0
+                data_len = len(data)
 
-        # Either fill up the buffer or consume the data (or both)
-        take = min(buffer_len - buffer_ptr, data_len - data_ptr)
-        buffer[buffer_ptr:buffer_ptr + take] = data[data_ptr:data_ptr + take]
-        buffer_ptr += take
-        data_ptr += take
+            # Either fill up the buffer or consume the data (or both)
+            take = min(buffer_len - buffer_ptr, data_len - data_ptr)
+            buffer[buffer_ptr:buffer_ptr + take] = data[data_ptr:data_ptr + take]
+            buffer_ptr += take
+            data_ptr += take
 
 
 # - LibAV utilities
@@ -1014,6 +1018,30 @@ def passed(seconds=1):
     for i in iterator:
         yield i / RATE
 
+@contextlib.contextmanager
+def _closeiter(iterator: Iterator):
+    try:
+        yield iterator
+    finally:
+        if hasattr(iterator, "close"):
+            iterator.close()  # type: ignore[attr-defined]
+
+class _PreservedIterator:
+    def __init__(self, iterator: Iterator):
+        self._iterator = iterator
+    def __next__(self):
+        return next(self._iterator)
+    def __getattr__(self, name: str):
+        return getattr(self._iterator, name)
+    def __iter__(self):
+        return self
+    def close(self):
+        pass
+
+@contextlib.contextmanager
+def _preserveiter(iterator: Iterator):
+    yield _PreservedIterator(iterator)
+
 
 # - Sound effects
 
@@ -1024,69 +1052,74 @@ def fade(iterator, *, fadein=0.005, fadeout=0.005):
     in and fading out is split proportionally.
 
     """
-    fadein = int(fadein * RATE)
-    fadeout = int(fadeout * RATE)
+    with _closeiter(iterator):
+        fadein = int(fadein * RATE)
+        fadeout = int(fadeout * RATE)
 
-    # First get fadein + fadeout samples
-    last = []
-    try:
-        while len(last) < fadein + fadeout:
-            last.append(next(iterator))
-    except StopIteration as e:
-        # If we ended early, split the fades equally between fadein and fadeout
-        split = int(len(last) * fadein / (fadein+fadeout))
-        for i in range(0, split):  # Fade in
-            yield last[i] * ((i+1) / split)
-        for i in range(split, len(last)):  # Fade out
-            yield last[i] * ((len(last)-i) / (len(last)-split))
-        return e.value
-    # Yield the fadein part
-    for i in range(0, fadein):
-        yield last[i] * ((i+1) / fadein)
-    # Remove the fadein
-    del last[:fadein]
-    assert len(last) == fadeout
-    # Loop until the sound ends. We use the last list as a circular buffer with
-    # the insert variable pointing to the next index to be overwritten.
-    insert = 0
-    try:
-        while True:
-            # Yield the oldest point and get the next point
-            value = last[insert]
-            last[insert] = next(iterator)
-            yield value
-            insert = (insert + 1) % fadeout
-    except StopIteration as e:
-        # Yield the fadeout
-        for i, j in enumerate(range(insert - fadeout, insert)):
-            yield last[j] * ((fadeout-i) / fadeout)
-        return e.value
+        # First get fadein + fadeout samples
+        last = []
+        try:
+            while len(last) < fadein + fadeout:
+                last.append(next(iterator))
+        except StopIteration as e:
+            # If we ended early, split the fades equally between fadein and fadeout
+            split = int(len(last) * fadein / (fadein+fadeout))
+            for i in range(0, split):  # Fade in
+                yield last[i] * ((i+1) / split)
+            for i in range(split, len(last)):  # Fade out
+                yield last[i] * ((len(last)-i) / (len(last)-split))
+            return e.value
+        # Yield the fadein part
+        for i in range(0, fadein):
+            yield last[i] * ((i+1) / fadein)
+        # Remove the fadein
+        del last[:fadein]
+        assert len(last) == fadeout
+        # Loop until the sound ends. We use the last list as a circular buffer with
+        # the insert variable pointing to the next index to be overwritten.
+        insert = 0
+        try:
+            while True:
+                # Yield the oldest point and get the next point
+                value = last[insert]
+                last[insert] = next(iterator)
+                yield value
+                insert = (insert + 1) % fadeout
+        except StopIteration as e:
+            # Yield the fadeout
+            for i, j in enumerate(range(insert - fadeout, insert)):
+                yield last[j] * ((fadeout-i) / fadeout)
+            return e.value
 
 def both(iterator):
     """Deprecated. sound.chunked accepts floats"""
-    for num in iterator:
-        yield num, num
+    with _closeiter(iterator):
+        for num in iterator:
+            yield num, num
 
 def volume(factor, sound):
     """Multiplies each point by the specified factor"""
-    for num in sound:
-        yield num * factor
+    with _closeiter(sound):
+        for num in sound:
+            yield num * factor
 
 def cut(seconds, sound):
     """Ends the sound after the specified time"""
-    for _, point in zip(passed(seconds), sound):
-        yield point
+    with _closeiter(sound):
+        for _, point in zip(passed(seconds), sound):
+            yield point
 
 def pad(seconds, sound):
     """Pads the sound with silence if shorter than the specified time"""
-    for x in passed(None):
-        try:
-            point = next(sound)
-        except StopIteration:
-            break
-        else:
-            yield point
-    yield from cut(seconds - x, silence())
+    with _closeiter(sound):
+        for x in passed(None):
+            try:
+                point = next(sound)
+            except StopIteration:
+                break
+            else:
+                yield point
+        yield from cut(seconds - x, silence())
 
 def exact(seconds, sound):
     """Cuts or pads the sound to make it exactly the specified time"""
@@ -1234,11 +1267,12 @@ def unchunked(chunks):
     """
     volume = 1 << (16-1)  # 16-bit signed
     int_from_bytes = int.from_bytes  # speedup by removing a getattr
-    for chunk in chunks:
-        for i in range(0, len(chunk) - len(chunk) % 4, 4):
-            left = int_from_bytes(chunk[i:i+2], "little", signed=True)
-            right = int_from_bytes(chunk[i+2:i+4], "little", signed=True)
-            yield left/volume, right/volume
+    with _closeiter(chunks):
+        for chunk in chunks:
+            for i in range(0, len(chunk) - len(chunk) % 4, 4):
+                left = int_from_bytes(chunk[i:i+2], "little", signed=True)
+                right = int_from_bytes(chunk[i+2:i+4], "little", signed=True)
+                yield left/volume, right/volume
 
 # - Utility for note names and the like
 
@@ -1424,18 +1458,18 @@ def _notes_to_sound(notes, func):
             queue.push(start, (note, length))
         start += length
     # Play until there are no more notes nor sounds
-    pool = _IteratorPool()
-    for x in passed(None):
-        # Add notes that should start by now
-        for _, (note, length) in queue.popleq(x):
-            iterable = func(note, length)
-            pool.add(iterable)
-        # Check for end of music
-        nums = pool.step()
-        if not queue and not pool:
-            return
-        # Add component sounds up and yield it
-        yield sum(nums)
+    with contextlib.closing(_IteratorPool()) as pool:
+        for x in passed(None):
+            # Add notes that should start by now
+            for _, (note, length) in queue.popleq(x):
+                iterable = func(note, length)
+                pool.add(iterable)
+            # Check for end of music
+            nums = pool.step()
+            if not queue and not pool:
+                return
+            # Add component sounds up and yield it
+            yield sum(nums)
 _layer = _notes_to_sound  #: :meta private:  # Old name
 
 
@@ -1473,15 +1507,19 @@ class _IteratorPool:
         """Creates an iterator pool"""
         self.iterators = {}
         self._next_key = 0
+        self.closed = False
 
     def __len__(self):
         return len(self.iterators)
 
     def __repr__(self):
-        return f"<{type(self).__name__} len={len(self)}>"
+        closed = " closed" if self.closed else ""
+        return f"<{type(self).__name__} len={len(self)}{closed}>"
 
     def step(self):
         """Returns a list of values from all iterators in the pool"""
+        if self.closed:
+            return []
         values = []  # List of values from the iterators
         remove = []  # Keys to remove after iteration
         for key, iterator in self.iterators.items():
@@ -1498,9 +1536,20 @@ class _IteratorPool:
 
     def add(self, iterable):
         """Adds the iterable to the pool"""
+        if self.closed:
+            raise RuntimeError("cannot add iterable to closed pool")
         iterator = iter(iterable)
         self.iterators[self._next_key] = iterator
         self._next_key += 1
+
+    def close(self):
+        """Closes all iterators in the pool"""
+        if self.closed:
+            return
+        self.closed = True
+        for iterator in self.iterators:
+            if hasattr(iterator, "close"):
+                iterator.close()
 
 
 # - Experimental class to aid in scheduling stuff
