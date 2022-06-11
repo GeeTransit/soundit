@@ -660,16 +660,7 @@ def chunked_ffmpeg_process(
     if close is None:
         close = True
 
-    SAMPLING_RATE = 48000  # 48kHz
-    CHANNELS = 2  # stereo
-    SAMPLE_WIDTH = 2 * 8  # 16-bit
-    FRAME_LENGTH = 20  # 20ms
-
-    SAMPLE_SIZE = SAMPLE_WIDTH * CHANNELS
-    SAMPLES_PER_FRAME = SAMPLING_RATE * FRAME_LENGTH // 1000
-    FRAME_SIZE = SAMPLES_PER_FRAME * SAMPLE_SIZE
-    FRAME_SIZE_BYTES = FRAME_SIZE // 8
-
+    FRAME_SIZE_BYTES = 3840  # 20ms of 48kHz stereo 16-bit audio
     check_return_code = True
 
     try:
@@ -800,25 +791,13 @@ def loop_stream(
 
     with _closeiter(data_iterator):
         if copy:
-            # Read and copy data until empty
-            while True:
-                data = next(data_iterator, None)
-                if data is None:
-                    break
-                data = bytes(data)  # copy = True
-                data_buffers.append(data)
-                data_buffers_size += len(data)
-                yield data
+            data_iterator = map(bytes, data_iterator)
 
-        else:
-            # Read data until empty
-            while True:
-                data = next(data_iterator, None)
-                if data is None:
-                    break
-                data_buffers.append(data)
-                data_buffers_size += len(data)
-                yield data
+        # Read data until empty
+        for data in data_iterator:
+            data_buffers.append(data)
+            data_buffers_size += len(data)
+            yield data
 
         # Sanity check for empty buffer length
         if when_empty == "error" and data_buffers_size == 0:
