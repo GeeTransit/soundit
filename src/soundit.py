@@ -875,39 +875,51 @@ def equal_chunk_stream(
         with _closeiter(chunks):
             return (yield from map(bytes, chunks))
 
-    # Initialize buffer / data variables
+    # Initialize buffer variables
     buffer = memoryview(bytearray(buffer_len))
     buffer_ptr = 0
-    data = b""
-    data_ptr = 0
-    data_len = len(data)
 
     with _closeiter(data_iterator):
-        while True:
-            # Buffer is full. This must come before the data checking so that the
-            # final chunk always passes an if len(chunk) != buffer_len.
-            if buffer_ptr == buffer_len:
+        for data in data_iterator:
+            # This stores the size data is over by compared to the remaining
+            # buffer size. If it's negative, it's the size it's under by.
+            end = len(data) - buffer_len + buffer_ptr
+
+            if end == 0:
+                # Faster to yield data directly (no copying to the buffer)
+                if buffer_ptr == 0:
+                    yield data
+                    continue
+
+                buffer[buffer_ptr:] = data
                 yield buffer
                 buffer_ptr = 0
+                continue
 
-            # Data is consumed
-            if data_ptr == data_len:
-                data_item = next(data_iterator, None)
-                if data_item is None:
-                    # Yield everything that we have left (could be b"") so that
-                    # other code can simply check the length to know if the stream
-                    # is ending.
-                    yield buffer[:buffer_ptr]
-                    return
-                data = memoryview(data_item)
-                data_ptr = 0
-                data_len = len(data)
+            if end < 0:
+                buffer[buffer_ptr:end] = data
+                buffer_ptr = buffer_len + end
+                continue
 
-            # Either fill up the buffer or consume the data (or both)
-            take = min(buffer_len - buffer_ptr, data_len - data_ptr)
-            buffer[buffer_ptr:buffer_ptr + take] = data[data_ptr:data_ptr + take]
-            buffer_ptr += take
-            data_ptr += take
+            # Don't copy for slices
+            data = memoryview(data)
+
+            buffer[buffer_ptr:] = data[:-end]
+            yield buffer
+            data = data[-end:]
+
+            # Yield buffer sized slices of data
+            if end >= buffer_len:
+                for i in range(0, len(data) - buffer_len + 1, buffer_len):
+                    yield data[i:i+buffer_len]
+
+            buffer_ptr = len(data) % buffer_len
+            if buffer_ptr != 0:
+                buffer[:buffer_ptr] = data[-buffer_ptr:]
+
+        # Yield everything that we have left (could be b"") so that other code
+        # can simply check the length to know if the stream is ending.
+        yield b"" if buffer_ptr == 0 else buffer[:buffer_ptr]
 
 
 # - LibAV utilities
