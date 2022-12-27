@@ -872,9 +872,11 @@ def equal_chunk_stream(
 
     with _closeiter(data_iterator):
         for data in data_iterator:
+            data = memoryview(data).cast("B")
+
             # This stores the size data is over by compared to the remaining
             # buffer size. If it's negative, it's the size it's under by.
-            end = len(data) - buffer_len + buffer_ptr
+            end = data.nbytes - buffer_len + buffer_ptr
 
             if end == 0:
                 # Faster to yield data directly (no copying to the buffer)
@@ -892,19 +894,16 @@ def equal_chunk_stream(
                 buffer_ptr = buffer_len + end
                 continue
 
-            # Don't copy for slices
-            data = memoryview(data)
-
             buffer[buffer_ptr:] = data[:-end]
             yield buffer
             data = data[-end:]
 
             # Yield buffer sized slices of data
             if end >= buffer_len:
-                for i in range(0, len(data) - buffer_len + 1, buffer_len):
+                for i in range(0, end - buffer_len + 1, buffer_len):
                     yield data[i:i+buffer_len]
 
-            buffer_ptr = len(data) % buffer_len
+            buffer_ptr = end % buffer_len
             if buffer_ptr != 0:
                 buffer[:buffer_ptr] = data[-buffer_ptr:]
 
