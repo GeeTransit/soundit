@@ -72,6 +72,7 @@ import sys
 import collections
 import cmath
 import contextlib
+import io
 
 try:
     import discord  # type: ignore
@@ -922,7 +923,7 @@ def _chunked_libav_section(
 
     # Close after usage to prevent memory leaks
     with av.open(filename, "r") as in_container, \
-            av.open(None, "w", format="s16le") as pcm_container:
+            av.open(io.BytesIO(), "w", format="s16le") as pcm_container:
 
         # Input audio stream to decode from
         in_stream = in_container.streams.audio[0]
