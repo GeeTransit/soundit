@@ -415,38 +415,42 @@ class _OSInstrument:
 class LRUCache:
     """An LRU cache
 
-    The maxsize argument specifies the maximum size the cache can grow to.
-    Specifying 0 means that the cache will remain empty. Specifying None means
-    the cache will grow without bound.
-
-    To get a value, call .get with a key (to uniquely identify each value, and
-    with a zero-argument function that returns a value for when it doesn't
-    exist.
-
-    To clear the cache and reset the hits / misses counters, call .clear().
-
-    To change the maxsize, set the .maxsize property to its new value. Note
-    that it won't take effect until the next .get call with a key not in the
-    cache. It is not recommended, but you can call ._ensure_size() to force
-    it to resize the cache.
-
-    For info on the number of hits / misses, check the .hits and .misses
-    attributes. You can reset them to 0 manually if you'd like.
-
-    Checking and modifying the cache manually isn't recommended, but they are
-    available through the .results attribute. It stores a dictionary between
-    keys and values. You can clear them manually if you'd like.
+    Arguments:
+        maxsize: the maximum size of the cache (None means unbounded)
 
     """
-    def __init__(self, *, maxsize=128):
+    def __init__(self, *, maxsize: Optional[int] = 128):
         # Set cache state
         self.maxsize = maxsize
+        """The maximum size of the cache
+
+        0 means that the cache will remain empty. Specifying None means the
+        cache will grow without bound.
+
+        Note that changes to maxsize won't take effect until the next `get()`
+        call with a key not in the cache. It is not recommended, but you can
+        call ``._ensure_size()`` to force it to resize the cache.
+
+        """
         self.hits = 0
+        """The number of cache hits"""
         self.misses = 0
-        self.results = {}
+        """The number of cache misses"""
+        self.results: dict = {}
+        """The dictionary between keys and values
+
+        Checking and modifying the cache manually isn't recommended.
+
+        """
 
     def get(self, key, value_func):
-        """Return the value for this key, calling value_func if needed"""
+        """Return the value for this key, calling value_func if needed
+
+        Arguments:
+            key: unique key for a value
+            value_func: a zero-arg function returning a value for this key
+
+        """
         # If the key ain't in the cache...
         if key not in self.results:
             # Get the value from calling the function
@@ -497,7 +501,7 @@ class LRUCache:
         return result
 
     def _ensure_size(self):
-        if self.maxsize is None:  # Cache is not unbounded
+        if self.maxsize is None:  # Cache is unbounded
             return False
         if len(self.results) <= max(0, self.maxsize):
             return False
@@ -513,7 +517,7 @@ class LRUCache:
         # Remove old keys
         for old_key in old_keys:
             self.results.pop(old_key)
-        # Force a resizing of the dictionary (resize on inserts)
+        # Force the dict to resize (inserts cause resizing)
         self.results[1] = 1
         del self.results[1]
         return True
@@ -523,8 +527,8 @@ class LRUCache:
 class LRUIterableCache(LRUCache):
     """An LRU cache for iterables
 
-    This class internally stores itertools.tee objects wrapped around the
-    original values and returns copy.copy(...) of the tees in the cache.
+    This class internally stores `itertools.tee` objects wrapped around the
+    original values and returns a copy of the tees in the cache.
 
     We use tee objects for a few reasons:
 
@@ -533,27 +537,34 @@ class LRUIterableCache(LRUCache):
     - They can be copied (major orz for this one).
     - They are fast (implemented in C).
 
-    A .get() call first finds a tee object, using the cached tee if one exists,
-    or creating a fresh one using the iterable_func. We then make a copy of the
-    tee to keep the original unchanged.
-
-    See LRUCache for more info on caching. See itertools.tee for more info on
+    See `LRUCache` for more info on caching. See `itertools.tee` for more info on
     tee objects.
 
     """
     def get(self, key, iterable_func):
-        """Return the iterator for this key, calling iterable_func if needed"""
+        """Return the iterator for this key, calling iterable_func if needed
+
+        If a matching tee is cached, return a copy. If no tee is found, create
+        a new one using the iterable_func and make a copy of it.
+
+        """
         def value_func():
             return itertools.tee(iterable_func(), 1)[0]
         return copy.copy(super().get(key, value_func))
 
-def lru_iter_cache(func=None, *, maxsize=128, cache=None):
+def lru_iter_cache(
+    func=None,
+    *,
+    maxsize: Optional[int] = 128,
+    cache: Optional[LRUIterableCache] = None,
+):
     """Decorator to wrap a function returning iterables
 
-    If maxsize is 0, no caching will be done. If maxsize is None, the cache
-    will be unbounded.
+    Arguments:
+        maxsize: the maximum size of the cache (None means unbounded)
+        cache: the cache to use
 
-    See LRUIterableCache for more info.
+    See `LRUIterableCache` for more info.
 
     """
     if func is None:
@@ -574,8 +585,8 @@ def lru_iter_cache(func=None, *, maxsize=128, cache=None):
         return cache.get(key, iterable_func)
 
     # Add the cache to the function object for later introspection
-    _lru_iter_cache_wrapper.cache = cache
-    _lru_iter_cache_wrapper.cache_clear = cache.clear
+    _lru_iter_cache_wrapper.cache = cache  # type: ignore
+    _lru_iter_cache_wrapper.cache_clear = cache.clear  # type: ignore
 
     # Return the wrapper function
     return _lru_iter_cache_wrapper
