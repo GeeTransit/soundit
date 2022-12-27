@@ -1267,12 +1267,12 @@ def unchunked(chunks):
 
     """
     volume = 1 << (16-1)  # 16-bit signed
-    int_from_bytes = int.from_bytes  # speedup by removing a getattr
     with _closeiter(chunks):
         for chunk in chunks:
-            for i in range(0, len(chunk) - len(chunk) % 4, 4):
-                left = int_from_bytes(chunk[i:i+2], "little", signed=True)
-                right = int_from_bytes(chunk[i+2:i+4], "little", signed=True)
+            chunk = memoryview(chunk).cast("B")
+            # Not sure how to use extra bytes so they're ignored for now
+            chunk = chunk[:len(chunk) // 4 * 4]
+            for left, right in struct.iter_unpack("<2h", chunk):
                 yield left/volume, right/volume
 
 # - Utility for note names and the like
