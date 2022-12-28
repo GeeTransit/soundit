@@ -25,7 +25,7 @@ all = ["doctest"]
 template = "test"
 
 [[envs.test-matrix.matrix]]
-python = ["37", "38", "39", "310"]
+python = ["37", "38", "39", "310", "311"]
 
 [envs.docs]
 skip-install = true
