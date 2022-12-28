@@ -7,7 +7,7 @@ to your heart's content to create music. We call these iterators "sounds".
 Note that all sounds are in 48kHz.
 
 There is also a kinda sus music parser which can aid in creating longer music.
-More info on that can be found in the music_to_notes's docstring.
+More info on that can be found in the `music_to_notes`'s docstring.
 
 Sound generators:
     `sine`
@@ -26,6 +26,10 @@ Sound effects:
     `cut`
     `pad`
     `exact`
+
+Frequency utilities:
+    `make_frequencies_dict`
+    `make_indices_dict`
 
 Music functions:
     `split_music`
@@ -47,6 +51,7 @@ discord.py utilities:
     `play_discord_source`
 
 FFmpeg utilities:
+    `file_chunks`
     `make_ffmpeg_section_args`
     `create_ffmpeg_process`
     `chunked_ffmpeg_process`
@@ -630,13 +635,13 @@ def create_ffmpeg_process(
 ):
     """Creates a process that run FFmpeg with the given arguments
 
-    This assumes that ffmpeg.exe is on your PATH environment variable. If not,
+    This assumes that ``ffmpeg.exe`` is on your PATH environment variable. If not,
     you can specify its location using the executable argument.
 
-    For the pipe_* arguments, if it is True, subprocess.PIPE will be passed to
-    subprocess.Popen's constructor. Otherwise, None will be passed.
+    For the ``pipe_*`` arguments, if it is True, `subprocess.PIPE` will be passed to
+    `subprocess.Popen`'s constructor. Otherwise, None will be passed.
 
-    All other keyword arguments, are passed directly to subprocess.Popen.
+    All other keyword arguments are passed directly to `subprocess.Popen`.
 
     """
     subprocess_kwargs = {
@@ -728,7 +733,7 @@ def make_ffmpeg_section_args(
 
     If length is None, the audio will play to the end of the file.
 
-    The returned args are of this form:
+    The returned args are of this form::
 
         -ss {start}
         -t {length}
