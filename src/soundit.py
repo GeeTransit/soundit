@@ -743,6 +743,7 @@ def make_ffmpeg_section_args(
         -ar 48000
         -ac 2
         -loglevel warning
+        -nostdin
         {options}
         pipe:1
 
@@ -761,6 +762,7 @@ def make_ffmpeg_section_args(
         "-ar", "48000",
         "-ac", "2",
         "-loglevel", "warning",
+        "-nostdin",
         *(options or ()),
         "pipe:1",
     ]
