@@ -33,8 +33,11 @@ email = "geetransit@gmail.com"
 source = "vcs"
 
 [tool.hatch.build]
-sources = ["src"]
 exclude = ["examples", "docs"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+sources = ["src"]
 
 [tool.flake8]
 extend-ignore = "E302, E305, E306"
