@@ -21,7 +21,7 @@ def _patch_resolve_annotation(old_resolve_annotation):
         if isinstance(annotation, astroid.Subscript):
             value = old_resolve_annotation(annotation.value)
             slice_node = annotation.slice
-            if isinstance(slice_node, astroid.Index):
+            if hasattr(astroid, "Index") and isinstance(slice_node, astroid.Index):
                 slice_node = slice_node.value
             if value == "Literal":
                 if isinstance(slice_node, astroid.Tuple):
