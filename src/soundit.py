@@ -1474,23 +1474,22 @@ def _notes_to_sound(notes, func):
     :meta public:
 
     """
-    # Create a queue with all the notes' start times
-    queue = _HeapQueue()
     start = 0
-    for note, length in notes:
-        if note is not None:
-            queue.push(start, (note, length))
-        start += length
+    notes = iter(notes)
+    note, length = (None, 0)
     # Play until there are no more notes nor sounds
     with contextlib.closing(_IteratorPool()) as pool:
         for x in passed(None):
             # Add notes that should start by now
-            for _, (note, length) in queue.popleq(x):
-                iterable = func(note, length)
-                pool.add(iterable)
+            while start <= x:
+                if note is not None:
+                    iterable = func(note, length)
+                    pool.add(iterable)
+                start += length
+                note, length = next(notes, (None, 9e999))  # 9e999 == inf
             # Check for end of music
             nums = pool.step()
-            if not queue and not pool:
+            if length == 9e999 and not pool:
                 return
             # Add component sounds up and yield it
             yield sum(nums)
