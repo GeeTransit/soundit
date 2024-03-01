@@ -1075,10 +1075,13 @@ def fade(iterator, *, fadein=0.005, fadeout=0.005):
             while len(last) < fadein + fadeout:
                 last.append(next(iterator))
         except StopIteration as e:
-            # If we ended early, pretend the fade exists and use the larger
+            # If we ended early, pretend the fade exists and use the smaller
             # volume from fadein or fadeout.
             for i, point in enumerate(last):
-                yield point * max((i+1) / fadein, (fadeout-i) / fadeout)
+                yield point * min(
+                    (i+1) / fadein if fadein else 1,
+                    (len(last)-i) / fadeout if fadeout else 1,
+                )
             return e.value
         # Yield the fadein part
         for i in range(0, fadein):
