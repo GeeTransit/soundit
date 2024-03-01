@@ -1149,6 +1149,29 @@ def pad(seconds, sound):
         else:
             yield from sound
 
+def _cut_cross(seconds: float, sound):
+    """End sound at the first sign flip after the specified time
+
+    :meta public:
+
+    """
+    with _closeiter(sound):
+        point = 0
+        for _ in passed(seconds):
+            try:
+                point = next(sound)
+            except StopIteration:
+                return
+            else:
+                yield point
+        last_point = point
+        if last_point == 0:
+            return
+        for point in sound:
+            if last_point*point <= 0:
+                return
+            yield point
+
 def exact(seconds, sound):
     """Cuts or pads the sound to make it exactly the specified time"""
     return cut(seconds, pad(seconds, sound))
@@ -1158,6 +1181,29 @@ def delay(seconds: float, sound):
     with _closeiter(sound):
         yield from cut(seconds, silence())
         yield from sound
+
+def _resample_linear(factor: float, sound):
+    """Resample the sound using linear interpolation
+
+    The returned sound will be shorter/longer by 1 over the specified factor.
+    Resampling a sound created by ``cut(1, sine(440))`` would give a sound
+    similar to one created by ``cut(1/factor, 440*factor)``.
+
+    :meta public:
+
+    """
+    elapsed = passed(None)
+    next_sample = factor*next(elapsed)
+    last_point = 0
+    last_x = -1
+    for x, point in zip(passed(None), sound):
+        while next_sample <= x:
+            # This is closest to how NumPy calculates linear interpolation
+            slope = (point - last_point) / (x - last_x)
+            yield last_point + slope*(next_sample - last_x)
+            next_sample = factor*next(elapsed)
+        last_point = point
+        last_x = x
 
 
 # - Utility for audio sources
