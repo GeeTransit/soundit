@@ -1104,6 +1104,12 @@ def both(iterator):
         for num in iterator:
             yield num, num
 
+def single(iterator):
+    """Merge stereo sounds into mono"""
+    with _closeiter(iterator):
+        for left, right in iterator:
+            yield (left + right)/2
+
 def volume(factor, sound):
     """Multiplies each point by the specified factor"""
     with _closeiter(sound):
