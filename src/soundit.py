@@ -26,6 +26,7 @@ Sound effects:
     `cut`
     `pad`
     `exact`
+    `delay`
 
 Frequency utilities:
     `make_frequencies_dict`
@@ -1151,6 +1152,12 @@ def pad(seconds, sound):
 def exact(seconds, sound):
     """Cuts or pads the sound to make it exactly the specified time"""
     return cut(seconds, pad(seconds, sound))
+
+def delay(seconds: float, sound):
+    """Add silence before the sound"""
+    with _closeiter(sound):
+        yield from cut(seconds, silence())
+        yield from sound
 
 
 # - Utility for audio sources
