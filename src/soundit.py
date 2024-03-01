@@ -1089,6 +1089,9 @@ def fade(iterator, *, fadein=0.005, fadeout=0.005):
         # Remove the fadein
         del last[:fadein]
         assert len(last) == fadeout
+        # If there's no fadeout, yield rest of the sound without changes.
+        if fadeout == 0:
+            return (yield from iterator)
         # Loop until the sound ends. We use the last list as a circular buffer with
         # the insert variable pointing to the next index to be overwritten.
         insert = 0
