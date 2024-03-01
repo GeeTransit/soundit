@@ -186,6 +186,11 @@ def file_chunks(filename: str, start: float = 0):
         stream of two-tuples of floats decoded from the audio file
 
     """
+    if has_av:
+        stream = _chunked_libav_section(filename, start, None)
+        chunks = equal_chunk_stream(stream, RATE//50*4)
+        return unchunked(chunks)
+
     args = make_ffmpeg_section_args(filename, start, None)
     process = create_ffmpeg_process(*args)
     chunks = chunked_ffmpeg_process(process)
