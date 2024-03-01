@@ -123,7 +123,7 @@ NOTE_NAMES = "c c# d d# e f f# g g# a a# b".split()
 def silence():
     """Returns silence"""
     for _ in passed(None):
-        yield 0
+        yield 0.0
 
 def sine(freq=A4_FREQUENCY):
     """Returns a sine wave at freq"""
