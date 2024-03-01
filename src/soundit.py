@@ -101,6 +101,13 @@ except ImportError:
 else:
     has_av = True
 
+try:
+    import numpy  # type: ignore
+except ImportError:
+    has_numpy = False
+else:
+    has_numpy = True
+
 from typing import TYPE_CHECKING, Optional, Any, Iterable, Deque, Iterator
 if sys.version_info >= (3, 8):
     from typing import Literal
@@ -119,32 +126,217 @@ A4_INDEX = 57
 NOTE_NAMES = "c c# d d# e f f# g g# a a# b".split()
 
 
+# - Numpy iterators
+
+if has_numpy:
+    # Convert sound iterator to numpy iterator
+    def _to_numpy(iterator):
+        if not hasattr(iterator, "_as_numpy_iterator"):
+            iterator = _NumpyConvertibleIterator._from_sound(iterator)
+        return iterator._as_numpy_iterator()
+
+    # Ensure iterator is a sound (assumes argument isn't a numpy iterator)
+    def _ensure_sound(iterator):
+        if hasattr(iterator, "_as_numpy_iterator"):
+            return iterator._as_sound_iterator()
+        else:
+            return iterator
+
+    # Can be used to speed up some operations
+    class _NumpyConvertibleIterator:
+        __slots__ = (
+            "_running", "_converted",
+            "_iterator", "_numpy_iterator",
+            "_name",
+        )
+
+        def __init__(self, iterator, numpy_iterator, *, name=None):
+            self._running = False
+            self._converted = False
+            self._iterator = iterator
+            self._numpy_iterator = numpy_iterator
+            self._name = name
+
+        def __repr__(self):
+            mode = (
+                f'sound={self._iterator!r}'
+                if self._running else
+                f'numpy={self._numpy_iterator!r}'
+                if self._converted else
+                f'unconverted name={self._name!r}'
+                if self._name is not None else
+                "unconverted"
+            )
+            return f'<{type(self).__name__} {mode}>'
+
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            if not self._running:
+                if self._converted:
+                    raise RuntimeError("cannot iterate converted iterator")
+                if callable(self._iterator):
+                    self._iterator = self._iterator()
+                self._running = True
+            return next(self._iterator)
+
+        def __getattr__(self, name: str):
+            if self._converted:
+                assert not self._running
+                return getattr(self._numpy_iterator, name)
+            # Getting an attribute on an unconverted iterator sets it running
+            if not self._running:
+                assert not self._converted
+                if callable(self._iterator):
+                    self._iterator = self._iterator()
+                self._running = True
+            return getattr(self._iterator, name)
+
+        def _as_numpy_iterator(self):
+            if not self._converted:
+                if self._running:
+                    raise RuntimeError("cannot convert running iterator")
+                if callable(self._numpy_iterator):
+                    self._numpy_iterator = self._numpy_iterator()
+                self._converted = True
+            return self._numpy_iterator
+
+        def _as_sound_iterator(self):
+            if not self._running:
+                if self._converted:
+                    raise RuntimeError("iterator already converted")
+                if callable(self._iterator):
+                    self._iterator = self._iterator()
+                self._running = True
+            return self._iterator
+
+        @staticmethod
+        def _numpy_from_sound(iterator: Iterator):
+            CHUNK_SIZE = RATE // 50
+            iterator = iter(iterator)  # iterator could actually be an iterable
+            while True:
+                array = numpy.fromiter(
+                    itertools.islice(iterator, CHUNK_SIZE),
+                    dtype="float",
+                )
+                yield array
+                if len(array) < CHUNK_SIZE:
+                    return
+
+        @staticmethod
+        def _sound_from_numpy(numpy_iterator: Iterator):
+            for array in numpy_iterator:
+                yield from array
+
+        @classmethod
+        def _from_sound(cls, iterator: Iterator):
+            return cls(
+                iterator,
+                lambda: cls._numpy_from_sound(iterator),
+                name=iterator,
+            )
+
+        @classmethod
+        def _from_numpy(cls, numpy_iterator: Iterator):
+            return cls(
+                lambda: cls._sound_from_numpy(numpy_iterator),
+                numpy_iterator,
+                name=numpy_iterator,
+            )
+
+# Main decorator interface for _NumpyConvertibleIterator compatible functions
+def _convertible(sound_func):
+    if has_numpy:
+        @functools.wraps(sound_func)
+        def _wrapper(*args, **kwargs):
+            return _NumpyConvertibleIterator(
+                lambda: func._sound_func(*args, **kwargs),
+                lambda: func._numpy_func(*args, **kwargs),
+                name=func._sound_func.__name__,
+            )
+        func = _wrapper
+        func._sound_func = sound_func
+        def _missing_numpy_func(*args, **kwargs):
+            raise TypeError(f'missing numpy function: {sound_func}')
+        func._numpy_func = _missing_numpy_func
+        func._supports_numpy = True
+    else:
+        func = sound_func
+
+    def _as_numpy_decorate(numpy_func):
+        if numpy_func.__name__ == sound_func.__name__:
+            import warnings
+            warnings.warn(
+                "numpy function has same name as sound function:"
+                f' {numpy_func.__name__}',
+                UserWarning,
+                stacklevel=2,
+            )
+        func._numpy_func = numpy_func
+        return numpy_func
+    func._as_numpy = _as_numpy_decorate
+
+    return func
+
+
 # - Sound generators
 
+@_convertible
 def silence():
     """Returns silence"""
     for _ in passed(None):
         yield 0.0
 
+@silence._as_numpy
+def _numpy_silence():
+    for x in _to_numpy(passed(None)):
+        x.fill(0.0)
+        yield x
+
+@_convertible
 def sine(freq=A4_FREQUENCY):
     """Returns a sine wave at freq"""
     for x in passed(None):
         yield math.sin(2*math.pi * freq * x)
 
+@sine._as_numpy
+def _numpy_sine(freq=A4_FREQUENCY):
+    for x in _to_numpy(passed(None)):
+        yield numpy.sin(2*math.pi * freq * x)
+
+@_convertible
 def square(freq=A4_FREQUENCY):
     """Returns a square wave at freq"""
     for x in passed(None):
         yield (freq*x % 1 >= 0.5) * 2 - 1
 
+@square._as_numpy
+def _numpy_square(freq=A4_FREQUENCY):
+    for x in _to_numpy(passed(None)):
+        yield (freq*x % 1 >= 0.5).astype("float") * 2 - 1
+
+@_convertible
 def sawtooth(freq=A4_FREQUENCY):
     """Returns a sawtooth wave at freq"""
     for x in passed(None):
         yield ((freq*x + 0.5) % 1 - 0.5) * 2
 
+@sawtooth._as_numpy
+def _numpy_sawtooth(freq=A4_FREQUENCY):
+    for x in _to_numpy(passed(None)):
+        yield ((freq*x + 0.5) % 1 - 0.5) * 2
+
+@_convertible
 def triangle(freq=A4_FREQUENCY):
     """Returns a triangle wave at freq"""
     for x in passed(None):
         yield (-abs(-((freq*x + 0.25) % 1) + 0.5) + 0.25) * 4
+
+@triangle._as_numpy
+def _numpy_triangle(freq=A4_FREQUENCY):
+    for x in _to_numpy(passed(None)):
+        yield (-numpy.abs(-((freq*x + 0.25) % 1) + 0.5) + 0.25) * 4
 
 piano_data = None
 def init_piano():
@@ -163,6 +355,7 @@ def init_piano():
     with open("0.raw", "rb") as f:
         piano_data = f.read()
 
+@_convertible
 def piano(index=A4_INDEX):
     """Returns a piano sound at index"""
     index -= 2*12  # The piano starts at C2
@@ -172,6 +365,14 @@ def piano(index=A4_INDEX):
             int.from_bytes(piano_data[i:i+2], "little", signed=True)
             / (1 << 16-1)
         )
+
+@piano._as_numpy
+def _numpy_piano(index=A4_INDEX):
+    _numpy_piano_data = numpy.frombuffer(piano_data, dtype="<h")
+    index -= 2*12  # The piano starts at C2
+    for x in _to_numpy(passed(1)):
+        i = ((index + x) * RATE + 0.5).astype("int")
+        yield _numpy_piano_data[i] / (1 << 16-1)
 
 
 # - Simple file API
@@ -558,6 +759,15 @@ class LRUIterableCache(LRUCache):
         a new one using the iterable_func and make a copy of it.
 
         """
+        if has_numpy:
+            # Defer cache get until we know if it's a sound or a numpy iterator
+            return _NumpyConvertibleIterator(
+                lambda: copy.copy(super(LRUIterableCache, self).get((0, key),
+                    lambda: itertools.tee(iterable_func(), 1)[0])),
+                lambda: copy.copy(super(LRUIterableCache, self).get((1, key),
+                    lambda: itertools.tee(_to_numpy(iterable_func()), 1)[0])),
+                name=key,
+            )
         def value_func():
             return itertools.tee(iterable_func(), 1)[0]
         return copy.copy(super().get(key, value_func))
@@ -1017,6 +1227,7 @@ def _chunked_libav_section(
 
 # - Sound creation utilities
 
+@_convertible
 def passed(seconds=1):
     """Returns a sound lasting the specified time yielding the seconds passed
 
@@ -1031,6 +1242,28 @@ def passed(seconds=1):
         iterator = range(int(seconds * RATE))
     for i in iterator:
         yield i / RATE
+
+@passed._as_numpy
+def _numpy_passed(seconds):
+    CHUNK_SIZE = RATE // 50  # We divide a second into 50 numpy arrays
+    if seconds is None:
+        iterator = itertools.count(0, CHUNK_SIZE)
+    else:
+        iterator = range(0, int(seconds * RATE), CHUNK_SIZE)[:-1]
+        i = -CHUNK_SIZE
+
+    for i in iterator:
+        yield (numpy.arange(
+            i,
+            i + CHUNK_SIZE,
+        ) / RATE)
+
+    if seconds is not None:
+        i += CHUNK_SIZE
+        yield (numpy.arange(
+            i,
+            i + CHUNK_SIZE,
+        ) / RATE)[:int(seconds * RATE)%CHUNK_SIZE]
 
 @contextlib.contextmanager
 def _closeiter(iterator: Iterator):
@@ -1059,6 +1292,7 @@ def _preserveiter(iterator: Iterator):
 
 # - Sound effects
 
+@_convertible
 def fade(iterator, *, fadein=0.005, fadeout=0.005):
     """Fades in and out of the sound
 
@@ -1109,30 +1343,140 @@ def fade(iterator, *, fadein=0.005, fadeout=0.005):
                 yield last[j] * ((fadeout-i) / fadeout)
             return e.value
 
+@fade._as_numpy
+def _numpy_fade(iterator, *, fadein=0.005, fadeout=0.005):
+    with _closeiter(iterator):
+        fadein = int(fadein * RATE)
+        fadeout = int(fadeout * RATE)
+
+        initial = True
+        buffers = []
+        samples = 0
+        for x, array in zip(_to_numpy(passed(None)), _to_numpy(iterator)):
+            # First get fadein + fadeout samples
+            if initial:
+                buffers.append(array)
+                samples += len(array)
+                if samples < fadein + fadeout:
+                    continue
+                initial = False
+                # Yield the fadein part
+                fadein_index = 0
+                for i, array in enumerate(buffers):
+                    if fadein:
+                        array *= (
+                            numpy.arange(
+                                fadein_index + 1,
+                                fadein_index + 1 + len(array),
+                            ) / fadein
+                        ).clip(0, 1)
+                    fadein_index += len(array)
+                    if fadein_index >= fadein:
+                        break
+                    yield array
+                del buffers[:i]
+                samples -= fadein_index
+                samples += len(array)
+                array = buffers.pop()
+                samples -= len(array)
+            # Loop until the sound ends. We use the buffers list to hold sounds
+            # until the fade out doesn't cover an array anymore.
+            buffers.append(array)
+            samples += len(array)
+            while buffers and samples - len(buffers[0]) >= fadeout:
+                array = buffers.pop(0)
+                samples -= len(array)
+                yield array
+        if initial:
+            # If we ended early, pretend the fade exists and use the smaller
+            # volume from fadein or fadeout.
+            fadein_index = 0
+            for array in buffers:
+                samples -= len(array)
+                fade = 1
+                if fadein:
+                    fade = numpy.minimum(
+                        fade,
+                        numpy.arange(
+                            fadein_index + 1,
+                            fadein_index + 1 + len(array),
+                        ) / fadein,
+                    )
+                if fadeout:
+                    fade = numpy.minimum(
+                        fade,
+                        numpy.arange(
+                            samples + len(array),
+                            samples,
+                            -1,
+                        ) / fadeout,
+                    )
+                array *= fade
+                fadein_index += len(array)
+                yield array
+        else:
+            # Yield the fadeout
+            fadeout_index = samples
+            for array in buffers:
+                samples -= len(array)
+                if fadeout:
+                    array *= (
+                        numpy.arange(
+                            samples + len(array),
+                            samples,
+                            -1,
+                        ) / fadeout
+                    ).clip(0, 1)
+                yield array
+
 def both(iterator):
     """Deprecated. sound.chunked accepts floats"""
     with _closeiter(iterator):
         for num in iterator:
             yield num, num
 
+@_convertible
 def single(iterator):
     """Merge stereo sounds into mono"""
     with _closeiter(iterator):
         for left, right in iterator:
             yield (left + right)/2
 
+@single._as_numpy
+def _numpy_single(iterator):
+    with _closeiter(iterator):
+        for left, right in _to_numpy(iterator):
+            yield (left + right)/2
+
+@_convertible
 def volume(factor, sound):
     """Multiplies each point by the specified factor"""
     with _closeiter(sound):
         for num in sound:
             yield num * factor
 
+@volume._as_numpy
+def _numpy_volume(factor, sound):
+    with _closeiter(sound):
+        for array in _to_numpy(sound):
+            yield array * factor
+
+@_convertible
 def cut(seconds, sound):
     """Ends the sound after the specified time"""
     with _closeiter(sound):
         for _, point in zip(passed(seconds), sound):
             yield point
 
+@cut._as_numpy
+def _numpy_cut(seconds, sound):
+    with _closeiter(sound):
+        for x, array in zip(_to_numpy(passed(seconds)), _to_numpy(sound)):
+            if len(array) > len(x):
+                array = array[:len(x)]
+            yield array
+
+@_convertible
 def pad(seconds, sound):
     """Pads the sound with silence if shorter than the specified time"""
     with _closeiter(sound):
@@ -1149,6 +1493,27 @@ def pad(seconds, sound):
         else:
             yield from sound
 
+@pad._as_numpy
+def _numpy_pad(seconds, sound):
+    with _closeiter(sound):
+        sound = _to_numpy(sound)
+        padded = _to_numpy(cut(seconds, silence()))
+        for x in padded:
+            try:
+                array = next(sound)
+            except StopIteration:
+                yield x
+                yield from padded
+                break
+            else:
+                if len(array) < len(x):
+                    x[:len(array)] = array
+                    array = x
+                yield array
+        else:
+            yield from sound
+
+@_convertible
 def _cut_cross(seconds: float, sound):
     """End sound at the first sign flip after the specified time
 
@@ -1172,16 +1537,88 @@ def _cut_cross(seconds: float, sound):
                 return
             yield point
 
+@_cut_cross._as_numpy
+def _numpy__cut_cross(seconds: float, sound):
+    with _closeiter(sound):
+        sound = _to_numpy(sound)
+        index = 0
+        last_point = 0
+        for x in _to_numpy(passed(seconds)):
+            try:
+                array = next(sound)
+            except StopIteration:
+                return
+            else:
+                if len(x) < len(array):
+                    index = len(x)
+                    break
+                else:
+                    yield array
+                    if len(array):
+                        last_point = array[-1]
+        while True:
+            if index == 0:
+                if len(array) == 0:
+                    yield array
+                    break
+                if last_point*array[0] <= 0:
+                    yield from _to_numpy(passed(0))
+                    break
+                index = 1
+            if index < len(array):
+                x = array[index-1:-1]*array[index:] <= 0
+                i = numpy.argmax(x)
+                if x[i]:
+                    yield array[:index+i]
+                    break
+            yield array
+            last_point = array[-1]
+            index = 0
+            try:
+                array = next(sound)
+            except StopIteration:
+                break
+
 def exact(seconds, sound):
     """Cuts or pads the sound to make it exactly the specified time"""
     return cut(seconds, pad(seconds, sound))
 
+@_convertible
 def delay(seconds: float, sound):
     """Add silence before the sound"""
     with _closeiter(sound):
         yield from cut(seconds, silence())
         yield from sound
 
+@delay._as_numpy
+def _numpy_delay(seconds: float, sound):
+    with _closeiter(sound):
+        last = None
+        for array in _to_numpy(cut(seconds, silence())):
+            if last is not None:
+                yield last
+            last = array
+        if len(array) == 0:
+            return (yield from _to_numpy(sound))
+
+        buffer = next(_to_numpy(silence()))
+        index = len(array)
+        for array in _to_numpy(sound):
+            if len(array) != len(buffer):
+                break
+            buffer[index:] = array[:-index]
+            yield buffer.copy()
+            buffer[:index] = array[-index:]
+
+        if len(array) >= len(buffer) - index:
+            buffer[index:] = array[:len(buffer) - index]
+            yield buffer
+            yield array[len(buffer) - index:]
+        else:
+            buffer[index:index + len(array)] = array
+            yield buffer[:index + len(array)]
+
+@_convertible
 def _resample_linear(factor: float, sound):
     """Resample the sound using linear interpolation
 
@@ -1204,6 +1641,37 @@ def _resample_linear(factor: float, sound):
             next_sample = factor*next(elapsed)
         last_point = point
         last_x = x
+
+@_resample_linear._as_numpy
+def _numpy__resample_linear(factor: float, sound):
+    # Note that the NumPy version is slightly off from the sound version
+    elapsed = _to_numpy(passed(None))
+    next_sample = factor*next(elapsed)
+    buffer = next(_to_numpy(silence()))
+    last_array = numpy.zeros(1 + len(buffer))
+    last_x = last_array.copy()
+    last_x[0] = -1
+    j = 0
+    for x, array in zip(_to_numpy(passed(None)), _to_numpy(sound)):
+        size = len(array)
+        last_x[1:1+size] = x[:size]
+        last_array[1:1+size] = array
+        while True:
+            i = next_sample.searchsorted(last_x[0])
+            j = next_sample.searchsorted(last_x[size], "right")
+            buffer[i:j] = numpy.interp(
+                next_sample[i:j],
+                last_x[:1+size],
+                last_array[:1+size],
+            )
+            if j != len(buffer):
+                break
+            yield buffer.copy()
+            next_sample = factor*next(elapsed)
+        if size:
+            last_x[0] = x[-1]
+            last_array[0] = array[-1]
+    yield buffer[:j]
 
 
 # - Utility for audio sources
@@ -1300,11 +1768,26 @@ def chunked(sound):
     size = points_per_chunk * 2 * 2  # 16-bit stereo
     int_to_bytes = int.to_bytes  # speedup by removing a getattr
     current = bytearray()
+    # Convert to numpy iterator if possible - the performance gain is HUGE. If
+    # for some reason you require it to use floats (testing maybe), wrap the
+    # argument with _ensure_sound.
+    if has_numpy and hasattr(sound, "_as_numpy_iterator"):
+        sound = sound._as_numpy_iterator()
     for point in sound:
         if type(point) is tuple:
             left, right = point
         else:
             left = right = point
+        if has_numpy and type(left) is numpy.ndarray:
+            assert left.ndim == 1
+            assert right.ndim == 1
+            left = numpy.clip(volume * left, low, high)
+            right = numpy.clip(volume * right, low, high)
+            current += numpy.column_stack([left, right]).astype("<h").tobytes()
+            while len(current) >= size:
+                yield bytes(current[:size])
+                del current[:size]
+            continue
         left = max(low, min(high, int(volume * left)))
         right = max(low, min(high, int(volume * right)))
         current += int_to_bytes(left, 2, "little", signed=True)
@@ -1338,6 +1821,7 @@ def unwrap_discord_source(source):
         else:
             cleanup()
 
+@_convertible
 def unchunked(chunks):
     """Converts a stream of bytes to two-tuples of floats in [-1, 1)
 
@@ -1353,6 +1837,32 @@ def unchunked(chunks):
             chunk = chunk[:len(chunk) // 4 * 4]
             for left, right in struct.iter_unpack("<2h", chunk):
                 yield left/volume, right/volume
+
+@unchunked._as_numpy
+def _numpy_unchunked(chunks):
+    volume = 1 << (16-1)  # 16-bit signed
+    with _closeiter(chunks):
+        buffer = numpy.zeros([len(next(_to_numpy(silence()))), 2])
+        index = 0
+        for chunk in chunks:
+            chunk = memoryview(chunk).cast("B")
+            # Not sure how to use extra bytes so they're ignored for now
+            chunk = chunk[:len(chunk) - len(chunk)%4]
+            array = numpy.frombuffer(chunk, dtype="<2h").astype("float")
+            array /= volume
+            if index == 0 and len(array) == len(buffer):
+                yield tuple(array.T)
+            else:
+                while True:
+                    size = min(index + len(array), len(buffer)) - index
+                    buffer[index:index + size] = array[:size]
+                    index += size
+                    if index < len(buffer):
+                        break
+                    yield tuple(buffer.T.copy())
+                    array = array[size:]
+                    index = 0
+        yield tuple(array[:index].T)
 
 # - Utility for note names and the like
 
@@ -1506,6 +2016,7 @@ def split_music(music):
         sequences[i] = "\n".join(sequence)
     return sequences
 
+@_convertible
 def notes_to_sine(notes, frequencies, *, line_length=1):
     """Converts notes into sine waves
 
@@ -1521,6 +2032,28 @@ def notes_to_sine(notes, frequencies, *, line_length=1):
         else:
             yield from cut(length, silence())
 
+@notes_to_sine._as_numpy
+def _numpy_notes_to_sine(notes, frequencies, *, line_length=1):
+    buffer = next(_to_numpy(silence()))
+    index = 0
+    for note, length in notes:
+        length *= line_length
+        if note is not None:
+            sound = cut(length, sine(freq=frequencies[note]))
+        else:
+            sound = cut(length, silence())
+        sound = _to_numpy(sound)
+        for array in sound:
+            size = min(index + len(array), len(buffer)) - index
+            buffer[index:index + size] = array[:size]
+            index += size
+            if index == len(buffer):
+                yield buffer.copy()
+                buffer[:len(array) - size] = array[size:]
+                index = len(array) - size
+    yield buffer[:index]
+
+@_convertible
 def _notes_to_sound(notes, func):
     """Converts notes to a sound using the provided func
 
@@ -1550,6 +2083,38 @@ def _notes_to_sound(notes, func):
             # Add component sounds up and yield it
             yield sum(nums)
 _layer = _notes_to_sound  #: :meta private:  # Old name
+
+@_notes_to_sound._as_numpy
+def _numpy__notes_to_sound(notes, func):
+    start = 0
+    notes = iter(notes)
+    note, length = (None, 0)
+    # Play until there are no more notes nor sounds
+    with contextlib.closing(_IteratorPool()) as pool:
+        for array in _to_numpy(passed(None)):
+            # Add notes that should start by now
+            while start <= array[-1]:
+                if note is not None:
+                    iterable = func(note, length)
+                    if start > array[0]:
+                        iterable = delay(start - array[0], iterable)
+                    pool.add(_to_numpy(iterable))
+                start += length
+                note, length = next(notes, (None, 9e999))  # 9e999 == inf
+            # Check for end of music
+            nums = pool.step()
+            sound_lengths = list(map(len, nums))
+            if length == 9e999 and max(sound_lengths, default=0) != len(array):
+                array.fill(0.0)
+                for sound_length, sound in zip(sound_lengths, nums):
+                    array[:sound_length] += sound
+                yield array[:max(sound_lengths, default=0)]
+                return
+            # Add component sounds up and yield it
+            array.fill(0.0)
+            for sound_length, sound in zip(sound_lengths, nums):
+                array[:sound_length] += sound
+            yield array
 
 
 # - Experimental class for using multiple iterators in lockstep
