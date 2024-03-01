@@ -93,7 +93,7 @@ top_sound = s._notes_to_sound(
     s.music_to_notes(top_music, line_length=LINE_LENGTH),
     lambda name, length: s.fade(s.cut(
         length,
-        (0.5*x for x in s.triangle(frequencies[indices[name] + 1 + 12])),
+        s.volume(0.5, s.triangle(frequencies[indices[name] + 1 + 12])),
     )),
 )
 
@@ -102,12 +102,12 @@ bottom_sound = s._notes_to_sound(
     s.music_to_notes(bottom_music, line_length=LINE_LENGTH),
     lambda name, length: s.fade(s.cut(
         length,
-        (0.08*x for x in s.square(frequencies[indices[name] + 1])),
+        s.volume(0.08, s.square(frequencies[indices[name] + 1])),
     )),
 )
 
 # Mix music by averaging out the top and bottom
-s.play_output_chunks(s.chunked(
-    0.5*x + 0.5*y
-    for x, y in zip(top_sound, bottom_sound)
-))
+s.play_output_chunks(s.chunked(s._notes_to_sound([
+    (s.volume(0.5, top_sound), 0),
+    (s.volume(0.5, bottom_sound), 0),
+], lambda sound, _: sound)))

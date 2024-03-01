@@ -343,8 +343,7 @@ class _OSInstrument:
         key = (self, index)
         chunks = self.cache.get(key, lambda: self._chunks_at(start))
         # Unchunk and convert into a sound
-        with _closeiter(unchunked(chunks)) as sound:
-            yield from ((x+y)/2 for x, y in sound)
+        return single(unchunked(chunks))
 
     def start_of(self, index=A4_INDEX):
         """Returns the start time for the specified note or None if invalid"""
@@ -1136,7 +1135,7 @@ def pad(seconds, sound):
 
 def exact(seconds, sound):
     """Cuts or pads the sound to make it exactly the specified time"""
-    return (yield from cut(seconds, pad(seconds, sound)))
+    return cut(seconds, pad(seconds, sound))
 
 
 # - Utility for audio sources
