@@ -25,9 +25,15 @@ def _patch_resolve_annotation(old_resolve_annotation):
                 slice_node = slice_node.value
             if value == "Literal":
                 if isinstance(slice_node, astroid.Tuple):
-                    slice_ = ", ".join(e.as_string() for e in slice_node.elts)
+                    elts = slice_node.elts
                 else:
-                    slice_ = slice_node.as_string()
+                    elts = [slice_node]
+                slice_ = ", ".join(
+                    repr(e.value)
+                    if isinstance(e, astroid.Const)
+                    else old_resolve_annotation(e)
+                    for e in elts
+                )
                 # `value` is already resolved so no need to resolve again
                 return f'{value}[{slice_}]'
         # Fallback to original resolve_annotation
