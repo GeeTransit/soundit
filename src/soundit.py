@@ -869,6 +869,7 @@ def create_ffmpeg_process(
 
 if TYPE_CHECKING or sys.version_info >= (3, 9):
     Popen: TypeAlias = subprocess.Popen[bytes]
+    ":meta private:"
 else:
     Popen: TypeAlias = subprocess.Popen
 
