@@ -79,6 +79,7 @@ import collections
 import cmath
 import contextlib
 import io
+import struct
 
 try:
     import discord  # type: ignore
