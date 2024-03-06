@@ -763,10 +763,14 @@ class LRUIterableCache(LRUCache):
         if has_numpy:
             # Defer cache get until we know if it's a sound or a numpy iterator
             return _NumpyConvertibleIterator(
-                lambda: copy.copy(super(LRUIterableCache, self).get((0, key),
-                    lambda: itertools.tee(iterable_func(), 1)[0])),
-                lambda: copy.copy(super(LRUIterableCache, self).get((1, key),
-                    lambda: itertools.tee(_to_numpy(iterable_func()), 1)[0])),
+                lambda: copy.copy(super(LRUIterableCache, self).get(
+                    (0, key),
+                    lambda: itertools.tee(iterable_func(), 1)[0]),
+                ),
+                lambda: copy.copy(super(LRUIterableCache, self).get(
+                    (1, key),
+                    lambda: itertools.tee(_to_numpy(iterable_func()), 1)[0]),
+                ),
                 name=key,
             )
         def value_func():
@@ -1285,7 +1289,7 @@ def _numpy_passed(seconds):
         yield (numpy.arange(
             i,
             i + CHUNK_SIZE,
-        ) / RATE)[:int(seconds * RATE)%CHUNK_SIZE]
+        ) / RATE)[:int(seconds * RATE) % CHUNK_SIZE]
 
 @contextlib.contextmanager
 def _closeiter(iterator: Iterator):
@@ -1298,12 +1302,16 @@ def _closeiter(iterator: Iterator):
 class _PreservedIterator:
     def __init__(self, iterator: Iterator):
         self._iterator = iterator
+
     def __next__(self):
         return next(self._iterator)
+
     def __getattr__(self, name: str):
         return getattr(self._iterator, name)
+
     def __iter__(self):
         return self
+
     def close(self):
         pass
 
@@ -1438,7 +1446,6 @@ def _numpy_fade(iterator, *, fadein=0.005, fadeout=0.005):
                 yield array
         else:
             # Yield the fadeout
-            fadeout_index = samples
             for array in buffers:
                 samples -= len(array)
                 if fadeout:
@@ -1869,7 +1876,7 @@ def _numpy_unchunked(chunks):
         for chunk in chunks:
             chunk = memoryview(chunk).cast("B")
             # Not sure how to use extra bytes so they're ignored for now
-            chunk = chunk[:len(chunk) - len(chunk)%4]
+            chunk = chunk[:len(chunk) - len(chunk) % 4]
             array = numpy.frombuffer(chunk, dtype="<2h").astype("float")
             array /= volume
             if index == 0 and len(array) == len(buffer):
