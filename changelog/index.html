@@ -1,0 +1,466 @@
+
+
+
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="article:modified_time" content="2022-05-19T01:50:19-04:00" /><link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="prev" title="soundit" href="../api/soundit/" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>Changelog - soundit 0.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=cdd7e7c4" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../" title="soundit 0.4 documentation"><div class="brand">soundit 0.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../">
+  
+  
+  <span class="sidebar-brand-text">soundit 0.4 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/soundit/">soundit</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="v0-4">
+<span id="v0-4-2024-03-06"></span><h2>v0.4 (2024-03-06)<a class="headerlink" href="#v0-4" title="Link to this heading">#</a></h2>
+<section id="v0-4-added">
+<span id="added"></span><h3>Added<a class="headerlink" href="#v0-4-added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Support numpy version of functions for faster synthesis. [George Zhang]</p></li>
+<li><p>Add experimental sign change cut and resample functions. [George Zhang]</p></li>
+<li><p>Implement <a class="reference internal" href="../api/soundit/#soundit.delay" title="soundit.delay"><code class="xref any py py-func docutils literal notranslate"><span class="pre">delay</span></code></a> function. [George Zhang]</p></li>
+<li><p>Implement <a class="reference internal" href="../api/soundit/#soundit.single" title="soundit.single"><code class="xref any py py-func docutils literal notranslate"><span class="pre">single</span></code></a> helper function. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-4-changed">
+<span id="changed"></span><h3>Changed<a class="headerlink" href="#v0-4-changed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use libav in <a class="reference internal" href="../api/soundit/#soundit.file_chunks" title="soundit.file_chunks"><code class="xref any py py-func docutils literal notranslate"><span class="pre">file_chunks</span></code></a> if possible. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-4-fixed">
+<span id="fixed"></span><h3>Fixed<a class="headerlink" href="#v0-4-fixed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fix missing struct import in unchunked. [George Zhang]</p></li>
+<li><p>Fix when fade in and out overlap on short sounds. [George Zhang]</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">-nostdin</span></code> to FFmpeg arguments. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-4-other">
+<span id="other"></span><h3>Other<a class="headerlink" href="#v0-4-other" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fix style issues. [George Zhang]</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-3">
+<span id="v0-3-2022-12-28"></span><h2>v0.3 (2022-12-28)<a class="headerlink" href="#v0-3" title="Link to this heading">#</a></h2>
+<section id="v0-3-added">
+<span id="id1"></span><h3>Added<a class="headerlink" href="#v0-3-added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Add simpler API for audio files. [George Zhang]</p></li>
+<li><p>Add installation README section. [George Zhang]</p></li>
+<li><p>Add GitHub watch button to docs. [George Zhang]</p></li>
+<li><p>Add documentation and PyPI link. [George Zhang]</p></li>
+<li><p>Add optional dependencies. [George Zhang]</p></li>
+<li><p>Generate changelog from Git history. [George Zhang]</p></li>
+<li><p>Add documentation using Sphinx. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-3-changed">
+<span id="id2"></span><h3>Changed<a class="headerlink" href="#v0-3-changed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Overlap instead of shrinking fades. [George Zhang]</p></li>
+<li><p>Allow <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a> length to specify no length (decode to the end) for <a class="reference internal" href="../api/soundit/#soundit.make_ffmpeg_section_args" title="soundit.make_ffmpeg_section_args"><code class="xref any py py-func docutils literal notranslate"><span class="pre">make_ffmpeg_section_args</span></code></a> [George Zhang]</p></li>
+<li><p>Use Furo theme for docs. [George Zhang]</p></li>
+<li><p>Use sphinx-autoapi to generate docs. [George Zhang]</p></li>
+<li><p>Use src layout. [George Zhang]</p></li>
+<li><p>Use Git for docs last updated date. [George Zhang]</p></li>
+<li><p>Generate changelog from inside docs. [George Zhang]</p></li>
+<li><p>Move examples from soundit docstring to README. [George Zhang]</p></li>
+<li><p>Use sphinx-better-subsection package. [George Zhang]</p></li>
+<li><p>New copy argument for <a class="reference internal" href="../api/soundit/#soundit.equal_chunk_stream" title="soundit.equal_chunk_stream"><code class="xref any py py-func docutils literal notranslate"><span class="pre">equal_chunk_stream</span></code></a> to return a copy of the internal buffer, defaulting to True. [George Zhang]</p></li>
+<li><p>Use hash symbol for permalink. [George Zhang]</p></li>
+<li><p>Use a more flexible copyright matcher. [George Zhang]</p></li>
+<li><p>Use appropriate code highlighting. [George Zhang]</p></li>
+<li><p>Change subsection permalink syntax. [George Zhang]</p></li>
+<li><p>Use README as main docs page. [George Zhang]</p></li>
+<li><p>Use cleaner docs HTML titles. [George Zhang]</p></li>
+<li><p>Change module docs sections to have permalinks. [George Zhang]</p></li>
+<li><p>Use reST in docstrings. [George Zhang]</p></li>
+<li><p>Use better section anchors. [George Zhang]</p></li>
+<li><p>Show build time of docs in footer. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-3-fixed">
+<span id="id3"></span><h3>Fixed<a class="headerlink" href="#v0-3-fixed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fix error in <code class="xref any docutils literal notranslate"><span class="pre">_chunked_libav_section</span></code> [George Zhang]</p></li>
+<li><p>Fix use of Python 3.9’s removesuffix. [George Zhang]</p></li>
+<li><p>Fix missing argument in chunked_ffmpeg_process. [George Zhang]</p></li>
+<li><p>Fix error when cutting short sounds. [George Zhang]</p></li>
+<li><p>Fix chunked_ffmpeg_process buffer size. [George Zhang]</p></li>
+<li><p>Fix docs showing empty version. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-3-other">
+<span id="id4"></span><h3>Other<a class="headerlink" href="#v0-3-other" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Add Python 3.11 to test matrix. [George Zhang]</p></li>
+<li><p>Improve LRU caching documentation. [George Zhang]</p></li>
+<li><p>Process meta fields in docstrings. [George Zhang]</p></li>
+<li><p>Simplify equal_chunk_stream doctests. [George Zhang]</p></li>
+<li><p>Remove redundant compact directive in CHANGELOG. [George Zhang]</p></li>
+<li><p>Change README to reST. [George Zhang]</p></li>
+<li><p>Host docs on GitHub Pages. [George Zhang]</p></li>
+<li><p>Simplify docs example. [George Zhang]</p></li>
+<li><p>Add return values to docs. [George Zhang]</p></li>
+<li><p>Clean up empty field lists in autodocs. [George Zhang]</p></li>
+<li><p>Show _notes_to_sound in docs. [George Zhang]</p></li>
+<li><p>Chore: Move Hatch env config into hatch.toml. [George Zhang]</p></li>
+<li><p>Test: Turn docstring usage into doctests. [George Zhang]</p></li>
+<li><p>Docs: Consistent style. [George Zhang]</p></li>
+<li><p>Exclude examples from builds. [George Zhang]</p></li>
+<li><p>Prefer explicit array of tables in pyproject.toml. [George Zhang]</p></li>
+<li><p>Simplify Hatch build config. [George Zhang]</p></li>
+<li><p>Update gitignore. [George Zhang]</p></li>
+<li><p>Fix bug with LRUIterableCache.get. [George Zhang]</p></li>
+<li><p>Add test matrix. [George Zhang]</p></li>
+<li><p>Fix doctest issues. [George Zhang]</p></li>
+<li><p>Add doctest script. [George Zhang]</p></li>
+<li><p>Use mypy as type checker. [George Zhang]</p></li>
+<li><p>Fix linter issues. [George Zhang]</p></li>
+<li><p>Use flake8 as linter. [George Zhang]</p></li>
+<li><p>Point homepage to PyPI and add repo link. [George Zhang]</p></li>
+<li><p>Only require typing-extensions when needed. [George Zhang]</p></li>
+<li><p>Get version from Git tags. [George Zhang]</p></li>
+<li><p>Use Hatch as project manager. [George Zhang]</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-2-1">
+<span id="v0-2-1-2022-02-21"></span><h2>v0.2.1 (2022-02-21)<a class="headerlink" href="#v0-2-1" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Release 0.2.1. [George Zhang]</p></li>
+<li><p>Fix missing typing_extensions dependency. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-2">
+<span id="v0-2-2022-02-21"></span><h2>v0.2 (2022-02-21)<a class="headerlink" href="#v0-2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Release 0.2. [George Zhang]</p></li>
+<li><p>Don’t check return code if generator is closing. [George Zhang]</p></li>
+<li><p>Add experimental FFmpeg bindings. [George Zhang]</p></li>
+<li><p>Add close argument to chunked_ffmpeg_process. [George Zhang]</p></li>
+<li><p>Ignore missing dependencies during type checking. [George Zhang]</p></li>
+<li><p>Move playbacque byte stream utilities into soundit. [George Zhang]</p></li>
+<li><p>Allow specifying number of channels in create_input_chunks. [George Zhang]</p></li>
+<li><p>Add experimental Fourier transform helpers. [George Zhang]</p></li>
+<li><p>Wrap the original function. [George Zhang]</p></li>
+<li><p>Fix triangle wave not starting at 0. [George Zhang]</p></li>
+<li><p>Update _layer -&gt; _notes_to_sound in docs. [George Zhang]</p></li>
+<li><p>Minor improvement in square wave. [George Zhang]</p></li>
+<li><p>Don’t add silent notes in _notes_to_sound. [George Zhang]</p></li>
+<li><p>Add experimental string pluck sound generator. [George Zhang]</p></li>
+<li><p>Include README and examples in source distribution. [George Zhang]</p></li>
+<li><p>Add some example programs. [George Zhang]</p></li>
+<li><p>Use a dev suffix on the version. [George Zhang]</p></li>
+<li><p>Update examples to use play_output_chunks. [George Zhang]</p></li>
+<li><p>Add sounddevice utilities. [George Zhang]</p></li>
+<li><p>Reimplement and rename _layer -&gt; _notes_to_sound. [George Zhang]</p></li>
+<li><p>Add an experimental scheduler class. [George Zhang]</p></li>
+<li><p>Add an experimental iterator pool class. [George Zhang]</p></li>
+<li><p>Use passed in place of RATE in more places. [George Zhang]</p></li>
+<li><p>Remove old function aliases. [George Zhang]</p></li>
+<li><p>Use cut instead of passing a seconds argument. [George Zhang]</p></li>
+<li><p>Remove the deprecated seconds argument from various functions. [George Zhang]</p></li>
+<li><p>Increment version. [George Zhang]</p></li>
+</ul>
+</section>
+<section id="v0-1">
+<span id="v0-1-2021-07-29"></span><h2>v0.1 (2021-07-29)<a class="headerlink" href="#v0-1" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Remove patch version number. [George Zhang]</p></li>
+<li><p>Add a gitignore. [George Zhang]</p></li>
+<li><p>Add a setup.py. [George Zhang]</p></li>
+<li><p>Add a LICENSE. [George Zhang]</p></li>
+<li><p>Add a simple README. [George Zhang]</p></li>
+<li><p>Improve documentation. [George Zhang]</p></li>
+<li><p>Add a version variable. [George Zhang]</p></li>
+<li><p>Copy soundit.py from JoshGone/sound.py. [George Zhang]</p></li>
+<li><p>Initial commit. [George Zhang]</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="../api/soundit/">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soundit</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021, GeeTransit
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+            
+            <div class="last-updated">
+              Last updated on May 19, 2022  from  <a class="muted-link" href="../_sources/changelog.rst.txt" rel="nofollow">Page Source</a>
+            </div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link" href="https://github.com/GeeTransit/soundit" aria-label="On GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Changelog</a><ul>
+<li><a class="reference internal" href="#v0-4">v0.4 (2024-03-06)</a><ul>
+<li><a class="reference internal" href="#v0-4-added">Added</a></li>
+<li><a class="reference internal" href="#v0-4-changed">Changed</a></li>
+<li><a class="reference internal" href="#v0-4-fixed">Fixed</a></li>
+<li><a class="reference internal" href="#v0-4-other">Other</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-3">v0.3 (2022-12-28)</a><ul>
+<li><a class="reference internal" href="#v0-3-added">Added</a></li>
+<li><a class="reference internal" href="#v0-3-changed">Changed</a></li>
+<li><a class="reference internal" href="#v0-3-fixed">Fixed</a></li>
+<li><a class="reference internal" href="#v0-3-other">Other</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v0-2-1">v0.2.1 (2022-02-21)</a></li>
+<li><a class="reference internal" href="#v0-2">v0.2 (2022-02-21)</a></li>
+<li><a class="reference internal" href="#v0-1">v0.1 (2021-07-29)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=751a5dd3"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

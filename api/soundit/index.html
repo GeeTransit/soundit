@@ -1,0 +1,1494 @@
+
+
+
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Changelog" href="../../changelog/" /><link rel="prev" title="API Reference" href="../" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>soundit - soundit 0.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cdd7e7c4" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../" title="soundit 0.4 documentation"><div class="brand">soundit 0.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../">
+  
+  
+  <span class="sidebar-brand-text">soundit 0.4 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">soundit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-soundit">
+<span id="soundit"></span><h1><a class="reference internal" href="#module-soundit" title="soundit"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soundit</span></code></a><a class="headerlink" href="#module-soundit" title="Link to this heading">#</a></h1>
+<p>Make audio</p>
+<p>This module uses iterators to represent audio streams. These iterators return
+float values between [-1.0, 1.0) and can be chained, averaged, and precomputed
+to your heart’s content to create music. We call these iterators “sounds”.</p>
+<p>Note that all sounds are in 48kHz.</p>
+<p>There is also a kinda sus music parser which can aid in creating longer music.
+More info on that can be found in the <a class="reference internal" href="#soundit.music_to_notes" title="soundit.music_to_notes"><code class="xref any py py-func docutils literal notranslate"><span class="pre">music_to_notes</span></code></a>’s docstring.</p>
+<dl class="simple">
+<dt>Sound generators:</dt><dd><p><a class="reference internal" href="#soundit.sine" title="soundit.sine"><code class="xref any py py-func docutils literal notranslate"><span class="pre">sine</span></code></a>
+<a class="reference internal" href="#soundit.square" title="soundit.square"><code class="xref any py py-func docutils literal notranslate"><span class="pre">square</span></code></a>
+<a class="reference internal" href="#soundit.sawtooth" title="soundit.sawtooth"><code class="xref any py py-func docutils literal notranslate"><span class="pre">sawtooth</span></code></a>
+<a class="reference internal" href="#soundit.triangle" title="soundit.triangle"><code class="xref any py py-func docutils literal notranslate"><span class="pre">triangle</span></code></a>
+<a class="reference internal" href="#soundit.silence" title="soundit.silence"><code class="xref any py py-func docutils literal notranslate"><span class="pre">silence</span></code></a>
+<a class="reference internal" href="#soundit.piano" title="soundit.piano"><code class="xref any py py-func docutils literal notranslate"><span class="pre">piano</span></code></a>  (requires <a class="reference internal" href="#soundit.init_piano" title="soundit.init_piano"><code class="xref any py py-func docutils literal notranslate"><span class="pre">init_piano</span></code></a> to be called)</p>
+</dd>
+<dt>Sound creation utilities:</dt><dd><p><a class="reference internal" href="#soundit.passed" title="soundit.passed"><code class="xref any py py-func docutils literal notranslate"><span class="pre">passed</span></code></a></p>
+</dd>
+<dt>Sound effects:</dt><dd><p><a class="reference internal" href="#soundit.fade" title="soundit.fade"><code class="xref any py py-func docutils literal notranslate"><span class="pre">fade</span></code></a>
+<a class="reference internal" href="#soundit.volume" title="soundit.volume"><code class="xref any py py-func docutils literal notranslate"><span class="pre">volume</span></code></a>
+<a class="reference internal" href="#soundit.cut" title="soundit.cut"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cut</span></code></a>
+<a class="reference internal" href="#soundit.pad" title="soundit.pad"><code class="xref any py py-func docutils literal notranslate"><span class="pre">pad</span></code></a>
+<a class="reference internal" href="#soundit.exact" title="soundit.exact"><code class="xref any py py-func docutils literal notranslate"><span class="pre">exact</span></code></a>
+<a class="reference internal" href="#soundit.delay" title="soundit.delay"><code class="xref any py py-func docutils literal notranslate"><span class="pre">delay</span></code></a></p>
+</dd>
+<dt>Frequency utilities:</dt><dd><p><a class="reference internal" href="#soundit.make_frequencies_dict" title="soundit.make_frequencies_dict"><code class="xref any py py-func docutils literal notranslate"><span class="pre">make_frequencies_dict</span></code></a>
+<a class="reference internal" href="#soundit.make_indices_dict" title="soundit.make_indices_dict"><code class="xref any py py-func docutils literal notranslate"><span class="pre">make_indices_dict</span></code></a></p>
+</dd>
+<dt>Music functions:</dt><dd><p><a class="reference internal" href="#soundit.split_music" title="soundit.split_music"><code class="xref any py py-func docutils literal notranslate"><span class="pre">split_music</span></code></a>
+<a class="reference internal" href="#soundit.music_to_notes" title="soundit.music_to_notes"><code class="xref any py py-func docutils literal notranslate"><span class="pre">music_to_notes</span></code></a>
+<a class="reference internal" href="#soundit.notes_to_sine" title="soundit.notes_to_sine"><code class="xref any py py-func docutils literal notranslate"><span class="pre">notes_to_sine</span></code></a>
+<a class="reference internal" href="#soundit._notes_to_sound" title="soundit._notes_to_sound"><code class="xref any py py-func docutils literal notranslate"><span class="pre">_notes_to_sound</span></code></a>  (unfinalized API)</p>
+</dd>
+<dt>Audio source utilities:</dt><dd><p><a class="reference internal" href="#soundit.chunked" title="soundit.chunked"><code class="xref any py py-func docutils literal notranslate"><span class="pre">chunked</span></code></a>
+<a class="reference internal" href="#soundit.unchunked" title="soundit.unchunked"><code class="xref any py py-func docutils literal notranslate"><span class="pre">unchunked</span></code></a></p>
+</dd>
+</dl>
+<p>We also provide some utility functions with other tools such as converting
+chunks into discord.py AudioSources or decompressing audio on the fly with
+FFmpeg. These only work when their required library is installed.</p>
+<dl class="simple">
+<dt>discord.py utilities:</dt><dd><p><a class="reference internal" href="#soundit.wrap_discord_source" title="soundit.wrap_discord_source"><code class="xref any py py-func docutils literal notranslate"><span class="pre">wrap_discord_source</span></code></a>
+<a class="reference internal" href="#soundit.unwrap_discord_source" title="soundit.unwrap_discord_source"><code class="xref any py py-func docutils literal notranslate"><span class="pre">unwrap_discord_source</span></code></a>
+<a class="reference internal" href="#soundit.play_discord_source" title="soundit.play_discord_source"><code class="xref any py py-func docutils literal notranslate"><span class="pre">play_discord_source</span></code></a></p>
+</dd>
+<dt>FFmpeg utilities:</dt><dd><p><a class="reference internal" href="#soundit.file_chunks" title="soundit.file_chunks"><code class="xref any py py-func docutils literal notranslate"><span class="pre">file_chunks</span></code></a>
+<a class="reference internal" href="#soundit.make_ffmpeg_section_args" title="soundit.make_ffmpeg_section_args"><code class="xref any py py-func docutils literal notranslate"><span class="pre">make_ffmpeg_section_args</span></code></a>
+<a class="reference internal" href="#soundit.create_ffmpeg_process" title="soundit.create_ffmpeg_process"><code class="xref any py py-func docutils literal notranslate"><span class="pre">create_ffmpeg_process</span></code></a>
+<a class="reference internal" href="#soundit.chunked_ffmpeg_process" title="soundit.chunked_ffmpeg_process"><code class="xref any py py-func docutils literal notranslate"><span class="pre">chunked_ffmpeg_process</span></code></a></p>
+</dd>
+<dt>sounddevice utilities:</dt><dd><p><a class="reference internal" href="#soundit.play_output_chunks" title="soundit.play_output_chunks"><code class="xref any py py-func docutils literal notranslate"><span class="pre">play_output_chunks</span></code></a>
+<a class="reference internal" href="#soundit.create_input_chunks" title="soundit.create_input_chunks"><code class="xref any py py-func docutils literal notranslate"><span class="pre">create_input_chunks</span></code></a></p>
+</dd>
+</dl>
+<p>There is also some built-in music that are prefixed with MUSIC_, such as
+MUSIC_DIGITIZED, provided for testing purposes.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.LRUCache" title="soundit.LRUCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRUCache</span></code></a></p></td>
+<td><p>An LRU cache</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.LRUIterableCache" title="soundit.LRUIterableCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRUIterableCache</span></code></a></p></td>
+<td><p>An LRU cache for iterables</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.DiscordIteratorSource" title="soundit.DiscordIteratorSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscordIteratorSource</span></code></a></p></td>
+<td><p>Internal subclass of discord.py's AudioSource for iterators</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.silence" title="soundit.silence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">silence</span></code></a></p></td>
+<td><p>Returns silence</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.sine" title="soundit.sine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sine</span></code></a></p></td>
+<td><p>Returns a sine wave at freq</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.square" title="soundit.square"><code class="xref py py-obj docutils literal notranslate"><span class="pre">square</span></code></a></p></td>
+<td><p>Returns a square wave at freq</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.sawtooth" title="soundit.sawtooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sawtooth</span></code></a></p></td>
+<td><p>Returns a sawtooth wave at freq</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.triangle" title="soundit.triangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">triangle</span></code></a></p></td>
+<td><p>Returns a triangle wave at freq</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.init_piano" title="soundit.init_piano"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_piano</span></code></a></p></td>
+<td><p>Loads the piano sound for use</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.piano" title="soundit.piano"><code class="xref py py-obj docutils literal notranslate"><span class="pre">piano</span></code></a></p></td>
+<td><p>Returns a piano sound at index</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.file_chunks" title="soundit.file_chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file_chunks</span></code></a></p></td>
+<td><p>Returns a sound from an audio file using FFmpeg</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.lru_iter_cache" title="soundit.lru_iter_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lru_iter_cache</span></code></a></p></td>
+<td><p>Decorator to wrap a function returning iterables</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.create_ffmpeg_process" title="soundit.create_ffmpeg_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_ffmpeg_process</span></code></a></p></td>
+<td><p>Creates a process that run FFmpeg with the given arguments</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.chunked_ffmpeg_process" title="soundit.chunked_ffmpeg_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunked_ffmpeg_process</span></code></a></p></td>
+<td><p>Returns an iterator of chunks from the given process</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.make_ffmpeg_section_args" title="soundit.make_ffmpeg_section_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_ffmpeg_section_args</span></code></a></p></td>
+<td><p>Returns a list of arguments to FFmpeg</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.loop_stream" title="soundit.loop_stream"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loop_stream</span></code></a></p></td>
+<td><p>Consumes a stream of buffers and loops them forever</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.equal_chunk_stream" title="soundit.equal_chunk_stream"><code class="xref py py-obj docutils literal notranslate"><span class="pre">equal_chunk_stream</span></code></a></p></td>
+<td><p>Normalizes a stream of buffers into ones of length buffer_len</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.passed" title="soundit.passed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">passed</span></code></a></p></td>
+<td><p>Returns a sound lasting the specified time yielding the seconds passed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.fade" title="soundit.fade"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fade</span></code></a></p></td>
+<td><p>Fades in and out of the sound</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.both" title="soundit.both"><code class="xref py py-obj docutils literal notranslate"><span class="pre">both</span></code></a></p></td>
+<td><p>Deprecated. sound.chunked accepts floats</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.single" title="soundit.single"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single</span></code></a></p></td>
+<td><p>Merge stereo sounds into mono</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.volume" title="soundit.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a></p></td>
+<td><p>Multiplies each point by the specified factor</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.cut" title="soundit.cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code></a></p></td>
+<td><p>Ends the sound after the specified time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.pad" title="soundit.pad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pad</span></code></a></p></td>
+<td><p>Pads the sound with silence if shorter than the specified time</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit._cut_cross" title="soundit._cut_cross"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cut_cross</span></code></a></p></td>
+<td><p>End sound at the first sign flip after the specified time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.exact" title="soundit.exact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact</span></code></a></p></td>
+<td><p>Cuts or pads the sound to make it exactly the specified time</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.delay" title="soundit.delay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delay</span></code></a></p></td>
+<td><p>Add silence before the sound</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit._resample_linear" title="soundit._resample_linear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_resample_linear</span></code></a></p></td>
+<td><p>Resample the sound using linear interpolation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.play_discord_source" title="soundit.play_discord_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">play_discord_source</span></code></a></p></td>
+<td><p>Plays and waits until the source finishes playing</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.wrap_discord_source" title="soundit.wrap_discord_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wrap_discord_source</span></code></a></p></td>
+<td><p>Wraps an iterator of bytes into an audio source</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.chunked" title="soundit.chunked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunked</span></code></a></p></td>
+<td><p>Converts a stream of floats or two-tuples of floats in [-1, 1) to bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.unwrap_discord_source" title="soundit.unwrap_discord_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrap_discord_source</span></code></a></p></td>
+<td><p>Converts an audio source into a stream of bytes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.unchunked" title="soundit.unchunked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unchunked</span></code></a></p></td>
+<td><p>Converts a stream of bytes to two-tuples of floats in [-1, 1)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.make_frequencies_dict" title="soundit.make_frequencies_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_frequencies_dict</span></code></a></p></td>
+<td><p>Makes a dictionary containing frequencies for each note</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.make_indices_dict" title="soundit.make_indices_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_indices_dict</span></code></a></p></td>
+<td><p>Makes a dictionary containing note indices of common note names</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.music_to_notes" title="soundit.music_to_notes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">music_to_notes</span></code></a></p></td>
+<td><p>Converts music into notes (two tuples of note name and length)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.split_music" title="soundit.split_music"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_music</span></code></a></p></td>
+<td><p>Splits music into individual sequences</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.notes_to_sine" title="soundit.notes_to_sine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notes_to_sine</span></code></a></p></td>
+<td><p>Converts notes into sine waves</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit._notes_to_sound" title="soundit._notes_to_sound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_notes_to_sound</span></code></a></p></td>
+<td><p>Converts notes to a sound using the provided func</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.play_output_chunks" title="soundit.play_output_chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">play_output_chunks</span></code></a></p></td>
+<td><p>Plays chunks to the default audio output device</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.create_input_chunks" title="soundit.create_input_chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_input_chunks</span></code></a></p></td>
+<td><p>Returns chunks from the default audio input device</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.reload" title="soundit.reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload</span></code></a></p></td>
+<td><p>Reloads this module. Helper function</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.has_discord" title="soundit.has_discord"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_discord</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.has_sounddevice" title="soundit.has_sounddevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_sounddevice</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.has_av" title="soundit.has_av"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_av</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.has_numpy" title="soundit.has_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_numpy</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.RATE" title="soundit.RATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RATE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.A4_FREQUENCY" title="soundit.A4_FREQUENCY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">A4_FREQUENCY</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.A4_INDEX" title="soundit.A4_INDEX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">A4_INDEX</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.NOTE_NAMES" title="soundit.NOTE_NAMES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NOTE_NAMES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.piano_data" title="soundit.piano_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">piano_data</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.MUSIC_DIGITIZED" title="soundit.MUSIC_DIGITIZED"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MUSIC_DIGITIZED</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#soundit.MUSIC_MEGALOVANIA" title="soundit.MUSIC_MEGALOVANIA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MUSIC_MEGALOVANIA</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#soundit.MUSIC_DIGITIZED_DUAL" title="soundit.MUSIC_DIGITIZED_DUAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MUSIC_DIGITIZED_DUAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.has_discord">
+<span class="sig-name descname"><span class="pre">has_discord</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../_modules/soundit/#has_discord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.has_discord" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.has_sounddevice">
+<span class="sig-name descname"><span class="pre">has_sounddevice</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../_modules/soundit/#has_sounddevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.has_sounddevice" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.has_av">
+<span class="sig-name descname"><span class="pre">has_av</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../_modules/soundit/#has_av"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.has_av" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.has_numpy">
+<span class="sig-name descname"><span class="pre">has_numpy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../_modules/soundit/#has_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.has_numpy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.RATE">
+<span class="sig-name descname"><span class="pre">RATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">48000</span></em><a class="reference internal" href="../../_modules/soundit/#RATE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.RATE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.A4_FREQUENCY">
+<span class="sig-name descname"><span class="pre">A4_FREQUENCY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">440</span></em><a class="reference internal" href="../../_modules/soundit/#A4_FREQUENCY"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.A4_FREQUENCY" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.A4_INDEX">
+<span class="sig-name descname"><span class="pre">A4_INDEX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">57</span></em><a class="reference internal" href="../../_modules/soundit/#A4_INDEX"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.A4_INDEX" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.NOTE_NAMES">
+<span class="sig-name descname"><span class="pre">NOTE_NAMES</span></span><a class="reference internal" href="../../_modules/soundit/#NOTE_NAMES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.NOTE_NAMES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.silence">
+<span class="sig-name descname"><span class="pre">silence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#silence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.silence" title="Link to this definition">#</a></dt>
+<dd><p>Returns silence</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.sine">
+<span class="sig-name descname"><span class="pre">sine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">A4_FREQUENCY</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#sine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.sine" title="Link to this definition">#</a></dt>
+<dd><p>Returns a sine wave at freq</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.square">
+<span class="sig-name descname"><span class="pre">square</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">A4_FREQUENCY</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#square"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.square" title="Link to this definition">#</a></dt>
+<dd><p>Returns a square wave at freq</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.sawtooth">
+<span class="sig-name descname"><span class="pre">sawtooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">A4_FREQUENCY</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#sawtooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.sawtooth" title="Link to this definition">#</a></dt>
+<dd><p>Returns a sawtooth wave at freq</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.triangle">
+<span class="sig-name descname"><span class="pre">triangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">A4_FREQUENCY</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#triangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.triangle" title="Link to this definition">#</a></dt>
+<dd><p>Returns a triangle wave at freq</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.piano_data">
+<span class="sig-name descname"><span class="pre">piano_data</span></span><a class="reference internal" href="../../_modules/soundit/#piano_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.piano_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.init_piano">
+<span class="sig-name descname"><span class="pre">init_piano</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#init_piano"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.init_piano" title="Link to this definition">#</a></dt>
+<dd><p>Loads the piano sound for use</p>
+<p>The raw file 0.raw was generated from Online Sequencer’s Electric Piano
+instrument (from <a class="reference external" href="https://onlinesequencer.net/app/instruments/0.ogg?v=12">https://onlinesequencer.net/app/instruments/0.ogg?v=12</a>)
+and FFmpeg was then used to convert it into a raw mono 48kHz signed 16-bit
+little endian file (using ffmpeg -i 0.ogg -f s16le -acodec pcm_s16le -ac 1
+-ar 48000 0.raw).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.piano">
+<span class="sig-name descname"><span class="pre">piano</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">A4_INDEX</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#piano"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.piano" title="Link to this definition">#</a></dt>
+<dd><p>Returns a piano sound at index</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.file_chunks">
+<span class="sig-name descname"><span class="pre">file_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#file_chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.file_chunks" title="Link to this definition">#</a></dt>
+<dd><p>Returns a sound from an audio file using FFmpeg</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – path to the audio file</p></li>
+<li><p><strong>start</strong> – seconds into the audio to start at</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>stream of two-tuples of floats decoded from the audio file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soundit.LRUCache">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LRUCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#LRUCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache" title="Link to this definition">#</a></dt>
+<dd><p>An LRU cache</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>maxsize</strong> – the maximum size of the cache (None means unbounded)</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="soundit.LRUCache.maxsize">
+<span class="sig-name descname"><span class="pre">maxsize</span></span><a class="reference internal" href="../../_modules/soundit/#LRUCache.maxsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache.maxsize" title="Link to this definition">#</a></dt>
+<dd><p>The maximum size of the cache</p>
+<p>0 means that the cache will remain empty. Specifying None means the
+cache will grow without bound.</p>
+<p>Note that changes to maxsize won’t take effect until the next <a class="reference internal" href="#soundit.LRUCache.get" title="soundit.LRUCache.get"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a>
+call with a key not in the cache. It is not recommended, but you can
+call <code class="docutils literal notranslate"><span class="pre">._ensure_size()</span></code> to force it to resize the cache.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="soundit.LRUCache.hits">
+<span class="sig-name descname"><span class="pre">hits</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="reference internal" href="../../_modules/soundit/#LRUCache.hits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache.hits" title="Link to this definition">#</a></dt>
+<dd><p>The number of cache hits</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="soundit.LRUCache.misses">
+<span class="sig-name descname"><span class="pre">misses</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="reference internal" href="../../_modules/soundit/#LRUCache.misses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache.misses" title="Link to this definition">#</a></dt>
+<dd><p>The number of cache misses</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="soundit.LRUCache.results">
+<span class="sig-name descname"><span class="pre">results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a></em><a class="reference internal" href="../../_modules/soundit/#LRUCache.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache.results" title="Link to this definition">#</a></dt>
+<dd><p>The dictionary between keys and values</p>
+<p>Checking and modifying the cache manually isn’t recommended.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soundit.LRUCache.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#LRUCache.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache.get" title="Link to this definition">#</a></dt>
+<dd><p>Return the value for this key, calling value_func if needed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – unique key for a value</p></li>
+<li><p><strong>value_func</strong> – a zero-arg function returning a value for this key</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soundit.LRUCache.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#LRUCache.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUCache.clear" title="Link to this definition">#</a></dt>
+<dd><p>Clears the cache and the hits / misses counters</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soundit.LRUIterableCache">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LRUIterableCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#LRUIterableCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUIterableCache" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#soundit.LRUCache" title="soundit.LRUCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRUCache</span></code></a></p>
+<p>An LRU cache for iterables</p>
+<p>This class internally stores <a class="reference external" href="https://docs.python.org/3/library/itertools.html#itertools.tee" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">itertools.tee</span></code></a> objects wrapped around the
+original values and returns a copy of the tees in the cache.</p>
+<p>We use tee objects for a few reasons:</p>
+<ul class="simple">
+<li><p>They can be iterated at different speeds.</p></li>
+<li><p>They are iterators (lazily evaluated).</p></li>
+<li><p>They can be copied (major orz for this one).</p></li>
+<li><p>They are fast (implemented in C).</p></li>
+</ul>
+<p>See <a class="reference internal" href="#soundit.LRUCache" title="soundit.LRUCache"><code class="xref any py py-class docutils literal notranslate"><span class="pre">LRUCache</span></code></a> for more info on caching. See <a class="reference external" href="https://docs.python.org/3/library/itertools.html#itertools.tee" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">itertools.tee</span></code></a> for more info on
+tee objects.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="soundit.LRUIterableCache.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterable_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#LRUIterableCache.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.LRUIterableCache.get" title="Link to this definition">#</a></dt>
+<dd><p>Return the iterator for this key, calling iterable_func if needed</p>
+<p>If a matching tee is cached, return a copy. If no tee is found, create
+a new one using the iterable_func and make a copy of it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.lru_iter_cache">
+<span class="sig-name descname"><span class="pre">lru_iter_cache</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#soundit.LRUIterableCache" title="soundit.LRUIterableCache"><span class="pre">LRUIterableCache</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#lru_iter_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.lru_iter_cache" title="Link to this definition">#</a></dt>
+<dd><p>Decorator to wrap a function returning iterables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxsize</strong> – the maximum size of the cache (None means unbounded)</p></li>
+<li><p><strong>cache</strong> – the cache to use</p></li>
+</ul>
+</dd>
+</dl>
+<p>See <a class="reference internal" href="#soundit.LRUIterableCache" title="soundit.LRUIterableCache"><code class="xref any py py-class docutils literal notranslate"><span class="pre">LRUIterableCache</span></code></a> for more info.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.create_ffmpeg_process">
+<span class="sig-name descname"><span class="pre">create_ffmpeg_process</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ffmpeg'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">pipe_stdin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">pipe_stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">pipe_stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#create_ffmpeg_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.create_ffmpeg_process" title="Link to this definition">#</a></dt>
+<dd><p>Creates a process that run FFmpeg with the given arguments</p>
+<p>This assumes that <code class="docutils literal notranslate"><span class="pre">ffmpeg.exe</span></code> is on your PATH environment variable. If not,
+you can specify its location using the executable argument.</p>
+<p>For the <code class="docutils literal notranslate"><span class="pre">pipe_*</span></code> arguments, if it is True, <a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.PIPE" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">subprocess.PIPE</span></code></a> will be passed to
+<a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">subprocess.Popen</span></code></a>’s constructor. Otherwise, None will be passed.</p>
+<p>All other keyword arguments are passed directly to <a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">subprocess.Popen</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.chunked_ffmpeg_process">
+<span class="sig-name descname"><span class="pre">chunked_ffmpeg_process</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Popen</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">close</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/soundit/#chunked_ffmpeg_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.chunked_ffmpeg_process" title="Link to this definition">#</a></dt>
+<dd><p>Returns an iterator of chunks from the given process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process</strong> – the subprocess to stream stdout from</p></li>
+<li><p><strong>close</strong> – whether to terminate the process when finished</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function is hardcoded to take PCM 16-bit stereo audio, same as the
+chunked function. See that function for more info.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.make_ffmpeg_section_args">
+<span class="sig-name descname"><span class="pre">make_ffmpeg_section_args</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">before_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#make_ffmpeg_section_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.make_ffmpeg_section_args" title="Link to this definition">#</a></dt>
+<dd><p>Returns a list of arguments to FFmpeg</p>
+<p>It will take the required amount of audio starting from the specified start
+time and convert them into PCM 16-bit stereo audio to be piped to stdout.</p>
+<p>The before_options argument will be passed after <code class="docutils literal notranslate"><span class="pre">-ss</span></code> and before <code class="docutils literal notranslate"><span class="pre">-i</span></code>,
+and the options argument will be passed after <code class="docutils literal notranslate"><span class="pre">-t</span></code> and before <code class="docutils literal notranslate"><span class="pre">pipe:1</span></code>.</p>
+<p>If length is None, the audio will play to the end of the file.</p>
+<p>The returned args are of this form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">ss</span> <span class="p">{</span><span class="n">start</span><span class="p">}</span>
+<span class="o">-</span><span class="n">t</span> <span class="p">{</span><span class="n">length</span><span class="p">}</span>
+<span class="p">{</span><span class="n">before_options</span><span class="p">}</span>
+<span class="o">-</span><span class="n">i</span> <span class="p">{</span><span class="n">filename</span><span class="p">}</span>
+<span class="o">-</span><span class="n">f</span> <span class="n">s16le</span>
+<span class="o">-</span><span class="n">ar</span> <span class="mi">48000</span>
+<span class="o">-</span><span class="n">ac</span> <span class="mi">2</span>
+<span class="o">-</span><span class="n">loglevel</span> <span class="n">warning</span>
+<span class="o">-</span><span class="n">nostdin</span>
+<span class="p">{</span><span class="n">options</span><span class="p">}</span>
+<span class="n">pipe</span><span class="p">:</span><span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.loop_stream">
+<span class="sig-name descname"><span class="pre">loop_stream</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">data_iterable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">when_empty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'ignore'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'error'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'error'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/soundit/#loop_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.loop_stream" title="Link to this definition">#</a></dt>
+<dd><p>Consumes a stream of buffers and loops them forever</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_iterable</strong> – the iterable of buffers</p></li>
+<li><p><strong>copy</strong> – whether or not to copy the buffers</p></li>
+<li><p><strong>when_empty</strong> – what to do when data is empty (ignore or error)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>stream of buffers</p>
+</dd>
+</dl>
+<p>The buffers are reused upon looping. If the buffers are known to be unused
+after being yielded, you can set copy to False to save some time copying.</p>
+<p>When sum(len(b) for b in buffers) == 0, a RuntimeError will be raised.
+Otherwise, this function can end up in an infinite loop, or it can cause
+other functions to never yield (such as equal_chunk_stream). This behaviour
+is almost never useful, though if necessary, pass when_empty=”ignore” to
+suppress the error.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;abc&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;def&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;ghi&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">looped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">loop_stream</span><span class="p">(</span><span class="n">parts</span><span class="p">),</span> <span class="mi">9</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">looped</span><span class="p">[::</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">[b&#39;abc&#39;, b&#39;abc&#39;, b&#39;abc&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">looped</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">[b&#39;def&#39;, b&#39;def&#39;, b&#39;def&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">looped</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">[b&#39;ghi&#39;, b&#39;ghi&#39;, b&#39;ghi&#39;]</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.equal_chunk_stream">
+<span class="sig-name descname"><span class="pre">equal_chunk_stream</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">data_iterable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">buffer_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/soundit/#equal_chunk_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.equal_chunk_stream" title="Link to this definition">#</a></dt>
+<dd><p>Normalizes a stream of buffers into ones of length buffer_len</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_iterable</strong> – the iterable of buffers</p></li>
+<li><p><strong>buffer_len</strong> – the size to normalize buffers to</p></li>
+<li><p><strong>copy</strong> – return copies of the internal buffer. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the yielded
+buffer may be reused to reduce object creation and collection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>stream of buffers with len(buffer) == buffer_len except the last one</p>
+</dd>
+</dl>
+<p>The last buffer yielded is always smaller than buffer_len. Other code can
+fill it with zeros, drop it, or execute clean up code.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">equal_chunk_stream</span><span class="p">([</span><span class="sa">b</span><span class="s2">&quot;abcd&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;efghi&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[b&#39;abc&#39;, b&#39;def&#39;, b&#39;ghi&#39;, b&#39;&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">equal_chunk_stream</span><span class="p">([</span><span class="sa">b</span><span class="s2">&quot;abcd&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;efghijk&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[b&#39;abc&#39;, b&#39;def&#39;, b&#39;ghi&#39;, b&#39;jk&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">equal_chunk_stream</span><span class="p">([</span><span class="sa">b</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[b&#39;abc&#39;, b&#39;d&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">equal_chunk_stream</span><span class="p">([],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[b&#39;&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">equal_chunk_stream</span><span class="p">([</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[b&#39;&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">equal_chunk_stream</span><span class="p">([</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[b&#39;a&#39;]</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.passed">
+<span class="sig-name descname"><span class="pre">passed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#passed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.passed" title="Link to this definition">#</a></dt>
+<dd><p>Returns a sound lasting the specified time yielding the seconds passed</p>
+<p>This abstracts away the use of RATE to calculate the number of points.</p>
+<p>If seconds is None, the returned sound will be unbounded.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">passed</span><span class="p">(</span><span class="mf">0.25</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">RATE</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">RATE</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">RATE</span>
+<span class="go">0.25</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.fade">
+<span class="sig-name descname"><span class="pre">fade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fadein</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fadeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#fade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.fade" title="Link to this definition">#</a></dt>
+<dd><p>Fades in and out of the sound</p>
+<p>If the sound is less than fadein + fadeout seconds, the time between fading
+in and fading out is split proportionally.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.both">
+<span class="sig-name descname"><span class="pre">both</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#both"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.both" title="Link to this definition">#</a></dt>
+<dd><p>Deprecated. sound.chunked accepts floats</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.single">
+<span class="sig-name descname"><span class="pre">single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#single"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.single" title="Link to this definition">#</a></dt>
+<dd><p>Merge stereo sounds into mono</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.volume" title="Link to this definition">#</a></dt>
+<dd><p>Multiplies each point by the specified factor</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.cut">
+<span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#cut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.cut" title="Link to this definition">#</a></dt>
+<dd><p>Ends the sound after the specified time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.pad">
+<span class="sig-name descname"><span class="pre">pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#pad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.pad" title="Link to this definition">#</a></dt>
+<dd><p>Pads the sound with silence if shorter than the specified time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit._cut_cross">
+<span class="sig-name descname"><span class="pre">_cut_cross</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#_cut_cross"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit._cut_cross" title="Link to this definition">#</a></dt>
+<dd><p>End sound at the first sign flip after the specified time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.exact">
+<span class="sig-name descname"><span class="pre">exact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#exact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.exact" title="Link to this definition">#</a></dt>
+<dd><p>Cuts or pads the sound to make it exactly the specified time</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.delay">
+<span class="sig-name descname"><span class="pre">delay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#delay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.delay" title="Link to this definition">#</a></dt>
+<dd><p>Add silence before the sound</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit._resample_linear">
+<span class="sig-name descname"><span class="pre">_resample_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#_resample_linear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit._resample_linear" title="Link to this definition">#</a></dt>
+<dd><p>Resample the sound using linear interpolation</p>
+<p>The returned sound will be shorter/longer by 1 over the specified factor.
+Resampling a sound created by <code class="docutils literal notranslate"><span class="pre">cut(1,</span> <span class="pre">sine(440))</span></code> would give a sound
+similar to one created by <code class="docutils literal notranslate"><span class="pre">cut(1/factor,</span> <span class="pre">440*factor)</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.play_discord_source">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">play_discord_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voice_client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#play_discord_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.play_discord_source" title="Link to this definition">#</a></dt>
+<dd><p>Plays and waits until the source finishes playing</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soundit.DiscordIteratorSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiscordIteratorSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_opus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#DiscordIteratorSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.DiscordIteratorSource" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">discord.AudioSource</span></code></p>
+<p>Internal subclass of discord.py’s AudioSource for iterators</p>
+<p>See wrap_discord_source for more info.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="soundit.DiscordIteratorSource.is_opus">
+<span class="sig-name descname"><span class="pre">is_opus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#DiscordIteratorSource.is_opus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.DiscordIteratorSource.is_opus" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soundit.DiscordIteratorSource.cleanup">
+<span class="sig-name descname"><span class="pre">cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#DiscordIteratorSource.cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.DiscordIteratorSource.cleanup" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soundit.DiscordIteratorSource.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#DiscordIteratorSource.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.DiscordIteratorSource.read" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.wrap_discord_source">
+<span class="sig-name descname"><span class="pre">wrap_discord_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_opus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#wrap_discord_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.wrap_discord_source" title="Link to this definition">#</a></dt>
+<dd><p>Wraps an iterator of bytes into an audio source</p>
+<p>If is_opus is False (the default), the iterator must yield 20ms of signed
+16-bit little endian stereo 48kHz audio each iteration. If is_opus is True,
+the iterator should yield 20ms of Opus encoded audio each iteration.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># source implements discord.AudioSource</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">wrap_discord_source</span><span class="p">(</span><span class="n">chunked</span><span class="p">(</span><span class="n">cut</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sine</span><span class="p">(</span><span class="mi">440</span><span class="p">))))</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">voice_client</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">after</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finished&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.chunked">
+<span class="sig-name descname"><span class="pre">chunked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#chunked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.chunked" title="Link to this definition">#</a></dt>
+<dd><p>Converts a stream of floats or two-tuples of floats in [-1, 1) to bytes</p>
+<p>This is hardcoded to return 20ms chunks of signed 16-bit little endian
+stereo 48kHz audio.</p>
+<p>If the sound yield float instead of two-tuples, it will have both sides
+play the same point.</p>
+<p>If the sound doesn’t complete on a chunk border, null bytes will be added
+until it reaches the required length, which should be 3840 bytes.</p>
+<p>Note that floats not in the range [-1, 1) will be silently truncated to
+fall inside the range. For example, 1.5 will be processed as 1 and -1.5
+will be processed as -1.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.unwrap_discord_source">
+<span class="sig-name descname"><span class="pre">unwrap_discord_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#unwrap_discord_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.unwrap_discord_source" title="Link to this definition">#</a></dt>
+<dd><p>Converts an audio source into a stream of bytes</p>
+<p>This basically does the opposite of wrap_discord_source. See that
+function’s documentation for more info.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.unchunked">
+<span class="sig-name descname"><span class="pre">unchunked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#unchunked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.unchunked" title="Link to this definition">#</a></dt>
+<dd><p>Converts a stream of bytes to two-tuples of floats in [-1, 1)</p>
+<p>This basically does the opposite of chunked. See that function’s
+documentation for more info.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.make_frequencies_dict">
+<span class="sig-name descname"><span class="pre">make_frequencies_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a4</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">A4_FREQUENCY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#make_frequencies_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.make_frequencies_dict" title="Link to this definition">#</a></dt>
+<dd><p>Makes a dictionary containing frequencies for each note</p>
+<ul class="simple">
+<li><p>a4 is the frequency for the A above middle C</p></li>
+<li><p>offset is the number of semitones to offset each note by</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.make_indices_dict">
+<span class="sig-name descname"><span class="pre">make_indices_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NOTE_NAMES</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a4</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">57</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#make_indices_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.make_indices_dict" title="Link to this definition">#</a></dt>
+<dd><p>Makes a dictionary containing note indices of common note names</p>
+<ul class="simple">
+<li><p>a4 is the note index for the A above middle C</p></li>
+<li><p>names is a list of note names</p></li>
+<li><p>offset is the number of semitones to offset each note by</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.music_to_notes">
+<span class="sig-name descname"><span class="pre">music_to_notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">music</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#music_to_notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.music_to_notes" title="Link to this definition">#</a></dt>
+<dd><p>Converts music into notes (two tuples of note name and length)</p>
+<p>This function returns a list of two-tuples of a string/None and a float.
+The first item is the note name (or a break if it is a None). The second
+item is its length.</p>
+<p>Note that there is a break between notes by default.</p>
+<p>A music string is first divided into lines with one line being the
+specified length, defaulting to 1. Each line is then split by whitespace
+into parts with the length divided evenly between them. Each part is then
+split by commas “,” into notes with the length again divided evenly between
+them.</p>
+<p>Empty lines or lines starting with a hash “#” are skipped.</p>
+<p>Note names can be almost anything. A note name of a dash “-” continues the
+previous note without a break between them. A suffix of a tilde “~” removes
+the break after the note, whereas an exclamation point “!” adds one.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.split_music">
+<span class="sig-name descname"><span class="pre">split_music</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">music</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#split_music"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.split_music" title="Link to this definition">#</a></dt>
+<dd><p>Splits music into individual sequences</p>
+<p>Lines starting with a slash “/” will be added to a new sequence. All other
+lines (including blanks and comments) will be part of the main sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">split_music</span><span class="p">(</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">1&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">1&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">split_music</span><span class="p">(</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">/2</span><span class="se">\n</span><span class="s2">1&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">split_music</span><span class="p">(</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">/2</span><span class="se">\n</span><span class="s2">/3</span><span class="se">\n</span><span class="s2">1</span><span class="se">\n</span><span class="s2">/2&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">1&quot;</span><span class="p">,</span> <span class="s2">&quot;2</span><span class="se">\n</span><span class="s2">2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.notes_to_sine">
+<span class="sig-name descname"><span class="pre">notes_to_sine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#notes_to_sine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.notes_to_sine" title="Link to this definition">#</a></dt>
+<dd><p>Converts notes into sine waves</p>
+<ul class="simple">
+<li><p>notes is an iterator of two-tuples of note names/None and lengths</p></li>
+<li><p>frequencies is a dict to look up the frequency for each note name</p></li>
+<li><p>line_length is how much to scale the note by</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit._notes_to_sound">
+<span class="sig-name descname"><span class="pre">_notes_to_sound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#_notes_to_sound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit._notes_to_sound" title="Link to this definition">#</a></dt>
+<dd><p>Converts notes to a sound using the provided func</p>
+<p>The provided func is called with the note to get its sound. When there are
+no more notes to add nor sounds to play, this stops.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.play_output_chunks">
+<span class="sig-name descname"><span class="pre">play_output_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#play_output_chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.play_output_chunks" title="Link to this definition">#</a></dt>
+<dd><p>Plays chunks to the default audio output device</p>
+<p>This is hardcoded to take PCM 16-bit 48kHz stereo audio, preferably in 20ms
+blocks.</p>
+<p>Keyword arguments are passed to sounddevice.RawOutputStream.</p>
+<p>Note that the sounddevice library is required for this function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.create_input_chunks">
+<span class="sig-name descname"><span class="pre">create_input_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#create_input_chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.create_input_chunks" title="Link to this definition">#</a></dt>
+<dd><p>Returns chunks from the default audio input device</p>
+<p>This is hardcoded to yield 20ms blocks of PCM 16-bit 48kHz stereo audio.</p>
+<p>Keyword arguments are passed to sounddevice.RawInputStream.</p>
+<p>Note that the sounddevice library is required for this function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soundit.reload">
+<span class="sig-name descname"><span class="pre">reload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/soundit/#reload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.reload" title="Link to this definition">#</a></dt>
+<dd><p>Reloads this module. Helper function</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.MUSIC_DIGITIZED">
+<span class="sig-name descname"><span class="pre">MUSIC_DIGITIZED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Multiline-String</span></em><a class="reference internal" href="../../_modules/soundit/#MUSIC_DIGITIZED"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.MUSIC_DIGITIZED" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><details><summary>Show Value</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span># names=&quot;do di re ri mi fa fi so si la li ti&quot;.split()
+# offset=1
+# line_length=1.15
+
+. mi mi mi
+fa do . do
+. so mi do
+re mi,re - mi
+
+la3 mi mi mi
+fa do . do
+. so mi do
+re mi,re - mi
+
+do mi mi mi
+fa do . do
+. so mi do
+re mi,re - mi
+
+la3 la3 la3 fa3
+fa3 fa3 fa3 fa3
+do do do so3
+so3 so3 si3 si3
+
+la3 la3 la3 fa3
+fa3 fa3 fa3 fa3
+do do do so3
+la3,do,mi,so la,do5,mi5,so5 la5 .
+
+do so mi do
+re re,mi so mi
+do so mi do
+re re,mi so re
+
+do so mi do
+re re,mi so mi
+do so mi do
+re re,mi so re
+
+- do . la3
+. la3 do re
+so3 do mi do
+re do,re - do
+
+- do . la3
+. la3 do re
+so3 do mi do
+re do,re - do
+
+do la3 - so3
+do re,mi - re
+. . do so3
+re mi re do
+
+. . do so3
+fa mi,re - do
+- so3 re do
+mi so re do
+
+la3 mi mi mi
+fa do . do
+. so mi do
+re mi,re - mi
+
+do mi mi mi
+fa do . do
+. so mi do
+re mi,re - mi
+
+la3 la3 la3 fa3
+fa3 fa3 fa3 fa3
+do do do so3
+so3 so3 si3 si3
+
+la3 la3 la3 fa3
+fa3 fa3 fa3 fa3
+do do do so3
+la3,do,mi,so la,do5,mi5,so5 la5 .
+
+do so mi do
+re re,mi so mi
+do so mi do
+re re,mi so re
+
+do so mi do
+re re,mi so mi
+do so mi do
+re re,mi so re
+
+- do . la3
+. la3 do re
+so3 do mi do
+re do,re - do
+
+- do . la3
+. la3 do re
+so3 do mi do
+re do,re - -
+
+do
+</pre></div>
+</div>
+</details></div></blockquote>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.MUSIC_MEGALOVANIA">
+<span class="sig-name descname"><span class="pre">MUSIC_MEGALOVANIA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Multiline-String</span></em><a class="reference internal" href="../../_modules/soundit/#MUSIC_MEGALOVANIA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.MUSIC_MEGALOVANIA" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><details><summary>Show Value</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span># names=&quot;do di re ri mi fa fi so si la li ti&quot;.split()
+# offset=6
+# line_length=2.2
+
+la3 la3 la - mi - - ri - re - do - la3 do re
+so3 so3 la - mi - - ri - re - do - la3 do re
+fi3 fi3 la - mi - - ri - re - do - la3 do re
+fa3 fa3 la - mi - - ri - re - do - la3 do re
+
+la3 la3 la - mi - - ri - re - do - la3 do re
+so3 so3 la - mi - - ri - re - do - la3 do re
+fi3 fi3 la - mi - - ri - re - do - la3 do re
+fa3 fa3 la - mi - - ri - re - do - la3 do re
+
+do - do do - do - do - la3 - la3 - - - -
+do - do do - re - ri - re do la3 do re - -
+do - do do - re - ri - mi - so - mi - -
+la - la - la mi la so - - - - - - - -
+
+mi - mi mi - mi - mi - re - re - - - -
+mi - mi mi - mi - re - mi - so - mi re -
+la do mi do so do mi do re do re mi so mi re do
+la3 - ti3 - do la3 do so - - - - - - - -
+
+la3 - - - - - - - do la3 do re ri re do la3
+do la3 do - re - - - - - - - - - re mi
+la - re mi re do ti3 la3 do - re - mi - so -
+la - la - la mi la so - - - - - - - -
+
+do - re - mi - do5 - ti - - - si - - -
+ti - - - do5 - - - re5 - - - ti - - -
+mi5 - - - - - - - mi5 ti so re do ti3 la3 si3
+so3 - - - - - - - si3 - - - - - - -
+
+mi3 - - - - - - - - - - - do - - -
+ti3 - - - - - - - si3 - - - - - - -
+la3
+-
+</pre></div>
+</div>
+</details></div></blockquote>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="soundit.MUSIC_DIGITIZED_DUAL">
+<span class="sig-name descname"><span class="pre">MUSIC_DIGITIZED_DUAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Multiline-String</span></em><a class="reference internal" href="../../_modules/soundit/#MUSIC_DIGITIZED_DUAL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#soundit.MUSIC_DIGITIZED_DUAL" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><details><summary>Show Value</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    # names=&quot;do di re ri mi fa fi so si la li ti&quot;.split()
+    # line_length=4.36
+    # offset=13
+/   # offset=1
+
+    . mi mi mi fa       do . do .           so mi do re         mi,re - mi
+/   .
+
+    la3 mi mi mi        fa do . do          . so mi do          re mi,re - mi
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do mi mi mi         fa do . do          . so mi do          re mi,re - mi
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do mi mi mi         fa do . do          . so mi do          re mi,re - mi
+/   la3 la3 la3 la3     la3 la3 la3 la3     la3 la3 la3 la3     la3 la3 la3 la3
+
+    do mi mi mi         fa do . do          . so mi do          . . . .
+/   la3 la3 la3 la3     la3 la3 la3 la3     la3 la3 la3 la3     la3,do,mi,so la,do5,mi5,so5 la5 .
+
+    do so mi do         re re,mi so mi      do so mi do         re re,mi so re
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do so mi do         re re,mi so mi      do so mi do         re re,mi so re
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    - do . la3          . la3 do re         so3 do mi do        re do,re - do
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    - do . la3          . la3 do re         so3 do mi do        re do,re - do
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do la3 - so3        do re,mi - re       . . do so3          re mi re do
+/   .
+
+    . . do so3          fa mi,re - do       - so3 re do         mi so re do
+/   .
+
+    la3 mi mi mi        fa do . do          . so mi do          re mi,re - mi
+/   la3 . la3 .         fa3 . fa3 .         do . do .           so3 . so3 .
+
+    do mi mi mi         fa do . do          . so mi do          re mi,re - mi
+/   la3 . la3 .         fa3 . fa3 .         do . do .           so3 . so3 .
+
+    do mi mi mi         fa do . do          . so mi do          re mi,re - mi
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do mi mi mi         fa do . do          . so mi do          . . . .
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        la3,do,mi,so la,do5,mi5,so5 la5 .
+
+    do so mi do         re re,mi so mi      do so mi do         re re,mi so re
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do so mi do         re re,mi so mi      do so mi do         re re,mi so re
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    - do . la3          . la3 do re         so3 do mi do        re do,re - do
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    - do . la3          . la3 do re         so3 do mi do        re do,re - -
+/   la3 la3 la3 fa3     fa3 fa3 fa3 fa3     do do do so3        so3 so3 si3 si3
+
+    do . . .
+/   la3 . . .
+</pre></div>
+</div>
+</details></div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../../changelog/">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Changelog</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">API Reference</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021, GeeTransit
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+            
+            <div class="last-updated">
+                <a class="muted-link" href="../../_sources/api/soundit/index.rst.txt" rel="nofollow">Page Source</a>
+            </div>
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link" href="https://github.com/GeeTransit/soundit" aria-label="On GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soundit</span></code></a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li><a class="reference internal" href="#soundit.has_discord"><code class="docutils literal notranslate"><span class="pre">has_discord</span></code></a></li>
+<li><a class="reference internal" href="#soundit.has_sounddevice"><code class="docutils literal notranslate"><span class="pre">has_sounddevice</span></code></a></li>
+<li><a class="reference internal" href="#soundit.has_av"><code class="docutils literal notranslate"><span class="pre">has_av</span></code></a></li>
+<li><a class="reference internal" href="#soundit.has_numpy"><code class="docutils literal notranslate"><span class="pre">has_numpy</span></code></a></li>
+<li><a class="reference internal" href="#soundit.RATE"><code class="docutils literal notranslate"><span class="pre">RATE</span></code></a></li>
+<li><a class="reference internal" href="#soundit.A4_FREQUENCY"><code class="docutils literal notranslate"><span class="pre">A4_FREQUENCY</span></code></a></li>
+<li><a class="reference internal" href="#soundit.A4_INDEX"><code class="docutils literal notranslate"><span class="pre">A4_INDEX</span></code></a></li>
+<li><a class="reference internal" href="#soundit.NOTE_NAMES"><code class="docutils literal notranslate"><span class="pre">NOTE_NAMES</span></code></a></li>
+<li><a class="reference internal" href="#soundit.silence"><code class="docutils literal notranslate"><span class="pre">silence()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.sine"><code class="docutils literal notranslate"><span class="pre">sine()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.square"><code class="docutils literal notranslate"><span class="pre">square()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.sawtooth"><code class="docutils literal notranslate"><span class="pre">sawtooth()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.triangle"><code class="docutils literal notranslate"><span class="pre">triangle()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.piano_data"><code class="docutils literal notranslate"><span class="pre">piano_data</span></code></a></li>
+<li><a class="reference internal" href="#soundit.init_piano"><code class="docutils literal notranslate"><span class="pre">init_piano()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.piano"><code class="docutils literal notranslate"><span class="pre">piano()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.file_chunks"><code class="docutils literal notranslate"><span class="pre">file_chunks()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.LRUCache"><code class="docutils literal notranslate"><span class="pre">LRUCache</span></code></a><ul>
+<li><a class="reference internal" href="#soundit.LRUCache.maxsize"><code class="docutils literal notranslate"><span class="pre">LRUCache.maxsize</span></code></a></li>
+<li><a class="reference internal" href="#soundit.LRUCache.hits"><code class="docutils literal notranslate"><span class="pre">LRUCache.hits</span></code></a></li>
+<li><a class="reference internal" href="#soundit.LRUCache.misses"><code class="docutils literal notranslate"><span class="pre">LRUCache.misses</span></code></a></li>
+<li><a class="reference internal" href="#soundit.LRUCache.results"><code class="docutils literal notranslate"><span class="pre">LRUCache.results</span></code></a></li>
+<li><a class="reference internal" href="#soundit.LRUCache.get"><code class="docutils literal notranslate"><span class="pre">LRUCache.get()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.LRUCache.clear"><code class="docutils literal notranslate"><span class="pre">LRUCache.clear()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#soundit.LRUIterableCache"><code class="docutils literal notranslate"><span class="pre">LRUIterableCache</span></code></a><ul>
+<li><a class="reference internal" href="#soundit.LRUIterableCache.get"><code class="docutils literal notranslate"><span class="pre">LRUIterableCache.get()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#soundit.lru_iter_cache"><code class="docutils literal notranslate"><span class="pre">lru_iter_cache()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.create_ffmpeg_process"><code class="docutils literal notranslate"><span class="pre">create_ffmpeg_process()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.chunked_ffmpeg_process"><code class="docutils literal notranslate"><span class="pre">chunked_ffmpeg_process()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.make_ffmpeg_section_args"><code class="docutils literal notranslate"><span class="pre">make_ffmpeg_section_args()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.loop_stream"><code class="docutils literal notranslate"><span class="pre">loop_stream()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.equal_chunk_stream"><code class="docutils literal notranslate"><span class="pre">equal_chunk_stream()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.passed"><code class="docutils literal notranslate"><span class="pre">passed()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.fade"><code class="docutils literal notranslate"><span class="pre">fade()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.both"><code class="docutils literal notranslate"><span class="pre">both()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.single"><code class="docutils literal notranslate"><span class="pre">single()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.volume"><code class="docutils literal notranslate"><span class="pre">volume()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.cut"><code class="docutils literal notranslate"><span class="pre">cut()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.pad"><code class="docutils literal notranslate"><span class="pre">pad()</span></code></a></li>
+<li><a class="reference internal" href="#soundit._cut_cross"><code class="docutils literal notranslate"><span class="pre">_cut_cross()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.exact"><code class="docutils literal notranslate"><span class="pre">exact()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.delay"><code class="docutils literal notranslate"><span class="pre">delay()</span></code></a></li>
+<li><a class="reference internal" href="#soundit._resample_linear"><code class="docutils literal notranslate"><span class="pre">_resample_linear()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.play_discord_source"><code class="docutils literal notranslate"><span class="pre">play_discord_source()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.DiscordIteratorSource"><code class="docutils literal notranslate"><span class="pre">DiscordIteratorSource</span></code></a><ul>
+<li><a class="reference internal" href="#soundit.DiscordIteratorSource.is_opus"><code class="docutils literal notranslate"><span class="pre">DiscordIteratorSource.is_opus()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.DiscordIteratorSource.cleanup"><code class="docutils literal notranslate"><span class="pre">DiscordIteratorSource.cleanup()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.DiscordIteratorSource.read"><code class="docutils literal notranslate"><span class="pre">DiscordIteratorSource.read()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#soundit.wrap_discord_source"><code class="docutils literal notranslate"><span class="pre">wrap_discord_source()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.chunked"><code class="docutils literal notranslate"><span class="pre">chunked()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.unwrap_discord_source"><code class="docutils literal notranslate"><span class="pre">unwrap_discord_source()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.unchunked"><code class="docutils literal notranslate"><span class="pre">unchunked()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.make_frequencies_dict"><code class="docutils literal notranslate"><span class="pre">make_frequencies_dict()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.make_indices_dict"><code class="docutils literal notranslate"><span class="pre">make_indices_dict()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.music_to_notes"><code class="docutils literal notranslate"><span class="pre">music_to_notes()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.split_music"><code class="docutils literal notranslate"><span class="pre">split_music()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.notes_to_sine"><code class="docutils literal notranslate"><span class="pre">notes_to_sine()</span></code></a></li>
+<li><a class="reference internal" href="#soundit._notes_to_sound"><code class="docutils literal notranslate"><span class="pre">_notes_to_sound()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.play_output_chunks"><code class="docutils literal notranslate"><span class="pre">play_output_chunks()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.create_input_chunks"><code class="docutils literal notranslate"><span class="pre">create_input_chunks()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.reload"><code class="docutils literal notranslate"><span class="pre">reload()</span></code></a></li>
+<li><a class="reference internal" href="#soundit.MUSIC_DIGITIZED"><code class="docutils literal notranslate"><span class="pre">MUSIC_DIGITIZED</span></code></a></li>
+<li><a class="reference internal" href="#soundit.MUSIC_MEGALOVANIA"><code class="docutils literal notranslate"><span class="pre">MUSIC_MEGALOVANIA</span></code></a></li>
+<li><a class="reference internal" href="#soundit.MUSIC_DIGITIZED_DUAL"><code class="docutils literal notranslate"><span class="pre">MUSIC_DIGITIZED_DUAL</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=751a5dd3"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

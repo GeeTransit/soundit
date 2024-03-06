@@ -1,0 +1,12 @@
+
+
+API Reference
+=============
+
+Auto-generated documentation from the code.
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   soundit </api/soundit/index>
