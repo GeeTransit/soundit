@@ -59,6 +59,7 @@ exclude_patterns = ["_build"]
 # Less clutter in API docs
 add_module_names = False
 python_use_unqualified_type_names = True
+maximum_signature_line_length = 80
 
 def setup(app):
     # Adapted from:
