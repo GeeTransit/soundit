@@ -1011,6 +1011,17 @@ def loop_stream(
     is almost never useful, though if necessary, pass when_empty="ignore" to
     suppress the error.
 
+    Example:
+        >>> from itertools import islice
+        >>> parts = [b"abc", b"def", b"ghi"]
+        >>> looped = list(islice(loop_stream(parts), 9))
+        >>> looped[::3]
+        [b'abc', b'abc', b'abc']
+        >>> looped[1::3]
+        [b'def', b'def', b'def']
+        >>> looped[2::3]
+        [b'ghi', b'ghi', b'ghi']
+
     """
     if copy is None:
         copy = True
@@ -1235,6 +1246,15 @@ def passed(seconds=1):
     This abstracts away the use of RATE to calculate the number of points.
 
     If seconds is None, the returned sound will be unbounded.
+
+    Example:
+        >>> x = list(passed(0.25))
+        >>> x[0] * RATE
+        0.0
+        >>> x[1] * RATE
+        1.0
+        >>> len(x) / RATE
+        0.25
 
     """
     if seconds is None:
